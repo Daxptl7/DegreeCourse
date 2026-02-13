@@ -23,7 +23,7 @@ try {
 export const connectDB = async () => {
   try {
     const conn = await mongoose.connect(config.mongodb.uri);//mongoose.connect(config.mongodb.uri) This will return the promise.we use the Await function to wait for the promise to be resolved.and work excute the code parallelly .JS pauses this function.//Node continues running other code//When MongoDB responds → Promise resolves//conn gets the actual connection object.
-    console.log(`MongoDB Port: ${conn.connection.port}`);//conn return the mongoose connection object. .connection is the property of the mongoose connection in which it includes terms like port:which return the port mongobd is using and host:which return the host name of the mongodb.for example :mongodb://localhost:27017/unilearn  
+  //conn return the mongoose connection object. .connection is the property of the mongoose connection in which it includes terms like port:which return the port mongobd is using and host:which return the host name of the mongodb.for example :mongodb://localhost:27017/unilearn  
     console.log(`MongoDB Host: ${conn.connection.host}`);
   } catch (error) {
     console.error(`Error: ${error.message}`);

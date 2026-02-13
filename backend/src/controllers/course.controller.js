@@ -79,7 +79,16 @@ export const addLecture = async (req, res) => {
       });
     }
 
-    section.lectures.push(req.body);
+    let lectureData = { ...req.body };
+
+    // Handle file upload
+    if (req.file) {
+      lectureData.videoUrl = `/uploads/videos/${req.file.filename}`;
+      // Map other fields that might come as text in multipart form
+      // e.g., duration, title, etc. are already in req.body
+    }
+
+    section.lectures.push(lectureData);
     await course.save();
 
     res.status(200).json({
