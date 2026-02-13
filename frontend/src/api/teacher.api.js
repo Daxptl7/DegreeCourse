@@ -21,6 +21,11 @@ export const addSection = async (courseId, sectionData) => {
 };
 
 export const addLecture = async (courseId, sectionId, lectureData) => {
-    const response = await axios.put(`/courses/${courseId}/sections/${sectionId}/lectures`, lectureData);
+    const isFormData = lectureData instanceof FormData;
+    const response = await axios.put(
+        `/courses/${courseId}/sections/${sectionId}/lectures`,
+        lectureData,
+        isFormData ? { headers: { 'Content-Type': 'multipart/form-data' } } : {}
+    );
     return response.data;
 };

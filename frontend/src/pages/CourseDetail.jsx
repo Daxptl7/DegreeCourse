@@ -448,20 +448,31 @@ const CourseDetail = () => {
                                 {/* 1. Video Player */}
                                 <div className="main-video-player">
                                     {videoSource ? (
-                                        <iframe
-                                            src={(function (url) {
-                                                if (!url || typeof url !== 'string') return '';
-                                                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-                                                const match = url.match(regExp);
-                                                return (match && match[2].length === 11)
-                                                    ? 'https://www.youtube.com/embed/' + match[2]
-                                                    : url;
-                                            })(videoSource)}
-                                            title={activeTitle}
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                            referrerPolicy="strict-origin-when-cross-origin"
-                                            allowFullScreen
-                                        ></iframe>
+                                        videoSource.startsWith('/uploads') ? (
+                                            <video
+                                                src={`${BASE_URL}${videoSource}`}
+                                                controls
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                autoPlay
+                                            >
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        ) : (
+                                            <iframe
+                                                src={(function (url) {
+                                                    if (!url || typeof url !== 'string') return '';
+                                                    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+                                                    const match = url.match(regExp);
+                                                    return (match && match[2].length === 11)
+                                                        ? 'https://www.youtube.com/embed/' + match[2]
+                                                        : url;
+                                                })(videoSource)}
+                                                title={activeTitle}
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                referrerPolicy="strict-origin-when-cross-origin"
+                                                allowFullScreen
+                                            ></iframe>
+                                        )
                                     ) : (
                                         <div className="video-placeholder">
                                             {course.thumbnail && <img src={course.thumbnail} alt={course.name} />}

@@ -112,10 +112,26 @@ const ManageCourse = () => {
         if (!lectureData.title || !activeSectionId) return;
 
         try {
-            const response = await addLecture(course._id, activeSectionId, { ...lectureData, order: 0 }); // Order logic needed
+            let payload;
+            if (lectureData.file) {
+                const formData = new FormData();
+                formData.append('title', lectureData.title);
+                formData.append('description', lectureData.description);
+                formData.append('summary', lectureData.summary);
+                formData.append('notes', lectureData.notes);
+                formData.append('thumbnail', lectureData.thumbnail);
+                formData.append('duration', lectureData.duration);
+                formData.append('video', lectureData.file);
+                formData.append('order', 0);
+                payload = formData;
+            } else {
+                payload = { ...lectureData, order: 0 };
+            }
+
+            const response = await addLecture(course._id, activeSectionId, payload);
             if (response.success) {
                 setCourse(response.data);
-                setLectureData({ title: '', videoUrl: '', description: '', summary: '', notes: '', thumbnail: '', duration: '' });
+                setLectureData({ title: '', videoUrl: '', description: '', summary: '', notes: '', thumbnail: '', duration: '', file: null });
                 setShowLectureModal(false);
                 setActiveSectionId(null);
             }
@@ -286,21 +302,31 @@ const ManageCourse = () => {
                                 ×
                             </button>
                             <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
-                                <iframe
-                                    src={(function (url) {
-                                        if (!url) return '';
-                                        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-                                        const match = url.match(regExp);
-                                        return (match && match[2].length === 11)
-                                            ? 'https://www.youtube.com/embed/' + match[2]
-                                            : url;
-                                    })(previewLecture.videoUrl)}
-                                    title={previewLecture.title}
-                                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                    referrerPolicy="strict-origin-when-cross-origin"
-                                    allowFullScreen
-                                ></iframe>
+                                {previewLecture.videoUrl && previewLecture.videoUrl.startsWith('/uploads') ? (
+                                    <video
+                                        src={`${config.API_URL.replace('/api', '')}${previewLecture.videoUrl}`}
+                                        controls
+                                        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+                                    >
+                                        Your browser does not support the video tag.
+                                    </video>
+                                ) : (
+                                    <iframe
+                                        src={(function (url) {
+                                            if (!url) return '';
+                                            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+                                            const match = url.match(regExp);
+                                            return (match && match[2].length === 11)
+                                                ? 'https://www.youtube.com/embed/' + match[2]
+                                                : url;
+                                        })(previewLecture.videoUrl)}
+                                        title={previewLecture.title}
+                                        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        referrerPolicy="strict-origin-when-cross-origin"
+                                        allowFullScreen
+                                    ></iframe>
+                                )}
                             </div>
                             <div style={{ padding: '20px', background: 'var(--bg-card)', color: 'var(--text-primary)' }}>
                                 <h3 style={{ margin: '0 0 10px 0' }}>{previewLecture.title}</h3>
@@ -335,7 +361,19 @@ const ManageCourse = () => {
                             <h3 style={{ marginTop: 0, color: 'var(--text-primary)' }}>Add Video Lecture</h3>
                             <form onSubmit={handleAddLecture} style={{ display: 'grid', gap: '15px' }}>
                                 <input type="text" placeholder="Lecture Title" required value={lectureData.title} onChange={e => setLectureData({ ...lectureData, title: e.target.value })} className="modal-input" style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color)', background: 'var(--bg-primary)', color: 'var(--text-primary)' }} />
-                                <input type="text" placeholder="Video URL" value={lectureData.videoUrl} onChange={e => setLectureData({ ...lectureData, videoUrl: e.target.value })} className="modal-input" style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color)', background: 'var(--bg-primary)', color: 'var(--text-primary)' }} />
+
+                                {/* Video Upload Input */}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                    <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Video File</label>
+                                    <input
+                                        type="file"
+                                        accept="video/*"
+                                        onChange={e => setLectureData({ ...lectureData, file: e.target.files[0] })}
+                                        className="modal-input"
+                                        style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color)', background: 'var(--bg-primary)', color: 'var(--text-primary)' }}
+                                    />
+                                </div>
+
                                 <input type="text" placeholder="Duration (e.g. 10:05)" value={lectureData.duration} onChange={e => setLectureData({ ...lectureData, duration: e.target.value })} className="modal-input" style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color)', background: 'var(--bg-primary)', color: 'var(--text-primary)' }} />
                                 <textarea placeholder="Description" value={lectureData.description} onChange={e => setLectureData({ ...lectureData, description: e.target.value })} className="modal-input" style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color)', background: 'var(--bg-primary)', color: 'var(--text-primary)' }}></textarea>
                                 <textarea placeholder="Summary" value={lectureData.summary} onChange={e => setLectureData({ ...lectureData, summary: e.target.value })} className="modal-input" style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color)', background: 'var(--bg-primary)', color: 'var(--text-primary)' }}></textarea>
