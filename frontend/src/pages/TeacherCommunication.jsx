@@ -3,36 +3,30 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
     ChevronDown,
-    Search,
+    ChevronUp,
     MessageCircle,
     CheckCircle,
     XCircle,
-    Send,
-    ChevronUp
+    Send
 } from 'lucide-react';
 import TeacherSidebar from '../components/teacher/TeacherSidebar';
 import { fetchTeacherCourses } from '../api/teacher.api';
 import { getQuestions, addAnswer, toggleStatus } from '../api/question.api';
 import { config } from '../config';
-import './TeacherCommunication.css';
+import './TeacherPortal.css';
 
 const BASE_URL = config.API_URL.replace('/api', '');
 
 const TeacherCommunication = () => {
     const { user } = useAuth();
-
-    // Data State
     const [courses, setCourses] = useState([]);
     const [selectedCourseId, setSelectedCourseId] = useState('');
     const [questions, setQuestions] = useState([]);
-
-    // UI State
     const [loading, setLoading] = useState(false);
     const [expandedQuestions, setExpandedQuestions] = useState({});
-    const [replyContent, setReplyContent] = useState({}); // questionId -> string
-    const [activeFilter, setActiveFilter] = useState('all'); // 'all', 'open', 'completed'
+    const [replyContent, setReplyContent] = useState({});
+    const [activeFilter, setActiveFilter] = useState('all');
 
-    // Fetch Courses on Mount
     useEffect(() => {
         const loadCourses = async () => {
             try {
@@ -48,7 +42,6 @@ const TeacherCommunication = () => {
         loadCourses();
     }, []);
 
-    // Fetch Questions
     useEffect(() => {
         if (selectedCourseId) {
             const loadQuestions = async () => {
@@ -68,15 +61,8 @@ const TeacherCommunication = () => {
         }
     }, [selectedCourseId]);
 
-    const handleCourseChange = (e) => {
-        setSelectedCourseId(e.target.value);
-    };
-
     const toggleQuestion = (qId) => {
-        setExpandedQuestions(prev => ({
-            ...prev,
-            [qId]: !prev[qId]
-        }));
+        setExpandedQuestions(prev => ({ ...prev, [qId]: !prev[qId] }));
     };
 
     const handleReplyChange = (qId, value) => {
@@ -86,14 +72,10 @@ const TeacherCommunication = () => {
     const handleSubmitReply = async (qId) => {
         const content = replyContent[qId];
         if (!content || !content.trim()) return;
-
         try {
             const response = await addAnswer(qId, content);
             if (response.success) {
-                // Update local list
-                setQuestions(prev => prev.map(q =>
-                    q._id === qId ? response.data : q
-                ));
+                setQuestions(prev => prev.map(q => q._id === qId ? response.data : q));
                 setReplyContent(prev => ({ ...prev, [qId]: '' }));
             }
         } catch (error) {
@@ -107,9 +89,7 @@ const TeacherCommunication = () => {
         try {
             const response = await toggleStatus(qId, newStatus);
             if (response.success) {
-                setQuestions(prev => prev.map(q =>
-                    q._id === qId ? { ...q, status: newStatus } : q
-                ));
+                setQuestions(prev => prev.map(q => q._id === qId ? { ...q, status: newStatus } : q));
             }
         } catch (error) {
             console.error("Failed to toggle status", error);
@@ -123,185 +103,128 @@ const TeacherCommunication = () => {
     });
 
     return (
-        <div className="teacher-comm-container">
+        <div className="tp-container">
             <TeacherSidebar />
-
-            <div className="comm-sub-sidebar">
-                <div className="sub-menu-item active">Q n A</div>
-                <Link to="/teacher/assignments" className="sub-menu-item">Assignments</Link>
-                <Link to="/teacher/announcements" className="sub-menu-item">Announcements</Link>
-            </div>
-
-            <main className="comm-main">
-                <header className="comm-header">
-                    <div className="header-title">
-                        <h1>Q n A</h1>
-                        <div className="course-dropdown-wrapper">
-                            <select
-                                value={selectedCourseId}
-                                onChange={handleCourseChange}
-                                className="course-select"
-                                style={{ padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }}
-                            >
+            <main className="tp-main">
+                <div className="tp-body">
+                    {/* Page Header */}
+                    <div className="tp-page-header">
+                        <div className="tp-page-title">
+                            <h1>Communication</h1>
+                            <p>Answer student questions and manage discussions</p>
+                        </div>
+                        <div className="tp-course-selector">
+                            <select value={selectedCourseId} onChange={(e) => setSelectedCourseId(e.target.value)}>
                                 <option value="" disabled>Select Course</option>
                                 {courses.map(c => (
                                     <option key={c._id} value={c._id}>{c.name}</option>
                                 ))}
                             </select>
+                            <ChevronDown size={16} className="tp-select-arrow" />
                         </div>
                     </div>
-                </header>
 
-                <div className="comm-content">
-                    {/* Overview & Filter Panel */}
-                    <div className="filter-bar" style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1.5rem' }}>
-                        <button
-                            onClick={() => setActiveFilter('all')}
-                            style={{
-                                padding: '6px 12px', borderRadius: '20px', border: '1px solid #ddd',
-                                background: activeFilter === 'all' ? '#000' : '#fff', color: activeFilter === 'all' ? '#fff' : '#333', cursor: 'pointer'
-                            }}
-                        >
-                            All
-                        </button>
-                        <button
-                            onClick={() => setActiveFilter('open')}
-                            style={{
-                                padding: '6px 12px', borderRadius: '20px', border: '1px solid #ddd',
-                                background: activeFilter === 'open' ? 'var(--accent-color)' : '#fff', color: activeFilter === 'open' ? '#fff' : '#333', cursor: 'pointer'
-                            }}
-                        >
-                            Open
-                        </button>
-                        <button
-                            onClick={() => setActiveFilter('completed')}
-                            style={{
-                                padding: '6px 12px', borderRadius: '20px', border: '1px solid #ddd',
-                                background: activeFilter === 'completed' ? '#10b981' : '#fff', color: activeFilter === 'completed' ? '#fff' : '#333', cursor: 'pointer'
-                            }}
-                        >
-                            Completed
-                        </button>
+                    {/* Tabs */}
+                    <div className="tp-tabs">
+                        <Link to="/teacher/communication" className="tp-tab active">Q & A</Link>
+                        <Link to="/teacher/assignments" className="tp-tab">Assignments</Link>
+                        <Link to="/teacher/announcements" className="tp-tab">Announcements</Link>
                     </div>
 
+                    {/* Filter Pills */}
+                    <div className="tp-filters">
+                        {['all', 'open', 'completed'].map(f => (
+                            <button key={f} className={`tp-filter-pill ${activeFilter === f ? 'active' : ''}`}
+                                onClick={() => setActiveFilter(f)}>
+                                {f.charAt(0).toUpperCase() + f.slice(1)}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Content */}
                     {loading ? (
-                        <div style={{ padding: '2rem', textAlign: 'center' }}>Loading questions...</div>
+                        <div className="tp-loading">Loading questions...</div>
                     ) : filteredQuestions.length === 0 ? (
-                        <div style={{ padding: '4rem', textAlign: 'center', color: '#666' }}>
-                            <MessageCircle size={48} style={{ opacity: 0.3, marginBottom: '1rem' }} />
-                            <p>No questions found.</p>
+                        <div className="tp-empty">
+                            <MessageCircle size={48} strokeWidth={1} />
+                            <h3>No questions found</h3>
+                            <p>Questions from students will appear here.</p>
                         </div>
                     ) : (
-                        <div className="question-list">
-                            {filteredQuestions.map(q => {
+                        <div className="tp-list">
+                            {filteredQuestions.map((q, i) => {
                                 const isOpen = expandedQuestions[q._id];
                                 return (
-                                    <div key={q._id} className="question-card" style={{ display: 'block' }}>
-                                        <div
-                                            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
-                                            onClick={() => toggleQuestion(q._id)}
-                                        >
-                                            <div style={{ flex: 1 }}>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
-                                                    <span style={{
-                                                        fontSize: '0.75rem',
-                                                        fontWeight: 'bold',
-                                                        padding: '2px 8px',
-                                                        borderRadius: '4px',
-                                                        backgroundColor: q.status === 'completed' ? '#dcfce7' : '#e0e7ff',
-                                                        color: q.status === 'completed' ? '#166534' : '#4338ca',
-                                                        textTransform: 'uppercase'
-                                                    }}>
-                                                        {q.status}
-                                                    </span>
-                                                    <h3 style={{ margin: 0, fontSize: '1.1rem' }}>{q.title}</h3>
+                                    <div key={q._id} className="tp-list-card" style={{ animationDelay: `${i * 0.05}s` }}>
+                                        <div className="tp-list-card-header" onClick={() => toggleQuestion(q._id)}>
+                                            <div>
+                                                <div className="tp-list-card-title">
+                                                    <span className={`tp-status-badge ${q.status}`}>{q.status}</span>
+                                                    <h3>{q.title}</h3>
                                                 </div>
-                                                <div style={{ fontSize: '0.85rem', color: '#666' }}>
+                                                <div className="tp-list-card-meta">
                                                     By {q.student?.name} ({q.student?.email}) • {new Date(q.createdAt).toLocaleDateString()}
                                                 </div>
                                             </div>
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#666', fontSize: '0.9rem' }}>
+                                            <div className="tp-list-card-actions">
+                                                <span className="tp-reply-count">
                                                     <MessageCircle size={16} /> {q.answers.length}
-                                                </div>
+                                                </span>
                                                 {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                                             </div>
                                         </div>
 
                                         {isOpen && (
-                                            <div style={{ marginTop: '1.5rem', borderTop: '1px solid #eee', paddingTop: '1.5rem' }}>
-                                                <div style={{ marginBottom: '1rem' }}>
-                                                    <p style={{ whiteSpace: 'pre-wrap', color: '#333', fontSize: '1rem' }}>{q.description}</p>
-                                                    {q.imageUrl && (
-                                                        <div style={{ marginTop: '1rem' }}>
-                                                            <img
-                                                                src={q.imageUrl.startsWith('http') ? q.imageUrl : `${BASE_URL}${q.imageUrl}`}
-                                                                alt="Attachment"
-                                                                style={{ maxWidth: '100%', maxHeight: '400px', borderRadius: '8px', border: '1px solid #eee' }}
-                                                            />
-                                                        </div>
-                                                    )}
-                                                </div>
+                                            <div className="tp-expanded">
+                                                <p className="tp-description">{q.description}</p>
+                                                {q.imageUrl && (
+                                                    <img
+                                                        src={q.imageUrl.startsWith('http') ? q.imageUrl : `${BASE_URL}${q.imageUrl}`}
+                                                        alt="Attachment"
+                                                        className="tp-attachment-img"
+                                                    />
+                                                )}
 
-                                                <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', marginBottom: '1.5rem' }}>
-                                                    <button
-                                                        onClick={() => handleToggleStatus(q._id, q.status)}
-                                                        style={{
-                                                            padding: '6px 12px', border: '1px solid #ddd', borderRadius: '6px', background: '#fff', cursor: 'pointer',
-                                                            display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.9rem'
-                                                        }}
-                                                    >
-                                                        {q.status === 'open' ? <CheckCircle size={16} color="#10b981" /> : <XCircle size={16} color="#ef4444" />}
-                                                        {q.status === 'open' ? 'Mark as Completed' : 'Re-open Question'}
+                                                <div className="tp-action-bar">
+                                                    <button className="tp-btn-secondary" onClick={() => handleToggleStatus(q._id, q.status)}>
+                                                        {q.status === 'open' ? <CheckCircle size={16} color="#059669" /> : <XCircle size={16} color="#ef4444" />}
+                                                        {q.status === 'open' ? 'Mark Completed' : 'Re-open'}
                                                     </button>
                                                 </div>
 
-                                                <div style={{ backgroundColor: '#f9f9f9', borderRadius: '8px', padding: '1.5rem' }}>
-                                                    <h4 style={{ margin: '0 0 1rem', fontSize: '1rem', color: '#666' }}>Discussion</h4>
-
+                                                <div className="tp-discussion">
+                                                    <h4>Discussion</h4>
                                                     {q.answers.map(ans => (
-                                                        <div key={ans._id} style={{ display: 'flex', gap: '12px', marginBottom: '1rem' }}>
-                                                            <div style={{
-                                                                width: '32px', height: '32px', borderRadius: '50%',
-                                                                backgroundColor: ans.user?.role === 'teacher' ? 'var(--accent-color)' : '#ccc',
-                                                                color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '0.8rem', flexShrink: 0, overflow: 'hidden'
-                                                            }}>
+                                                        <div key={ans._id} className="tp-reply-item">
+                                                            <div className={`tp-reply-avatar ${ans.user?.role === 'teacher' ? 'teacher' : 'student'}`}>
                                                                 {ans.user?.image ? (
                                                                     <img
                                                                         src={ans.user.image.startsWith('http') ? ans.user.image : `${BASE_URL}${ans.user.image}`}
                                                                         alt={ans.user.name}
-                                                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                                                     />
                                                                 ) : (
                                                                     ans.user?.name?.charAt(0) || 'U'
                                                                 )}
                                                             </div>
-                                                            <div style={{ background: '#fff', padding: '10px', borderRadius: '8px', border: '1px solid #eee', flex: 1 }}>
-                                                                <div style={{ fontSize: '0.85rem', fontWeight: '600', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                            <div className="tp-reply-bubble">
+                                                                <div className="tp-reply-name">
                                                                     {ans.user?.name}
-                                                                    {ans.user?.role === 'teacher' && <span style={{ fontSize: '0.7rem', background: 'var(--accent-color)', color: '#fff', padding: '1px 6px', borderRadius: '4px' }}>Instructor</span>}
+                                                                    {ans.user?.role === 'teacher' && <span className="tp-instructor-tag">Instructor</span>}
                                                                 </div>
-                                                                <p style={{ margin: 0, fontSize: '0.95rem', color: '#333' }}>{ans.content}</p>
+                                                                <p className="tp-reply-text">{ans.content}</p>
                                                             </div>
                                                         </div>
                                                     ))}
 
-                                                    <div style={{ display: 'flex', gap: '10px', marginTop: '1.5rem' }}>
+                                                    <div className="tp-reply-input">
                                                         <input
                                                             type="text"
                                                             value={replyContent[q._id] || ''}
                                                             onChange={(e) => handleReplyChange(q._id, e.target.value)}
                                                             placeholder="Type your answer..."
-                                                            style={{ flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid #ddd' }}
                                                         />
-                                                        <button
-                                                            onClick={() => handleSubmitReply(q._id)}
-                                                            style={{
-                                                                background: 'var(--accent-color)', color: '#fff', border: 'none', padding: '0 1.2rem', borderRadius: '8px', cursor: 'pointer',
-                                                                display: 'flex', alignItems: 'center', gap: '6px'
-                                                            }}
-                                                        >
-                                                            <Send size={18} /> Reply
+                                                        <button className="tp-reply-btn" onClick={() => handleSubmitReply(q._id)}>
+                                                            <Send size={16} /> Reply
                                                         </button>
                                                     </div>
                                                 </div>

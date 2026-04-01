@@ -87,7 +87,7 @@ const Navbar = ({ user, toggleLogin, viewMode, toggleViewMode }) => {
                                             onClick={() => {
                                                 toggleViewMode();
                                                 if (viewMode !== 'teacher') {
-                                                    navigate('/teacher/courses');
+                                                    navigate('/teacher/dashboard');
                                                 } else {
                                                     navigate('/');
                                                 }
@@ -102,7 +102,7 @@ const Navbar = ({ user, toggleLogin, viewMode, toggleViewMode }) => {
                             )}
                             <li><Link to="/profile" className="menuLink">Profile</Link></li>
                             {user.role === 'teacher' && viewMode === 'teacher' ? (
-                                <li><Link to="/teacher/courses" className="menuLink">Dashboard</Link></li>
+                                <li><Link to="/teacher/dashboard" className="menuLink">Dashboard</Link></li>
                             ) : (
                                 <>
                                     <li><Link to="/my-courses" className="menuLink">My Courses</Link></li>

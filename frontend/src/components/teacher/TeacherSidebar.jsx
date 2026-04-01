@@ -1,17 +1,17 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
+    LayoutDashboard,
     BookOpen,
     MessageCircle,
     BarChart2,
     Settings,
-    Video,
 } from 'lucide-react';
-import '../../pages/TeacherCommunication.css'; // Assuming styles are here for now
+import '../../pages/TeacherCommunication.css';
 
 const TeacherSidebar = () => {
     const location = useLocation();
-    const isActive = (path) => location.pathname.startsWith(path);
+    const isActive = (path) => location.pathname === path || location.pathname.startsWith(path + '/');
 
     return (
         <aside className="comm-sidebar">
@@ -20,11 +20,15 @@ const TeacherSidebar = () => {
             </div>
 
             <nav className="comm-nav">
-                <Link to="/teacher/courses" className={`comm-nav-item ${isActive('/teacher/courses') ? 'active' : ''}`}>
-                    <div className="comm-nav-icon"><BookOpen size={24} /></div>
+                <Link to="/teacher/dashboard" className={`comm-nav-item ${isActive('/teacher/dashboard') ? 'active' : ''}`}>
+                    <div className="comm-nav-icon"><LayoutDashboard size={24} /></div>
                     <span className="nav-tooltip">Dashboard</span>
                 </Link>
-                <Link to="/teacher/communication" className={`comm-nav-item ${isActive('/teacher/communication') || isActive('/teacher/assignments') ? 'active' : ''}`}>
+                <Link to="/teacher/courses" className={`comm-nav-item ${isActive('/teacher/courses') ? 'active' : ''}`}>
+                    <div className="comm-nav-icon"><BookOpen size={24} /></div>
+                    <span className="nav-tooltip">Courses</span>
+                </Link>
+                <Link to="/teacher/communication" className={`comm-nav-item ${isActive('/teacher/communication') || isActive('/teacher/assignments') || isActive('/teacher/announcements') ? 'active' : ''}`}>
                     <div className="comm-nav-icon"><MessageCircle size={24} /></div>
                     <span className="nav-tooltip">Communication</span>
                 </Link>
@@ -42,3 +46,4 @@ const TeacherSidebar = () => {
 };
 
 export default TeacherSidebar;
+

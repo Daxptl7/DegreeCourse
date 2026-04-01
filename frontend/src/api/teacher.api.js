@@ -10,6 +10,11 @@ export const fetchTeacherCourses = async () => {
     return response.data;
 };
 
+export const fetchTeacherStats = async () => {
+    const response = await axios.get('/teacher/stats');
+    return response.data;
+};
+
 export const createCourse = async (courseData) => {
     const response = await axios.post('/courses', courseData);
     return response.data;

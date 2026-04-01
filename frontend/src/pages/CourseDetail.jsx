@@ -632,48 +632,41 @@ const CourseDetail = () => {
 
                     {/* 2. ANNOUNCEMENTS VIEW */}
                     {activeTab === 'announcements' && (
-                        <div style={{ maxWidth: '800px', margin: '0 auto', background: 'var(--bg-card)', borderRadius: '12px', border: '1px solid var(--border-color)', minHeight: '400px', padding: '1.5rem' }}>
-                            <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>Announcements</h2>
+                        <div className="sp-content-view">
+                            <div className="sp-section-header">
+                                <h2>Announcements</h2>
+                            </div>
 
                             {!isEnrolled ? (
-                                <div style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--text-secondary)' }}>
+                                <div className="sp-empty-state">
                                     <Lock size={48} style={{ margin: '0 auto 1rem', opacity: 0.5 }} />
                                     <h3>Enroll to view announcements</h3>
                                     <p>You need to be enrolled in this course to see updates from the instructor.</p>
                                 </div>
                             ) : announcementsLoading ? (
-                                <div style={{ textAlign: 'center', padding: '3rem 0' }}>Loading announcements...</div>
+                                <div className="sp-empty-state">Loading announcements...</div>
                             ) : announcements.length === 0 ? (
-                                <div style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--text-secondary)' }}>
+                                <div className="sp-empty-state">
                                     <MessageSquare size={48} style={{ margin: '0 auto 1rem', opacity: 0.5 }} />
                                     <h3>No announcements yet</h3>
                                     <p>The instructor hasn't posted any updates.</p>
                                 </div>
                             ) : (
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                <div className="sp-announcement-list">
                                     {announcements.map(ann => {
                                         const isRead = ann.readBy.includes(user._id);
                                         return (
                                             <div
                                                 key={ann._id}
                                                 onClick={() => !isRead && handleMarkRead(ann._id)}
-                                                style={{
-                                                    border: '1px solid var(--border-color)',
-                                                    borderRadius: '8px',
-                                                    padding: '1.5rem',
-                                                    backgroundColor: isRead ? 'transparent' : 'var(--bg-hover)',
-                                                    cursor: isRead ? 'default' : 'pointer',
-                                                    borderLeft: isRead ? '1px solid var(--border-color)' : '4px solid var(--accent-color)'
-                                                }}
+                                                className={`sp-announcement-card ${isRead ? 'read' : 'unread'}`}
                                             >
-                                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-                                                    <h4 style={{ fontWeight: '600', fontSize: '1.1rem', margin: 0 }}>{ann.title}</h4>
-                                                    {!isRead && (
-                                                        <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--accent-color)', backgroundColor: 'rgba(79, 70, 229, 0.1)', padding: '2px 8px', borderRadius: '4px', height: 'fit-content' }}>NEW</span>
-                                                    )}
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                                                    <h4>{ann.title}</h4>
+                                                    {!isRead && <span className="sp-badge-new">NEW</span>}
                                                 </div>
-                                                <p style={{ fontSize: '1rem', color: 'var(--text-primary)', whiteSpace: 'pre-wrap', lineHeight: '1.6' }}>{ann.content}</p>
-                                                <div style={{ marginTop: '1rem', fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                <p>{ann.content}</p>
+                                                <div className="sp-announcement-meta">
                                                     <span>Posted on {new Date(ann.createdAt).toLocaleDateString()}</span>
                                                     <span>•</span>
                                                     <span>By {course.instructor?.name || 'Instructor'}</span>
@@ -688,100 +681,84 @@ const CourseDetail = () => {
 
                     {/* 3. ASSIGNMENTS VIEW */}
                     {activeTab === 'assignments' && (
-                        <div style={{ maxWidth: '800px', margin: '0 auto', background: 'var(--bg-card)', borderRadius: '12px', border: '1px solid var(--border-color)', minHeight: '400px', padding: '1.5rem' }}>
-                            <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>Assignments</h2>
+                        <div className="sp-content-view">
+                            <div className="sp-section-header">
+                                <h2>Assignments</h2>
+                            </div>
 
                             {!isEnrolled ? (
-                                <div style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--text-secondary)' }}>
+                                <div className="sp-empty-state">
                                     <Lock size={48} style={{ margin: '0 auto 1rem', opacity: 0.5 }} />
                                     <h3>Enroll to view assignments</h3>
                                     <p>You need to be enrolled in this course to see and submit assignments.</p>
                                 </div>
                             ) : assignmentsLoading ? (
-                                <div style={{ textAlign: 'center', padding: '3rem 0' }}>Loading assignments...</div>
+                                <div className="sp-empty-state">Loading assignments...</div>
                             ) : assignments.length === 0 ? (
-                                <div style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--text-secondary)' }}>
+                                <div className="sp-empty-state">
                                     <FileText size={48} style={{ margin: '0 auto 1rem', opacity: 0.5 }} />
                                     <h3>No assignments yet</h3>
                                     <p>The instructor hasn't posted any assignments.</p>
                                 </div>
                             ) : (
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                                <div className="sp-assignment-list">
                                     {assignments.map(assign => {
                                         const isExpired = new Date() > new Date(assign.dueDate);
                                         const dueDateStr = new Date(assign.dueDate).toLocaleDateString() + ' ' + new Date(assign.dueDate).toLocaleTimeString();
 
                                         return (
-                                            <div
-                                                key={assign._id}
-                                                style={{
-                                                    border: '1px solid var(--border-color)',
-                                                    borderRadius: '8px',
-                                                    padding: '1.5rem',
-                                                    backgroundColor: 'var(--bg-card)'
-                                                }}
-                                            >
-                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                                            <div key={assign._id} className="sp-assignment-card">
+                                                <div className="sp-assignment-header">
                                                     <div>
-                                                        <h3 style={{ margin: '0 0 0.5rem', fontSize: '1.2rem' }}>{assign.title}</h3>
-                                                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', whiteSpace: 'pre-wrap' }}>{assign.description}</p>
+                                                        <h3 className="sp-assignment-title">{assign.title}</h3>
+                                                        <p className="sp-assignment-desc">{assign.description}</p>
                                                     </div>
                                                     <div style={{ textAlign: 'right' }}>
-                                                        <div style={{
-                                                            display: 'inline-flex',
-                                                            alignItems: 'center',
-                                                            gap: '6px',
-                                                            fontSize: '0.85rem',
-                                                            color: isExpired ? '#ef4444' : 'var(--text-secondary)',
-                                                            fontWeight: isExpired ? '600' : 'normal',
-                                                            backgroundColor: isExpired ? '#fee2e2' : '#f3f4f6',
-                                                            padding: '4px 8px',
-                                                            borderRadius: '4px'
-                                                        }}>
+                                                        <div className={`sp-assignment-status-pill ${isExpired ? 'expired' : 'due'}`}>
                                                             <Clock size={14} /> Due: {dueDateStr}
                                                         </div>
                                                         {assign.isSubmitted && (
-                                                            <div style={{ marginTop: '0.5rem', color: '#10b981', fontWeight: '600', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'flex-end' }}>
-                                                                <CheckCircle size={16} /> Submitted
+                                                            <div className="sp-assignment-status-pill submitted" style={{ marginTop: '0.5rem', display: 'flex', justifyContent: 'flex-end' }}>
+                                                                <CheckCircle size={14} /> Submitted
                                                             </div>
                                                         )}
                                                     </div>
                                                 </div>
 
-                                                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center', marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }}>
-                                                    {/* Teacher Attachment */}
-                                                    {assign.fileUrl && (
-                                                        <a
-                                                            href={assign.fileUrl.startsWith('http') ? assign.fileUrl : `${BASE_URL}${assign.fileUrl}`}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="btn-action"
-                                                            style={{ textDecoration: 'none', color: 'var(--text-primary)', border: '1px solid var(--border-color)' }}
-                                                        >
-                                                            <Download size={16} /> Download Attachment
-                                                        </a>
-                                                    )}
+                                                <div className="sp-assignment-footer">
+                                                    <div className="sp-assignment-actions">
+                                                        {assign.fileUrl && (
+                                                            <a
+                                                                href={assign.fileUrl.startsWith('http') ? assign.fileUrl : `${BASE_URL}${assign.fileUrl}`}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="btn-action"
+                                                                style={{ textDecoration: 'none' }}
+                                                            >
+                                                                <Download size={16} /> Download Attachment
+                                                            </a>
+                                                        )}
+                                                    </div>
 
-                                                    {/* Student Submission */}
-                                                    <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', gap: '1rem', alignItems: 'center' }}>
+                                                    <div className="sp-assignment-actions">
                                                         {assign.isSubmitted ? (
-                                                            <div style={{ textAlign: 'right' }}>
-                                                                <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                                                            <div className="sp-submission-info">
+                                                                <span className="sp-submission-date">
                                                                     Submitted on {new Date(assign.submittedAt).toLocaleDateString()}
                                                                 </span>
                                                                 {assign.grade != null && (
-                                                                    <div style={{ fontWeight: 'bold', color: 'var(--accent-color)' }}>
+                                                                    <div className="sp-grade-badge">
                                                                         Grade: {assign.grade}/100
                                                                     </div>
                                                                 )}
                                                             </div>
                                                         ) : (
                                                             isExpired ? (
-                                                                <span style={{ color: '#ef4444', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                                <span style={{ color: '#ef4444', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.9rem', fontWeight: '600' }}>
                                                                     <AlertCircle size={16} /> Deadline passed
                                                                 </span>
                                                             ) : (
-                                                                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                                                <div className="sp-submit-container">
                                                                     <input
                                                                         type="file"
                                                                         id={`file-${assign._id}`}
@@ -790,17 +767,15 @@ const CourseDetail = () => {
                                                                         disabled={submittingId === assign._id}
                                                                         accept=".pdf,.doc,.docx"
                                                                     />
-                                                                    <label
-                                                                        htmlFor={`file-${assign._id}`}
-                                                                        className="btn-action"
-                                                                        style={{ cursor: 'pointer', border: '1px solid var(--border-color)' }}
-                                                                    >
+                                                                    <label htmlFor={`file-${assign._id}`} className="sp-file-upload-label">
                                                                         <FileText size={16} />
-                                                                        {submissionFiles[assign._id] ? submissionFiles[assign._id].name : "Select File"}
+                                                                        <span style={{ maxWidth: '120px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                                            {submissionFiles[assign._id] ? submissionFiles[assign._id].name : "Select File"}
+                                                                        </span>
                                                                     </label>
                                                                     <button
                                                                         className="btn-enroll-primary"
-                                                                        style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}
+                                                                        style={{ padding: '0.6rem 1.2rem', fontSize: '0.85rem' }}
                                                                         onClick={() => handleSubmitAssignment(assign._id)}
                                                                         disabled={submittingId === assign._id || !submissionFiles[assign._id]}
                                                                     >
@@ -821,57 +796,39 @@ const CourseDetail = () => {
 
                     {/* 4. QnA VIEW */}
                     {activeTab === 'qna' && (
-                        <div style={{ maxWidth: '800px', margin: '0 auto', background: 'var(--bg-card)', borderRadius: '12px', border: '1px solid var(--border-color)', minHeight: '400px', padding: '1.5rem', position: 'relative' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                                <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', margin: 0 }}>Q & A</h2>
+                        <div className="sp-content-view">
+                            <div className="sp-section-header">
+                                <h2>Q & A</h2>
                                 <button
                                     onClick={() => setIsAskModalOpen(true)}
                                     disabled={!isEnrolled}
-                                    style={{
-                                        background: isEnrolled ? 'var(--accent-color)' : '#ccc',
-                                        color: '#fff',
-                                        border: 'none',
-                                        padding: '0.6rem 1.2rem',
-                                        borderRadius: '8px',
-                                        cursor: isEnrolled ? 'pointer' : 'not-allowed',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '8px',
-                                        fontWeight: '600'
-                                    }}
+                                    className="btn-enroll-primary"
+                                    style={{ padding: '0.6rem 1.25rem' }}
                                 >
                                     <MessageCircle size={18} /> Ask Question
                                 </button>
                             </div>
 
                             {!isEnrolled ? (
-                                <div style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--text-secondary)' }}>
+                                <div className="sp-empty-state">
                                     <Lock size={48} style={{ margin: '0 auto 1rem', opacity: 0.5 }} />
                                     <h3>Enroll to view discussions</h3>
                                     <p>You need to be enrolled in this course to view and ask questions.</p>
                                 </div>
                             ) : questionsLoading ? (
-                                <div style={{ textAlign: 'center', padding: '3rem 0' }}>Loading questions...</div>
+                                <div className="sp-empty-state">Loading questions...</div>
                             ) : questions.length === 0 ? (
-                                <div style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--text-secondary)' }}>
+                                <div className="sp-empty-state">
                                     <HelpCircle size={48} style={{ margin: '0 auto 1rem', opacity: 0.5 }} />
                                     <h3>No questions yet</h3>
                                     <p>Be the first to ask a question!</p>
                                 </div>
                             ) : (
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                                     {questions.map(q => {
                                         const isOpen = expandedQuestions[q._id];
                                         return (
-                                            <div
-                                                key={q._id}
-                                                style={{
-                                                    border: '1px solid var(--border-color)',
-                                                    borderRadius: '8px',
-                                                    padding: '1.25rem',
-                                                    backgroundColor: 'var(--bg-card)'
-                                                }}
-                                            >
+                                            <div key={q._id} className="sp-assignment-card" style={{ padding: '1.25rem' }}>
                                                 <div
                                                     style={{ display: 'flex', justifyContent: 'space-between', cursor: 'pointer', alignItems: 'center' }}
                                                     onClick={() => toggleQuestion(q._id)}
@@ -879,24 +836,24 @@ const CourseDetail = () => {
                                                     <div style={{ flex: 1 }}>
                                                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
                                                             <span style={{
-                                                                fontSize: '0.75rem',
-                                                                fontWeight: 'bold',
+                                                                fontSize: '0.7rem',
+                                                                fontWeight: '800',
                                                                 padding: '2px 8px',
                                                                 borderRadius: '4px',
-                                                                backgroundColor: q.status === 'completed' ? '#dcfce7' : '#e0e7ff',
-                                                                color: q.status === 'completed' ? '#166534' : '#4338ca',
+                                                                backgroundColor: q.status === 'completed' ? '#ecfdf5' : '#fff1f2',
+                                                                color: q.status === 'completed' ? '#059669' : '#e11d48',
                                                                 textTransform: 'uppercase'
                                                             }}>
                                                                 {q.status}
                                                             </span>
-                                                            <h3 style={{ margin: 0, fontSize: '1.1rem' }}>{q.title}</h3>
+                                                            <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: '700' }}>{q.title}</h3>
                                                         </div>
-                                                        <div style={{ fontSize: '0.85rem', color: '#666' }}>
+                                                        <div style={{ fontSize: '0.82rem', color: '#6b7280', fontWeight: '500' }}>
                                                             By {q.student?.name} • {new Date(q.createdAt).toLocaleDateString()}
                                                         </div>
                                                     </div>
                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#666', fontSize: '0.9rem' }}>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#6b7280', fontSize: '0.85rem' }}>
                                                             <MessageSquare size={16} /> {q.answers.length}
                                                         </div>
                                                         {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
@@ -904,32 +861,28 @@ const CourseDetail = () => {
                                                 </div>
 
                                                 {isOpen && (
-                                                    <div style={{ marginTop: '1rem', borderTop: '1px solid #eee', paddingTop: '1rem' }}>
-                                                        <p style={{ whiteSpace: 'pre-wrap', color: '#333', marginBottom: '1rem' }}>{q.description}</p>
+                                                    <div style={{ marginTop: '1.25rem', borderTop: '1px solid #f1f5f9', paddingTop: '1.25rem' }}>
+                                                        <p style={{ whiteSpace: 'pre-wrap', color: '#334155', marginBottom: '1.25rem', fontSize: '0.95rem', lineHeight: '1.6' }}>{q.description}</p>
 
                                                         {q.imageUrl && (
                                                             <div style={{ marginBottom: '1.5rem' }}>
                                                                 <img
                                                                     src={q.imageUrl.startsWith('http') ? q.imageUrl : `${BASE_URL}${q.imageUrl}`}
                                                                     alt="Question attachment"
-                                                                    style={{ maxWidth: '100%', maxHeight: '300px', borderRadius: '8px', border: '1px solid #eee' }}
+                                                                    style={{ maxWidth: '100%', maxHeight: '400px', borderRadius: '12px', border: '1px solid #e2e8f0' }}
                                                                 />
                                                             </div>
                                                         )}
 
-                                                        <div style={{ backgroundColor: '#f9f9f9', borderRadius: '8px', padding: '1rem' }}>
-                                                            <h4 style={{ margin: '0 0 1rem', fontSize: '1rem', color: '#666' }}>Answers ({q.answers.length})</h4>
+                                                        <div className="sp-answers-box">
+                                                            <h4 style={{ margin: '0 0 1.25rem', fontSize: '0.95rem', color: '#64748b', fontWeight: '700' }}>Answers ({q.answers.length})</h4>
                                                             {q.answers.length === 0 ? (
-                                                                <p style={{ fontSize: '0.9rem', color: '#888', fontStyle: 'italic' }}>No answers yet.</p>
+                                                                <p style={{ fontSize: '0.85rem', color: '#94a3b8', fontStyle: 'italic' }}>No answers yet.</p>
                                                             ) : (
-                                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                                                <div style={{ display: 'flex', flexDirection: 'column' }}>
                                                                     {q.answers.map(ans => (
-                                                                        <div key={ans._id} style={{ display: 'flex', gap: '10px' }}>
-                                                                            <div style={{
-                                                                                width: '32px', height: '32px', borderRadius: '50%',
-                                                                                backgroundColor: ans.user?.role === 'teacher' ? 'var(--accent-color)' : '#ccc',
-                                                                                color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '0.8rem', overflow: 'hidden'
-                                                                            }}>
+                                                                        <div key={ans._id} className="sp-answer-item">
+                                                                            <div className="sp-answer-avatar" style={{ backgroundColor: ans.user?.role === 'teacher' ? '#A6192E' : '#94a3b8' }}>
                                                                                 {ans.user?.image ? (
                                                                                     <img
                                                                                         src={ans.user.image.startsWith('http') ? ans.user.image : `${BASE_URL}${ans.user.image}`}
@@ -940,12 +893,12 @@ const CourseDetail = () => {
                                                                                     ans.user?.name?.charAt(0) || 'U'
                                                                                 )}
                                                                             </div>
-                                                                            <div>
-                                                                                <div style={{ fontSize: '0.9rem', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                                            <div className="sp-answer-content">
+                                                                                <h5>
                                                                                     {ans.user?.name}
-                                                                                    {ans.user?.role === 'teacher' && <CheckCircle size={14} fill="var(--accent-color)" color="#fff" />}
-                                                                                </div>
-                                                                                <p style={{ margin: '4px 0 0', fontSize: '0.95rem', color: '#444' }}>{ans.content}</p>
+                                                                                    {ans.user?.role === 'teacher' && <CheckCircle size={14} fill="#A6192E" color="#fff" />}
+                                                                                </h5>
+                                                                                <p className="sp-answer-text">{ans.content}</p>
                                                                             </div>
                                                                         </div>
                                                                     ))}
@@ -964,44 +917,45 @@ const CourseDetail = () => {
                             {isAskModalOpen && (
                                 <div style={{
                                     position: 'fixed', inset: 0,
-                                    backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
+                                    backgroundColor: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
+                                    backdropFilter: 'blur(4px)'
                                 }}>
                                     <div style={{
-                                        background: '#fff', borderRadius: '12px', width: '500px', maxWidth: '90%', padding: '2rem',
-                                        boxShadow: '0 4px 20px rgba(0,0,0,0.15)'
+                                        background: '#fff', borderRadius: '20px', width: '550px', maxWidth: '95%', padding: '2.5rem',
+                                        boxShadow: '0 20px 50px rgba(0,0,0,0.2)', animation: 'tpSlideUp 0.3s ease-out'
                                     }}>
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
-                                            <h2 style={{ margin: 0, fontSize: '1.5rem' }}>Ask a Question</h2>
-                                            <button onClick={() => setIsAskModalOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}><X size={24} /></button>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem', alignItems: 'center' }}>
+                                            <h2 style={{ margin: 0, fontSize: '1.4rem', fontWeight: '700' }}>Ask a Question</h2>
+                                            <button onClick={() => setIsAskModalOpen(false)} style={{ background: '#f3f4f6', border: 'none', cursor: 'pointer', padding: '8px', borderRadius: '50%', color: '#6b7280' }}><X size={20} /></button>
                                         </div>
 
-                                        <form onSubmit={handleAskSubmit}>
-                                            <div style={{ marginBottom: '1rem' }}>
-                                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Title / Subject</label>
+                                        <form onSubmit={handleAskSubmit} className="sp-modal-form-content">
+                                            <div>
+                                                <label style={{ display: 'block', marginBottom: '0.6rem', fontWeight: '600', fontSize: '0.9rem', color: '#374151' }}>Title / Subject</label>
                                                 <input
                                                     type="text"
                                                     value={askForm.title}
                                                     onChange={(e) => setAskForm({ ...askForm, title: e.target.value })}
                                                     required
-                                                    style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid #ccc' }}
-                                                    placeholder="e.g., Error in Lecture 4"
+                                                    style={{ width: '100%', padding: '0.85rem', borderRadius: '10px', border: '1px solid #d1d5db', fontSize: '0.95rem' }}
+                                                    placeholder="Short summary of your question"
                                                 />
                                             </div>
 
-                                            <div style={{ marginBottom: '1rem' }}>
-                                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Description</label>
+                                            <div>
+                                                <label style={{ display: 'block', marginBottom: '0.6rem', fontWeight: '600', fontSize: '0.9rem', color: '#374151' }}>Description</label>
                                                 <textarea
                                                     value={askForm.description}
                                                     onChange={(e) => setAskForm({ ...askForm, description: e.target.value })}
                                                     required
-                                                    style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid #ccc', minHeight: '100px' }}
-                                                    placeholder="Describe your doubt..."
+                                                    style={{ width: '100%', padding: '0.85rem', borderRadius: '10px', border: '1px solid #d1d5db', minHeight: '120px', fontSize: '0.95rem', resize: 'vertical' }}
+                                                    placeholder="Provide details about your doubt..."
                                                 />
                                             </div>
 
-                                            <div style={{ marginBottom: '1.5rem' }}>
-                                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Screenshot (Optional)</label>
-                                                <div style={{ border: '1px dashed #ccc', padding: '1rem', borderRadius: '8px', textAlign: 'center' }}>
+                                            <div>
+                                                <label style={{ display: 'block', marginBottom: '0.6rem', fontWeight: '600', fontSize: '0.9rem', color: '#374151' }}>Screenshot (Optional)</label>
+                                                <div style={{ border: '2px dashed #e5e7eb', padding: '1.5rem', borderRadius: '12px', textAlign: 'center', background: '#f9fafb' }}>
                                                     <input
                                                         type="file"
                                                         id="qna-image-upload"
@@ -1009,11 +963,12 @@ const CourseDetail = () => {
                                                         accept="image/*"
                                                         style={{ display: 'none' }}
                                                     />
-                                                    <label htmlFor="qna-image-upload" style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                                                        <ImageIcon size={24} style={{ color: '#666' }} />
-                                                        <span style={{ color: 'var(--accent-color)', fontWeight: '500' }}>
-                                                            {askForm.image ? askForm.image.name : 'Upload Screenshot / Image'}
+                                                    <label htmlFor="qna-image-upload" style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+                                                        <ImageIcon size={28} style={{ color: '#9ca3af' }} />
+                                                        <span style={{ color: '#A6192E', fontWeight: '700', fontSize: '0.9rem' }}>
+                                                            {askForm.image ? askForm.image.name : 'Click to upload image'}
                                                         </span>
+                                                        <span style={{ color: '#6b7280', fontSize: '0.8rem' }}>PNG, JPG up to 10MB</span>
                                                     </label>
                                                 </div>
                                             </div>
@@ -1021,16 +976,8 @@ const CourseDetail = () => {
                                             <button
                                                 type="submit"
                                                 disabled={askingLoading}
-                                                style={{
-                                                    width: '100%',
-                                                    padding: '0.8rem',
-                                                    background: 'var(--accent-color)',
-                                                    color: '#fff',
-                                                    border: 'none',
-                                                    borderRadius: '8px',
-                                                    fontWeight: '600',
-                                                    cursor: askingLoading ? 'not-allowed' : 'pointer'
-                                                }}
+                                                className="btn-enroll-primary"
+                                                style={{ width: '100%', padding: '1rem', marginTop: '0.5rem' }}
                                             >
                                                 {askingLoading ? 'Posting...' : 'Post Question'}
                                             </button>
@@ -1038,7 +985,6 @@ const CourseDetail = () => {
                                     </div>
                                 </div>
                             )}
-
                         </div>
                     )}
                 </div>
