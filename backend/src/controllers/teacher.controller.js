@@ -25,13 +25,44 @@ export const getTeacherCourses = async (req, res) => {
 export const getTeacherStats = async (req, res) => {
     try {
         const courses = await Course.find({ instructor: req.user.id });
-        const students = await User.find({ enrollments: { $in: courses.map(c => c._id) } });
         
+        let totalStudents = 0;
+        let totalReviews = 0;
+        let sumRatings = 0;
+        let ratedCourses = 0;
+
+        const individualCourseStats = courses.map(course => {
+            const courseStudents = course.enrolledStudents ? course.enrolledStudents.length : 0;
+            const courseReviews = course.stats?.reviews || 0;
+            const courseRating = course.stats?.rating || 0;
+
+            totalStudents += courseStudents;
+            totalReviews += courseReviews;
+            
+            if (courseRating > 0) {
+                sumRatings += courseRating;
+                ratedCourses++;
+            }
+
+            return {
+                id: course._id,
+                name: course.name,
+                thumbnail: course.thumbnail,
+                students: courseStudents,
+                reviews: courseReviews,
+                rating: courseRating,
+                status: course.status
+            };
+        });
+
+        const overallAverageRating = ratedCourses > 0 ? (sumRatings / ratedCourses).toFixed(1) : 0;
+
         const stats = {
             totalCourses: courses.length,
-            totalStudents: students.length, // Simplified
-            totalReviews: courses.reduce((acc, curr) => acc + (curr.stats.reviews || 0), 0),
-            averageRating: 4.8 // Mock for now
+            totalStudents,
+            totalReviews,
+            averageRating: parseFloat(overallAverageRating),
+            individualCourseStats
         };
 
         res.json({ success: true, data: stats });

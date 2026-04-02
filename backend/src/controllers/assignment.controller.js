@@ -59,6 +59,8 @@ export const getAssignments = async (req, res) => {
              assignmentsWithStatus.push({
                  ...assign.toObject(),
                  isSubmitted: !!submission,
+                 submission: submission ? submission.toObject() : null,
+                 status: submission ? submission.status : null,
                  grade: submission ? submission.grade : null,
                  submittedAt: submission ? submission.submittedAt : null
              });
@@ -80,6 +82,7 @@ export const submitAssignment = async (req, res) => {
     try {
         const { assignmentId } = req.params;
         const studentId = req.user._id;
+        const isDraft = req.body.isDraft === 'true' || req.body.isDraft === true; // form-data handles as string
 
         if (!req.file) {
             return res.status(400).json({ success: false, message: 'No file uploaded' });
@@ -92,22 +95,23 @@ export const submitAssignment = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Assignment not found' });
         }
 
-        // Check Due Date
-        if (new Date() > new Date(assignment.dueDate)) {
-             return res.status(400).json({ success: false, message: 'Late submission not allowed (Strict)' });
-        }
-
         // Check existing submission
         let submission = await Submission.findOne({ assignment: assignmentId, student: studentId });
+        
         if (submission) {
-             // Optional: Allow re-upload? For now, update existing
+             // If already graded, cannot resubmit
+             if (submission.status === 'graded') {
+                 return res.status(400).json({ success: false, message: 'Cannot update a graded submission' });
+             }
              submission.fileUrl = fileUrl;
              submission.submittedAt = Date.now();
+             submission.status = isDraft ? 'draft' : 'submitted';
         } else {
              submission = new Submission({
                  assignment: assignmentId,
                  student: studentId,
-                 fileUrl
+                 fileUrl,
+                 status: isDraft ? 'draft' : 'submitted'
              });
         }
 
@@ -139,6 +143,46 @@ export const getSubmissions = async (req, res) => {
         });
     } catch (error) {
         console.error('Get Submissions Error:', error);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+};
+
+// Grade Submission (Teacher)
+export const gradeSubmission = async (req, res) => {
+    try {
+        const { assignmentId, submissionId } = req.params;
+        const { grade, feedback } = req.body;
+        
+        // Ensure the assignment exists and belongs to the instructor
+        const assignment = await Assignment.findOne({ _id: assignmentId, instructor: req.user._id });
+        if (!assignment) {
+            return res.status(403).json({ success: false, message: 'Not authorized for this assignment' });
+        }
+
+        const submission = await Submission.findById(submissionId);
+        if (!submission || submission.assignment.toString() !== assignmentId) {
+            return res.status(404).json({ success: false, message: 'Submission not found' });
+        }
+
+        if (submission.status === 'draft') {
+            return res.status(400).json({ success: false, message: 'Cannot grade a draft submission' });
+        }
+
+        submission.grade = grade;
+        submission.feedback = feedback;
+        submission.status = 'graded';
+        submission.gradedAt = Date.now();
+
+        await submission.save();
+
+        res.status(200).json({
+            success: true,
+            message: 'Submission graded successfully',
+            data: submission
+        });
+
+    } catch (error) {
+        console.error('Grade Submission Error:', error);
         res.status(500).json({ success: false, message: 'Server error' });
     }
 };

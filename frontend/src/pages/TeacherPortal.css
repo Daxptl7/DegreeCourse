@@ -546,6 +546,7 @@
     line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -746,6 +747,11 @@
     max-width: 750px;
 }
 
+.tp-modal.extra-wide {
+    max-width: 1000px;
+    width: 95%;
+}
+
 .tp-modal-header {
     display: flex;
     justify-content: space-between;
@@ -843,58 +849,189 @@
     opacity: 0.8;
 }
 
-/* Submission row */
-.tp-submission-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid var(--border-color, #e5e7eb);
-    border-radius: 12px;
-    padding: 1rem;
-    background: var(--bg-primary, #f9fafb);
-    margin-bottom: 0.75rem;
-    transition: all 0.2s;
+/* ======================== PREMIUM SUBMISSIONS GRID ======================== */
+.tp-submissions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+    padding: 0.5rem 0;
 }
 
-.tp-submission-row:hover {
-    border-color: rgba(166, 25, 46, 0.15);
+.tp-submission-card {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(166, 25, 46, 0.1);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: tpSlideUp 0.6s ease both;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
 }
 
-.tp-submission-info {
+.tp-submission-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 12px 24px rgba(166, 25, 46, 0.08);
+    border-color: rgba(166, 25, 46, 0.25);
+}
+
+.tp-sub-card-header {
     display: flex;
-    gap: 12px;
-    align-items: center;
+    align-items: flex-start;
+    padding: 1.25rem 1.25rem 0.75rem;
+    gap: 1rem;
+    position: relative;
 }
 
 .tp-submission-avatar {
-    width: 42px;
-    height: 42px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
-    background: rgba(166, 25, 46, 0.1);
-    color: #A6192E;
+    background: linear-gradient(135deg, #A6192E 0%, #d32f2f 100%);
+    color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(166, 25, 46, 0.3);
+    border: 2px solid white;
+}
+
+.tp-sub-student-info {
+    flex: 1;
+    min-width: 0;
 }
 
 .tp-submission-name {
-    font-weight: 600;
-    font-size: 0.95rem;
+    font-weight: 700;
+    font-size: 1.1rem;
     color: var(--text-primary, #111827);
+    margin: 0 0 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: inherit;
 }
 
 .tp-submission-email {
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     color: var(--text-secondary, #6b7280);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.tp-submission-date {
-    font-size: 0.75rem;
-    color: var(--text-secondary, #9ca3af);
-    margin-top: 2px;
+.tp-sub-badge {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 50px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.tp-sub-badge.status-submitted {
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.tp-sub-card-body {
+    padding: 0 1.25rem 1rem;
+}
+
+.tp-sub-meta-row {
+    background: rgba(249, 250, 251, 0.8);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    margin-top: 0.5rem;
+    border: 1px solid rgba(229, 231, 235, 0.5);
+}
+
+.tp-sub-date-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.tp-sub-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #9ca3af;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.tp-sub-value {
+    font-size: 0.9rem;
+    color: var(--text-primary, #374151);
+    font-weight: 500;
+}
+
+.tp-sub-card-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 1rem 1.25rem;
+    border-top: 1px solid rgba(229, 231, 235, 0.6);
+    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(249, 250, 251, 0.8) 100%);
+}
+
+.tp-btn-download-glass {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: white;
+    color: #4b5563;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.tp-btn-download-glass:hover {
+    background: #f9fafb;
+    color: #111827;
+    border-color: #d1d5db;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+}
+
+.tp-btn-grade-outline {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: #A6192E;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border: 1px solid #A6192E;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.tp-btn-grade-outline:hover {
+    background: #A6192E;
+    color: white;
+    box-shadow: 0 4px 10px rgba(166, 25, 46, 0.2);
 }
 
 /* ======================== EMPTY & LOADING STATES ======================== */
@@ -993,4 +1130,60 @@
     .tp-tabs {
         overflow-x: auto;
     }
+}
+
+/* --- Split Layout for Forms (Announcements etc.) --- */
+.tp-split-layout {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+@media (max-width: 1024px) {
+    .tp-split-layout {
+        flex-direction: column;
+    }
+    .tp-form-container, .tp-recent-announcements {
+        width: 100%;
+        flex: none;
+    }
+}
+
+.btn-cancel-edit {
+    display: flex;
+    align-items: center;
+    background-color: #f3f4f6;
+    color: #4b5563;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.btn-cancel-edit:hover {
+    background-color: #e5e7eb;
+}
+
+.tp-announcement-card:hover {
+    border-color: #d1d5db !important;
+}
+
+.tp-announcement-card.editing {
+    border-color: #A6192E !important;
+    background-color: #fdf2f2 !important;
+}
+
+.tp-icon-btn {
+    border-radius: 4px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.tp-icon-btn:hover {
+    background-color: #f3f4f6 !important;
+    transform: scale(1.05);
+}
+
+.tp-icon-btn.delete-btn:hover {
+    background-color: #fee2e2 !important;
 }

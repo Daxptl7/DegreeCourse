@@ -236,14 +236,28 @@ const TeacherAssignments = () => {
             {/* Submissions Modal */}
             {isSubmissionModalOpen && (
                 <div className="tp-modal-overlay">
-                    <div className="tp-modal wide">
+                    <div className="tp-modal extra-wide">
                         <div className="tp-modal-header">
                             <div>
-                                <h2>Submissions</h2>
+                                <h2>Submissions ({submissions.length})</h2>
                                 <p>{currentAssignmentTitle}</p>
                             </div>
-                            <button className="tp-modal-close" onClick={() => setIsSubmissionModalOpen(false)}><X size={22} /></button>
+                            <button className="tp-modal-close" onClick={() => { setIsSubmissionModalOpen(false); setSearchQuery(''); }}><X size={22} /></button>
                         </div>
+                        
+                        {submissions.length > 0 && (
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <input
+                                    type="text"
+                                    placeholder="Search by student name or email..."
+                                    className="tp-form-input"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    style={{ background: '#f9fafb', border: '1px solid #e5e7eb', boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.02)' }}
+                                />
+                            </div>
+                        )}
+
                         {submissionsLoading ? (
                             <div className="tp-loading">Loading submissions...</div>
                         ) : submissions.length === 0 ? (
@@ -253,25 +267,43 @@ const TeacherAssignments = () => {
                                 <p>Students haven't submitted yet.</p>
                             </div>
                         ) : (
-                            <div>
-                                {submissions.map((sub, idx) => (
-                                    <div key={sub._id || idx} className="tp-submission-row">
-                                        <div className="tp-submission-info">
+                            <div className="tp-submissions-grid">
+                                {submissions
+                                    .filter(sub => 
+                                        sub.student?.name?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                        sub.student?.email?.toLowerCase().includes(searchQuery.toLowerCase())
+                                    )
+                                    .map((sub, idx) => (
+                                    <div key={sub._id || idx} className="tp-submission-card" style={{ animationDelay: `${idx * 0.02}s` }}>
+                                        <div className="tp-sub-card-header">
                                             <div className="tp-submission-avatar">
                                                 {sub.student?.name?.charAt(0) || <User size={18} />}
                                             </div>
-                                            <div>
-                                                <div className="tp-submission-name">{sub.student?.name || 'Unknown Student'}</div>
-                                                <div className="tp-submission-email">{sub.student?.email}</div>
-                                                <div className="tp-submission-date">
-                                                    Submitted: {new Date(sub.submittedAt).toLocaleDateString()} {new Date(sub.submittedAt).toLocaleTimeString()}
+                                            <div className="tp-sub-student-info">
+                                                <h4 className="tp-submission-name">{sub.student?.name || 'Unknown Student'}</h4>
+                                                <p className="tp-submission-email">{sub.student?.email}</p>
+                                            </div>
+                                            <div className="tp-sub-badge status-submitted">On Time</div>
+                                        </div>
+                                        <div className="tp-sub-card-body">
+                                            <div className="tp-sub-meta-row">
+                                                <div className="tp-sub-date-block">
+                                                    <span className="tp-sub-label">Turned In</span>
+                                                    <span className="tp-sub-value">
+                                                        {new Date(sub.submittedAt).toLocaleDateString()} at {new Date(sub.submittedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
-                                        <a href={sub.fileUrl.startsWith('http') ? sub.fileUrl : `${BASE_URL}${sub.fileUrl}`}
-                                            target="_blank" rel="noopener noreferrer" className="tp-btn-secondary">
-                                            <Download size={16} /> Download
-                                        </a>
+                                        <div className="tp-sub-card-footer">
+                                            <a href={sub.fileUrl && sub.fileUrl.startsWith('http') ? sub.fileUrl : `${BASE_URL}${sub.fileUrl}`}
+                                                target="_blank" rel="noopener noreferrer" className="tp-btn-download-glass" title="Download Submission">
+                                                <Download size={16} /> Access File
+                                            </a>
+                                            <button className="tp-btn-grade-outline">
+                                                Evaluate
+                                            </button>
+                                        </div>
                                     </div>
                                 ))}
                             </div>

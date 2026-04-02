@@ -130,3 +130,52 @@ export const getUnreadCounts = async (req, res) => {
         res.status(200).json({ success: true, data: {} }); 
     }
 };
+
+// Update an existing announcement
+export const updateAnnouncement = async (req, res) => {
+    try {
+        const { announcementId } = req.params;
+        const { title, content } = req.body;
+        const teacherId = req.user._id;
+
+        const announcement = await Announcement.findOne({ _id: announcementId, instructor: teacherId });
+        if (!announcement) {
+            return res.status(404).json({ success: false, message: "Announcement not found or unauthorized." });
+        }
+
+        announcement.title = title || announcement.title;
+        if (content) announcement.content = content;
+
+        await announcement.save();
+
+        res.status(200).json({
+            success: true,
+            data: announcement,
+            message: "Announcement updated successfully!"
+        });
+    } catch (error) {
+        console.error("Update Announcement Error:", error);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+
+// Delete an announcement
+export const deleteAnnouncement = async (req, res) => {
+    try {
+        const { announcementId } = req.params;
+        const teacherId = req.user._id;
+
+        const announcement = await Announcement.findOneAndDelete({ _id: announcementId, instructor: teacherId });
+        if (!announcement) {
+            return res.status(404).json({ success: false, message: "Announcement not found or unauthorized." });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Announcement deleted successfully!"
+        });
+    } catch (error) {
+        console.error("Delete Announcement Error:", error);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};

@@ -9,6 +9,8 @@ import { getAssignments, submitAssignment } from '../api/assignment.api';
 import { createQuestion, getQuestions } from '../api/question.api';
 import { useAuth } from '../context/AuthContext';
 import { config } from '../config';
+import { motion, AnimatePresence } from 'framer-motion';
+import confetti from 'canvas-confetti';
 import './CourseDetail.css';
 
 const BASE_URL = config.API_URL.replace('/api', '');
@@ -142,21 +144,40 @@ const CourseDetail = () => {
         }
     };
 
-    const handleSubmitAssignment = async (assignmentId) => {
+    const handleSubmitAssignment = async (assignmentId, isDraft) => {
         const file = submissionFiles[assignmentId];
-        if (!file) {
-            alert("Please select a file to upload.");
-            return;
+        
+        // If it's a new submission or updating file
+        if (!file && !isDraft) {
+            // Check if they already have a draft file uploaded they just want to turn in
+            const existingAssignment = assignments.find(a => a._id === assignmentId);
+            if (!existingAssignment?.submission?.fileUrl) {
+                alert("Please select a file to upload.");
+                return;
+            }
         }
 
         try {
             setSubmittingId(assignmentId);
             const formData = new FormData();
-            formData.append('submissionFile', file);
+            if (file) {
+                formData.append('submissionFile', file);
+            }
+            formData.append('isDraft', isDraft);
 
             const response = await submitAssignment(assignmentId, formData);
             if (response.success) {
-                alert("Assignment submitted successfully!");
+                if (!isDraft) {
+                    confetti({
+                        particleCount: 150,
+                        spread: 70,
+                        origin: { y: 0.6 },
+                        colors: ['#00e5ff', '#3b82f6', '#8b5cf6']
+                    });
+                } else {
+                    alert("Draft saved successfully!");
+                }
+                
                 // Refresh assignments to show submitted status
                 const refreshed = await getAssignments(course._id);
                 if (refreshed.success) setAssignments(refreshed.data);
@@ -653,27 +674,42 @@ const CourseDetail = () => {
                                 </div>
                             ) : (
                                 <div className="sp-announcement-list">
-                                    {announcements.map(ann => {
-                                        const isRead = ann.readBy.includes(user._id);
-                                        return (
-                                            <div
-                                                key={ann._id}
-                                                onClick={() => !isRead && handleMarkRead(ann._id)}
-                                                className={`sp-announcement-card ${isRead ? 'read' : 'unread'}`}
-                                            >
-                                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                                                    <h4>{ann.title}</h4>
-                                                    {!isRead && <span className="sp-badge-new">NEW</span>}
-                                                </div>
-                                                <p>{ann.content}</p>
-                                                <div className="sp-announcement-meta">
-                                                    <span>Posted on {new Date(ann.createdAt).toLocaleDateString()}</span>
-                                                    <span>•</span>
-                                                    <span>By {course.instructor?.name || 'Instructor'}</span>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
+                                    <AnimatePresence>
+                                        {announcements.map((ann, index) => {
+                                            const isRead = ann.readBy.includes(user._id);
+                                            return (
+                                                <motion.div
+                                                    key={ann._id}
+                                                    initial={{ opacity: 0, y: 15 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    transition={{ delay: index * 0.05 }}
+                                                    onClick={() => !isRead && handleMarkRead(ann._id)}
+                                                    className={`glass-card announcement-modern-card ${isRead ? 'read' : 'unread'}`}
+                                                >
+                                                    <div className="announcement-modern-icon">
+                                                        <Bell size={24} className={isRead ? 'icon-read' : 'icon-unread'} />
+                                                    </div>
+                                                    <div className="announcement-modern-content">
+                                                        <div className="announcement-modern-header">
+                                                            <h4 className="announcement-modern-title">{ann.title}</h4>
+                                                            {!isRead && <span className="status-pill due" style={{ padding: '2px 8px', fontSize: '0.7rem' }}>NEW</span>}
+                                                        </div>
+                                                        <p className="announcement-modern-text">{ann.content}</p>
+                                                        <div className="announcement-modern-meta">
+                                                            <div className="meta-item">
+                                                                <Clock size={14} /> 
+                                                                {new Date(ann.createdAt).toLocaleDateString()}
+                                                            </div>
+                                                            <span className="meta-dot">•</span>
+                                                            <div className="meta-item">
+                                                                By {course.instructor?.name || 'Instructor'}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </motion.div>
+                                            );
+                                        })}
+                                    </AnimatePresence>
                                 </div>
                             )}
                         </div>
@@ -701,94 +737,152 @@ const CourseDetail = () => {
                                     <p>The instructor hasn't posted any assignments.</p>
                                 </div>
                             ) : (
-                                <div className="sp-assignment-list">
-                                    {assignments.map(assign => {
-                                        const isExpired = new Date() > new Date(assign.dueDate);
-                                        const dueDateStr = new Date(assign.dueDate).toLocaleDateString() + ' ' + new Date(assign.dueDate).toLocaleTimeString();
+                                <div className="interactive-timeline-container">
+                                    <div className="timeline-line"></div>
+                                    <AnimatePresence>
+                                        {assignments.map((assign, index) => {
+                                            const isExpired = new Date() > new Date(assign.dueDate);
+                                            const dueDateStr = new Date(assign.dueDate).toLocaleDateString() + ' ' + new Date(assign.dueDate).toLocaleTimeString();
+                                            const subStatus = assign.status || 'unsubmitted';
+                                            
+                                            // Node coloring based on status
+                                            let nodeClass = 'node-unsubmitted';
+                                            if (subStatus === 'submitted') nodeClass = 'node-submitted';
+                                            else if (subStatus === 'graded') nodeClass = 'node-graded';
+                                            else if (subStatus === 'draft') nodeClass = 'node-draft';
+                                            else if (isExpired) nodeClass = 'node-expired';
 
-                                        return (
-                                            <div key={assign._id} className="sp-assignment-card">
-                                                <div className="sp-assignment-header">
-                                                    <div>
-                                                        <h3 className="sp-assignment-title">{assign.title}</h3>
-                                                        <p className="sp-assignment-desc">{assign.description}</p>
+                                            return (
+                                                <motion.div 
+                                                    key={assign._id}
+                                                    initial={{ opacity: 0, y: 20 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    transition={{ delay: index * 0.1 }}
+                                                    className="timeline-item"
+                                                >
+                                                    <div className={`timeline-node ${nodeClass}`}>
+                                                        {subStatus === 'submitted' && <CheckCircle size={16} />}
+                                                        {subStatus === 'graded' && <CheckCircle size={16} />}
+                                                        {subStatus === 'draft' && <FileText size={16} />}
+                                                        {isExpired && subStatus === 'unsubmitted' && <AlertCircle size={16} />}
+                                                        {!isExpired && subStatus === 'unsubmitted' && <Circle size={16} />}
                                                     </div>
-                                                    <div style={{ textAlign: 'right' }}>
-                                                        <div className={`sp-assignment-status-pill ${isExpired ? 'expired' : 'due'}`}>
-                                                            <Clock size={14} /> Due: {dueDateStr}
-                                                        </div>
-                                                        {assign.isSubmitted && (
-                                                            <div className="sp-assignment-status-pill submitted" style={{ marginTop: '0.5rem', display: 'flex', justifyContent: 'flex-end' }}>
-                                                                <CheckCircle size={14} /> Submitted
+                                                    
+                                                    <div className="glass-card assignment-card-modern">
+                                                        <div className="assignment-modern-header">
+                                                            <div>
+                                                                <h3 className="assignment-modern-title">{assign.title}</h3>
+                                                                <p className="assignment-modern-desc">{assign.description}</p>
                                                             </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-
-                                                <div className="sp-assignment-footer">
-                                                    <div className="sp-assignment-actions">
-                                                        {assign.fileUrl && (
-                                                            <a
-                                                                href={assign.fileUrl.startsWith('http') ? assign.fileUrl : `${BASE_URL}${assign.fileUrl}`}
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                                className="btn-action"
-                                                                style={{ textDecoration: 'none' }}
-                                                            >
-                                                                <Download size={16} /> Download Attachment
-                                                            </a>
-                                                        )}
-                                                    </div>
-
-                                                    <div className="sp-assignment-actions">
-                                                        {assign.isSubmitted ? (
-                                                            <div className="sp-submission-info">
-                                                                <span className="sp-submission-date">
-                                                                    Submitted on {new Date(assign.submittedAt).toLocaleDateString()}
-                                                                </span>
-                                                                {assign.grade != null && (
-                                                                    <div className="sp-grade-badge">
-                                                                        Grade: {assign.grade}/100
+                                                            <div className="assignment-badges">
+                                                                <div className={`status-pill ${isExpired && subStatus === 'unsubmitted' ? 'expired' : 'due'}`}>
+                                                                    <Clock size={14} /> Due: {dueDateStr}
+                                                                </div>
+                                                                {subStatus === 'submitted' && (
+                                                                    <div className="status-pill submitted">
+                                                                        <CheckCircle size={14} /> Turned In
+                                                                    </div>
+                                                                )}
+                                                                {subStatus === 'draft' && (
+                                                                    <div className="status-pill draft">
+                                                                        <FileText size={14} /> Draft Saved
+                                                                    </div>
+                                                                )}
+                                                                {subStatus === 'graded' && (
+                                                                    <div className="status-pill graded">
+                                                                        <CheckCircle size={14} /> Graded
                                                                     </div>
                                                                 )}
                                                             </div>
-                                                        ) : (
-                                                            isExpired ? (
-                                                                <span style={{ color: '#ef4444', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.9rem', fontWeight: '600' }}>
-                                                                    <AlertCircle size={16} /> Deadline passed
-                                                                </span>
-                                                            ) : (
-                                                                <div className="sp-submit-container">
-                                                                    <input
-                                                                        type="file"
-                                                                        id={`file-${assign._id}`}
-                                                                        style={{ display: 'none' }}
-                                                                        onChange={(e) => handleFileChange(e, assign._id)}
-                                                                        disabled={submittingId === assign._id}
-                                                                        accept=".pdf,.doc,.docx"
-                                                                    />
-                                                                    <label htmlFor={`file-${assign._id}`} className="sp-file-upload-label">
-                                                                        <FileText size={16} />
-                                                                        <span style={{ maxWidth: '120px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                                                            {submissionFiles[assign._id] ? submissionFiles[assign._id].name : "Select File"}
-                                                                        </span>
-                                                                    </label>
-                                                                    <button
-                                                                        className="btn-enroll-primary"
-                                                                        style={{ padding: '0.6rem 1.2rem', fontSize: '0.85rem' }}
-                                                                        onClick={() => handleSubmitAssignment(assign._id)}
-                                                                        disabled={submittingId === assign._id || !submissionFiles[assign._id]}
-                                                                    >
-                                                                        {submittingId === assign._id ? 'Uploading...' : 'Submit'}
-                                                                    </button>
+                                                        </div>
+
+                                                        {/* Instructor Feedback Block */}
+                                                        {subStatus === 'graded' && (
+                                                            <motion.div 
+                                                                initial={{ opacity: 0, height: 0 }}
+                                                                animate={{ opacity: 1, height: 'auto' }}
+                                                                className="grading-feedback-block"
+                                                            >
+                                                                <div className="grade-score">
+                                                                    <span className="grade-label">Score</span>
+                                                                    <span className="grade-value">{assign.grade}/100</span>
                                                                 </div>
-                                                            )
+                                                                {assign.submission?.feedback && (
+                                                                    <div className="feedback-text">
+                                                                        <strong>Instructor Feedback:</strong>
+                                                                        <p>{assign.submission.feedback}</p>
+                                                                    </div>
+                                                                )}
+                                                            </motion.div>
                                                         )}
+
+                                                        <div className="assignment-modern-footer">
+                                                            <div className="footer-left">
+                                                                {assign.fileUrl && (
+                                                                    <a
+                                                                        href={assign.fileUrl.startsWith('http') ? assign.fileUrl : `${BASE_URL}${assign.fileUrl}`}
+                                                                        target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                        className="btn-glass-download"
+                                                                    >
+                                                                        <Download size={14} /> Assignment Resource
+                                                                    </a>
+                                                                )}
+                                                                {assign.submission?.fileUrl && (
+                                                                    <a
+                                                                        href={assign.submission.fileUrl.startsWith('http') ? assign.submission.fileUrl : `${BASE_URL}${assign.submission.fileUrl}`}
+                                                                        target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                        className="btn-glass-download submission-link"
+                                                                    >
+                                                                        <Download size={14} /> Your Submission
+                                                                    </a>
+                                                                )}
+                                                            </div>
+
+                                                            <div className="footer-right">
+                                                                {subStatus !== 'graded' && subStatus !== 'submitted' ? (
+                                                                    <div className="upload-controls">
+                                                                        <input
+                                                                            type="file"
+                                                                            id={`file-${assign._id}`}
+                                                                            style={{ display: 'none' }}
+                                                                            onChange={(e) => handleFileChange(e, assign._id)}
+                                                                            disabled={submittingId === assign._id}
+                                                                            accept=".pdf,.doc,.docx"
+                                                                        />
+                                                                        <label htmlFor={`file-${assign._id}`} className={`btn-upload-label ${submissionFiles[assign._id] ? 'has-file' : ''}`}>
+                                                                            <Upload size={14} />
+                                                                            <span>
+                                                                                {submissionFiles[assign._id] ? submissionFiles[assign._id].name : "Choose File"}
+                                                                            </span>
+                                                                        </label>
+                                                                        
+                                                                        <div className="submit-action-group">
+                                                                            <button
+                                                                                className="btn-glass-secondary"
+                                                                                onClick={() => handleSubmitAssignment(assign._id, true)}
+                                                                                disabled={submittingId === assign._id || (!submissionFiles[assign._id] && !assign.submission?.fileUrl)}
+                                                                            >
+                                                                                {submittingId === assign._id ? 'Saving...' : 'Save Draft'}
+                                                                            </button>
+                                                                            <button
+                                                                                className="btn-glow-primary"
+                                                                                onClick={() => handleSubmitAssignment(assign._id, false)}
+                                                                                disabled={submittingId === assign._id || (!submissionFiles[assign._id] && !assign.submission?.fileUrl)}
+                                                                            >
+                                                                                Turn In
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                ) : null}
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
+                                                </motion.div>
+                                            );
+                                        })}
+                                    </AnimatePresence>
                                 </div>
                             )}
                         </div>

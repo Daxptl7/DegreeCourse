@@ -31,3 +31,9 @@ export const getSubmissions = async (assignmentId) => {
     const response = await api.get(`/assignments/${assignmentId}/submissions`);
     return response.data;
 };
+
+// Grade Submission (Teacher)
+export const gradeSubmission = async (assignmentId, submissionId, data) => {
+    const response = await api.put(`/assignments/${assignmentId}/submissions/${submissionId}/grade`, data);
+    return response.data;
+};

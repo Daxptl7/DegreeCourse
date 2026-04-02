@@ -5,7 +5,8 @@ import {
     createAssignment, 
     getAssignments, 
     submitAssignment, 
-    getSubmissions 
+    getSubmissions,
+    gradeSubmission 
 } from '../controllers/assignment.controller.js';
 
 const router = express.Router();
@@ -21,5 +22,8 @@ router.post('/:assignmentId/submit', protect, authorize('student'), upload.singl
 
 // Teacher: Get Submissions for an assignment
 router.get('/:assignmentId/submissions', protect, authorize('teacher'), getSubmissions);
+
+// Teacher: Grade a Submission
+router.put('/:assignmentId/submissions/:submissionId/grade', protect, authorize('teacher'), gradeSubmission);
 
 export default router;

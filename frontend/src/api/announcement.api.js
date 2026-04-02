@@ -52,3 +52,29 @@ export const getUnreadCounts = async (courseIds) => {
         return { success: true, data: {} };
     }
 };
+
+// Update an announcement (Teacher)
+export const updateAnnouncement = async (announcementId, title, content) => {
+    try {
+        const response = await api.put(
+            `/announcements/${announcementId}`,
+            { title, content }
+        );
+        return response.data;
+    } catch (error) {
+        throw error.response?.data || error.message;
+    }
+};
+
+// Delete an announcement (Teacher)
+export const deleteAnnouncement = async (announcementId) => {
+    try {
+        const response = await api.delete(
+            `/announcements/${announcementId}`
+        );
+        return response.data;
+    } catch (error) {
+        throw error.response?.data || error.message;
+    }
+};
+
