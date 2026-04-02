@@ -34,6 +34,7 @@ const TeacherAssignments = () => {
     const [formData, setFormData] = useState({
         title: '', description: '', dueDate: '', assignmentFile: null
     });
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         const loadCourses = async () => {

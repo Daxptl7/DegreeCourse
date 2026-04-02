@@ -4,8 +4,8 @@ import {
   PieChart, Pie, Cell, LineChart, Line
 } from 'recharts';
 import { TrendingUp, Users, Star, MessageSquare } from 'lucide-react';
-import axios from 'axios';
 import TeacherSidebar from '../components/teacher/TeacherSidebar';
+import { fetchTeacherStats } from '../api/teacher.api';
 import '../pages/TeacherPortal.css';
 import './TeacherStats.css';
 
@@ -35,26 +35,23 @@ const TeacherStats = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetchStats();
+        const loadStats = async () => {
+            try {
+                const response = await fetchTeacherStats();
+                if (response.success) {
+                    setStats({
+                        overall: response.data,
+                        courses: response.data.individualCourseStats || []
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching teacher stats:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        loadStats();
     }, []);
-
-    const fetchStats = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await axios.get('http://localhost:5000/api/teacher/stats', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            // Adapt the response payload
-            setStats({
-                overall: response.data.stats,
-                courses: response.data.individualCourseStats || []
-            });
-        } catch (error) {
-            console.error('Error fetching teacher stats:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     if (loading) {
         return (
@@ -133,7 +130,7 @@ const TeacherStats = () => {
                             <Star size={24} />
                         </div>
                         <div>
-                            <h3>{stats.overall.averageRating.toFixed(1)}</h3>
+                            <h3>{stats.overall.averageRating ? stats.overall.averageRating.toFixed(1) : 0}</h3>
                             <p>Average Rating</p>
                         </div>
                     </div>
@@ -153,7 +150,7 @@ const TeacherStats = () => {
                                         >
                                             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
                                             <XAxis 
-                                                dataKey="title" 
+                                                dataKey="name" 
                                                 tick={{ fill: '#6b7280', fontSize: 12 }} 
                                                 tickMargin={15}
                                                 angle={-35}
@@ -183,7 +180,7 @@ const TeacherStats = () => {
                                         >
                                             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
                                             <XAxis 
-                                                dataKey="title" 
+                                                dataKey="name" 
                                                 tick={{ fill: '#6b7280', fontSize: 11 }}
                                                 tickFormatter={(value) => value.length > 12 ? value.substring(0, 10) + '...' : value}
                                                 angle={-25}
@@ -225,14 +222,15 @@ const TeacherStats = () => {
                     </>
                 ) : (
                     <div className="ts-empty-state">
-                        <BarChart size={48} color="#d1d5db" />
+                        <TrendingUp size={48} color="#d1d5db" />
                         <h3>No Analytics Data Available</h3>
                         <p>Create and publish courses to start tracking student enrollments and performance metrics.</p>
                     </div>
                 )}
             </div>
         </div>
-    );
+    </div>
+);
 };
 
 export default TeacherStats;

@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Announcement from '../models/Announcement.js';
 import Course from '../models/Course.js';
 
