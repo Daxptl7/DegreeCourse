@@ -7,6 +7,7 @@
 ## ✨ Key Features
 
 ### 👨‍🏫 For Teachers
+
 - **Course Creation & Management:** Create structured courses with modular parts and lectures.
 - **Assignment System (MS Teams-style):** Create, distribute, and collect assignments with file attachments and strict due dates.
 - **Submissions Review:** View, download, and track assignment submissions from enrolled students.
@@ -15,6 +16,7 @@
 - **Rich Media Support:** Upload instructional videos or embed standard YouTube course materials.
 
 ### 👨‍🎓 For Students
+
 - **Course Marketplace & Cart:** Browse available courses, view previews, and enroll using a streamlined cart system.
 - **Immersive Video Player:** Watch course lectures with built-in progress tracking (completed/pending indicators).
 - **Assignments Workflow:** Upload and turn in assignment files before deadlines, tracking submission status.
@@ -26,12 +28,14 @@
 ## 🛠️ Technology Stack
 
 **Frontend:**
+
 - **React.js** - UI Library (Hooks, Context API for state management)
 - **React Router** - Single Page Application navigation
 - **Lucide React** - Modern, clean SVG icon pack
 - **Vanilla CSS** - Custom, responsive styling (no heavy UI frameworks)
 
 **Backend:**
+
 - **Node.js & Express.js** - Fast, unopinionated web framework
 - **MongoDB & Mongoose** - NoSQL database for flexible, scalable schema management
 - **JWT (JSON Web Tokens)** - Secure, stateless user authentication and role authorization
@@ -44,37 +48,46 @@
 Follow these steps to set up the project locally on your machine.
 
 ### Prerequisites
+
 - [Node.js](https://nodejs.org/) (v16 or higher recommended)
 - [MongoDB](https://www.mongodb.com/) (Local installation or MongoDB Atlas cluster)
 
 ### 1. Clone the Repository
+
 ```bash
 git clone <repository-url>
 cd UnilearnPDEU
 ```
 
 ### 2. Backend Setup
+
 ```bash
 cd backend
 npm install
 ```
+
 - Create a `.env` file in the `backend` directory tracking `.env.example`.
 - Ensure you have the following variables set:
   - `PORT=5000`
   - `MONGODB_URI=<your-mongodb-connection-string>`
   - `JWT_SECRET=<your-secure-secret>`
 - Start the backend server:
+
 ```bash
 npm run dev
 ```
 
 ### 3. Frontend Setup
+
 Open a new terminal window:
+
 ```bash
 cd frontend
 npm install
 ```
+
 - Start the React development server:
+
 ```bash
 npm run dev
 # or npm start depending on your scripts
@@ -96,6 +109,7 @@ The frontend will run on `http://localhost:5173` (or `3000`), and the API will b
 ---
 
 ## 🔮 Future Roadmap (Coming Soon)
+
 - **Advanced Grading & Rubrics:** Configure points and rubrics for assignments.
 - **Plagiarism Detection:** Basic similarity scoring on assignment submissions.
 - **Real-time Notifications:** WebSockets for instant PUSH notifications on grades, announcements, and messages.
@@ -103,4 +117,6 @@ The frontend will run on `http://localhost:5173` (or `3000`), and the API will b
 
 ---
 
-*Built for education. Built for PDEU.*
+_Built for education. Built for PDEU._
+
+I have change some things in the readme file to make the GitPush Update
