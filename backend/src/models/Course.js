@@ -85,6 +85,27 @@ const courseSchema = new mongoose.Schema({
     enum: Object.values(COURSE_STATUS),
     default: COURSE_STATUS.PENDING
   },
+  isFeatured: {
+    type: Boolean,
+    default: false
+  },
+  featuredAt: {
+    type: Date
+  },
+  archivedAt: {
+    type: Date
+  },
+  rejectionReason: {
+    type: String,
+    default: ''
+  },
+  reviewedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  reviewedAt: {
+    type: Date
+  },
   enrolledStudents: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'

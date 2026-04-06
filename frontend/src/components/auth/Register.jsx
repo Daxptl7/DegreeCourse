@@ -16,6 +16,7 @@ const Register = () => {
         school: ''
     });
     const [error, setError] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
@@ -29,16 +30,20 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+        setSuccessMessage('');
         setLoading(true);
 
         try {
             const response = await registerAPI(formData);
 
             if (response.success) {
-                // Update auth context
-                login(response.data);
-                // Navigate to home
-                navigate('/');
+                if (response.data.requiresApproval) {
+                    setSuccessMessage(response.message || 'Registration submitted. Please wait for admin approval before logging in.');
+                    window.setTimeout(() => navigate('/login'), 1200);
+                } else {
+                    login(response.data);
+                    navigate('/');
+                }
             } else {
                 setError(response.message || 'Registration failed');
             }
@@ -75,6 +80,7 @@ const Register = () => {
                         {/* Form Section */}
                         <div className="register-form-wrapper">
                             {error && <div className="register-error-msg">{error}</div>}
+                            {successMessage && <div className="register-error-msg" style={{ backgroundColor: '#ecfdf5', color: '#065f46', borderColor: '#10b981' }}>{successMessage}</div>}
 
                             <form onSubmit={handleSubmit} className="register-form">
                                 <div className="register-input-group">
@@ -93,7 +99,6 @@ const Register = () => {
                                             <option value="">Select Role...</option>
                                             <option value="student">Student</option>
                                             <option value="teacher">Teacher</option>
-                                            <option value="admin">Admin</option>
                                         </select>
                                     </div>
 

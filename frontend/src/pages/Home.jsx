@@ -19,9 +19,12 @@ const Home = ({ user, viewMode, toggleViewMode }) => {
         const loadCourses = async () => {
             try {
                 const { fetchPublicCourses } = await import('../api/course.api');
-                const response = await fetchPublicCourses();
+                const response = await fetchPublicCourses({
+                    sort: 'ratingHighToLow',
+                    limit: 24
+                });
                 if (response.success) {
-                    let allCourses = response.data;
+                    const allCourses = Array.isArray(response.data) ? response.data : [];
                     console.log("Fetched courses:", allCourses);
 
                     // Filter by Student School if applicable

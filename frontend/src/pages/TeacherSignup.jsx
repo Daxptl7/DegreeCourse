@@ -19,6 +19,7 @@ const TeacherSignup = () => {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
     const handleChange = (e) => {
         setFormData({
@@ -32,6 +33,7 @@ const TeacherSignup = () => {
         e.preventDefault();
         setLoading(true);
         setError('');
+        setSuccessMessage('');
 
         try {
             // Directly call register instead of OTP flow
@@ -40,8 +42,13 @@ const TeacherSignup = () => {
             });
 
             if (response.data.success) {
-                login(response.data.data);
-                navigate('/');
+                if (response.data.data.requiresApproval) {
+                    setSuccessMessage(response.data.message || 'Registration submitted for approval. You can log in after approval.');
+                    window.setTimeout(() => navigate('/login'), 1200);
+                } else {
+                    login(response.data.data);
+                    navigate('/');
+                }
             }
         } catch (err) {
             setError(err.response?.data?.message || 'Registration failed');
@@ -57,6 +64,7 @@ const TeacherSignup = () => {
                 <p className="subtitle">Discover a community<br />of online instructors</p>
 
                 {error && <div className="error-message">{error}</div>}
+                {successMessage && <div className="error-message" style={{ backgroundColor: '#ecfdf5', color: '#065f46', borderColor: '#10b981' }}>{successMessage}</div>}
 
                 <form onSubmit={handleRegister}>
                     <div className="form-group">

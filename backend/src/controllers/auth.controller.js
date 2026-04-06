@@ -1,6 +1,34 @@
 import User from '../models/User.js';
+import LoginActivity from '../models/LoginActivity.js';
+import { ADMIN_ROLES, APPROVAL_STATUS, ROLES, USER_STATUS } from '../config/roles.js';
+import { logLoginAttempt } from '../services/admin-log.service.js';
 import { generateToken } from '../utils/jwt.js';
 import { sendSuccess, sendError } from '../utils/response.js';
+
+const buildSuspiciousLoginMetadata = async (email, req) => {
+  const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+  const ipAddress = req.ip || req.headers['x-forwarded-for'] || '';
+  const normalizedEmail = String(email || '').toLowerCase();
+
+  const failures = await LoginActivity.countDocuments({
+    email: normalizedEmail,
+    ipAddress,
+    status: 'failure',
+    createdAt: { $gte: oneHourAgo }
+  });
+
+  if (failures >= 3) {
+    return {
+      suspicious: true,
+      detectedRules: ['multiple_failed_attempts']
+    };
+  }
+
+  return {
+    suspicious: false,
+    detectedRules: []
+  };
+};
 
 // @desc    Register user
 // @route   POST /api/auth/register
@@ -8,6 +36,11 @@ import { sendSuccess, sendError } from '../utils/response.js';
 export const register = async (req, res) => {
   try {
     const { name, email, phone, password, role, school } = req.body;
+    const normalizedRole = role || ROLES.STUDENT;
+
+    if (ADMIN_ROLES.includes(normalizedRole)) {
+      return sendError(res, 403, 'Admin accounts can only be provisioned internally');
+    }
 
     // Check if user exists
     const userExists = await User.findOne({ email });
@@ -17,18 +50,33 @@ export const register = async (req, res) => {
 
     // Create user
     const personId = 'PDEU-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+    const approvalStatus = normalizedRole === ROLES.TEACHER
+      ? APPROVAL_STATUS.PENDING
+      : APPROVAL_STATUS.APPROVED;
     
     const user = await User.create({
       name,
       email,
       phone,
       password,
-      role,
+      role: normalizedRole,
       school,
-      personId
+      personId,
+      approvalStatus
     });
 
-    // Generate token
+    if (normalizedRole === ROLES.TEACHER) {
+      return sendSuccess(res, 201, {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        school: user.school,
+        approvalStatus: user.approvalStatus,
+        requiresApproval: true
+      }, 'Teacher registration submitted for admin approval');
+    }
+
     const token = generateToken(user._id);
 
     sendSuccess(res, 201, {
@@ -37,6 +85,7 @@ export const register = async (req, res) => {
       email: user.email,
       role: user.role,
       school: user.school,
+      approvalStatus: user.approvalStatus,
       token
     }, 'User registered successfully');
 
@@ -51,11 +100,22 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    const normalizedEmail = String(email || '').toLowerCase();
 
     // Check for user and include password
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.findOne({ email: normalizedEmail }).select('+password');
     
     if (!user) {
+      const suspiciousMetadata = await buildSuspiciousLoginMetadata(normalizedEmail, req);
+
+      await logLoginAttempt({
+        email: normalizedEmail,
+        status: 'failure',
+        reason: 'invalid_credentials',
+        req,
+        ...suspiciousMetadata
+      });
+
       return sendError(res, 401, 'Invalid credentials');
     }
 
@@ -63,11 +123,65 @@ export const login = async (req, res) => {
     const isMatch = await user.comparePassword(password);
     
     if (!isMatch) {
+      const suspiciousMetadata = await buildSuspiciousLoginMetadata(user.email, req);
+
+      await logLoginAttempt({
+        user,
+        status: 'failure',
+        reason: 'invalid_credentials',
+        req,
+        ...suspiciousMetadata
+      });
+
       return sendError(res, 401, 'Invalid credentials');
+    }
+
+    if (user.status === USER_STATUS.SUSPENDED) {
+      await logLoginAttempt({
+        user,
+        status: 'failure',
+        reason: 'account_suspended',
+        req
+      });
+
+      return sendError(res, 403, 'Your account is suspended. Please contact support.');
+    }
+
+    if (user.role === ROLES.TEACHER && user.approvalStatus === APPROVAL_STATUS.PENDING) {
+      await logLoginAttempt({
+        user,
+        status: 'failure',
+        reason: 'teacher_approval_pending',
+        req
+      });
+
+      return sendError(res, 403, 'Your teacher account is awaiting admin approval.');
+    }
+
+    if (user.role === ROLES.TEACHER && user.approvalStatus === APPROVAL_STATUS.REJECTED) {
+      await logLoginAttempt({
+        user,
+        status: 'failure',
+        reason: 'teacher_approval_rejected',
+        req
+      });
+
+      return sendError(res, 403, 'Your teacher account request was rejected. Please contact the admin team.');
     }
 
     // Generate token
     const token = generateToken(user._id);
+
+    user.lastLoginAt = Date.now();
+    user.lastLoginIp = req.ip || req.headers['x-forwarded-for'] || '';
+    await user.save({ validateBeforeSave: false });
+
+    await logLoginAttempt({
+      user,
+      status: 'success',
+      reason: 'login_success',
+      req
+    });
 
     sendSuccess(res, 200, {
       _id: user._id,
@@ -75,6 +189,9 @@ export const login = async (req, res) => {
       email: user.email,
       role: user.role,
       school: user.school,
+      status: user.status,
+      approvalStatus: user.approvalStatus,
+      lastLoginAt: user.lastLoginAt,
       token
     }, 'Login successful');
 
@@ -155,6 +272,12 @@ export const verifyOtpRegister = async (req, res) => {
       return sendError(res, 400, 'User already exists');
     }
 
+    const normalizedRole = role || ROLES.TEACHER;
+
+    if (ADMIN_ROLES.includes(normalizedRole)) {
+      return sendError(res, 403, 'Admin accounts can only be provisioned internally');
+    }
+
     // Create user
     const personId = 'PDEU-' + Math.random().toString(36).substr(2, 9).toUpperCase();
 
@@ -162,14 +285,27 @@ export const verifyOtpRegister = async (req, res) => {
       name,
       email,
       password,
-      role: role || 'teacher', // Default to teacher for this flow
-      personId
+      role: normalizedRole,
+      personId,
+      approvalStatus: normalizedRole === ROLES.TEACHER
+        ? APPROVAL_STATUS.PENDING
+        : APPROVAL_STATUS.APPROVED
     });
 
     // Delete OTP used
     await Otp.deleteOne({ email });
 
-    // Generate token
+    if (normalizedRole === ROLES.TEACHER) {
+      return sendSuccess(res, 201, {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        approvalStatus: user.approvalStatus,
+        requiresApproval: true
+      }, 'Teacher registration submitted for admin approval');
+    }
+
     const token = generateToken(user._id);
 
     sendSuccess(res, 201, {
@@ -177,6 +313,7 @@ export const verifyOtpRegister = async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
+      approvalStatus: user.approvalStatus,
       token
     }, 'User registered successfully');
   } catch (error) {

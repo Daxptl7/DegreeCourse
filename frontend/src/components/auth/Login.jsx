@@ -33,8 +33,8 @@ const Login = () => {
             if (response.success) {
                 // Update auth context
                 login(response.data);
-                // Navigate to home
-                navigate('/');
+                const adminRoles = ['super_admin', 'admin', 'moderator'];
+                navigate(adminRoles.includes(response.data.role) ? '/admin' : '/');
             } else {
                 setError(response.message || 'Login failed');
             }

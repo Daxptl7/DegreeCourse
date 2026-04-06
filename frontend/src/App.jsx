@@ -24,6 +24,8 @@ import TeacherCreateCourse from './pages/TeacherCreateCourse';
 import ManageCourse from './pages/ManageCourse';
 import LiveClass from './pages/LiveClass';
 import StudentCourses from './pages/StudentCourses';
+import AdminPortal from './pages/admin/AdminPortal';
+import AdminRoute from './pages/admin/AdminRoute';
 
 // Layout Component to handle conditional padding
 const PageLayout = ({ children, navbarProps, viewMode }) => {
@@ -31,8 +33,9 @@ const PageLayout = ({ children, navbarProps, viewMode }) => {
     // Only apply 0 padding if on Home Page AND in Student Mode
     const isStudentHome = location.pathname === '/' && viewMode !== 'teacher';
     const isLiveClass = location.pathname.startsWith('/live/');
+    const isAdminRoute = location.pathname.startsWith('/admin');
 
-    if (isLiveClass) {
+    if (isLiveClass || isAdminRoute) {
         return <div className="app">{children}</div>;
     }
 
@@ -85,6 +88,7 @@ function App() {
                             <Route path="/teacher/courses" element={<TeacherCourses />} />
                             <Route path="/teacher/create-course" element={<TeacherCreateCourse />} />
                             <Route path="/teacher/courses/:slug" element={<ManageCourse />} />
+                            <Route path="/admin/*" element={<AdminRoute><AdminPortal /></AdminRoute>} />
 
                             <Route path="/cart" element={<Cart />} />
                             <Route path="/course/:slug" element={<CourseDetail />} />

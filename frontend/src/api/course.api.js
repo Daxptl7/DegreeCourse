@@ -1,7 +1,7 @@
 import axios from './axios';
 
-export const fetchPublicCourses = async () => {
-  const response = await axios.get('/courses');
+export const fetchPublicCourses = async (params = {}) => {
+  const response = await axios.get('/courses', { params });
   return response.data;
 };
 
