@@ -249,7 +249,7 @@ const AdminPortal = () => {
 
       <AdminSidebar user={user} onLogout={logout} />
 
-      <main className="relative px-4 pb-10 pt-6 lg:pl-[22rem] lg:pr-8">
+      <main className="relative z-10 px-4 pb-10 pt-6 lg:ml-[22rem] lg:px-8">
         <header className="mb-6 rounded-[32px] border border-white/10 bg-slate-900/70 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>

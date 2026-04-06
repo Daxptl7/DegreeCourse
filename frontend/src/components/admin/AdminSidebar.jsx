@@ -21,7 +21,7 @@ const navigationItems = [
 
 const AdminSidebar = ({ user, onLogout }) => {
   return (
-    <aside className="lg:fixed lg:inset-y-0 lg:left-0 lg:w-80 lg:p-6">
+    <aside className="relative z-30 lg:fixed lg:inset-y-0 lg:left-0 lg:w-80 lg:p-6">
       <div className="mx-4 mt-4 overflow-x-auto rounded-[28px] border border-white/10 bg-slate-950/90 p-4 shadow-2xl shadow-slate-950/30 backdrop-blur lg:mx-0 lg:h-full lg:overflow-visible lg:p-6">
         <div className="mb-6 flex items-center justify-between gap-3 lg:block">
           <div>

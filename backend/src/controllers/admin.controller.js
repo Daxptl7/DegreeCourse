@@ -165,10 +165,16 @@ const summarizeUser = (user) => ({
   role: user.role,
   school: user.school,
   status: user.status,
-  approvalStatus: user.approvalStatus,
+  approvalStatus: user.approvalStatus || (user.role === ROLES.TEACHER ? APPROVAL_STATUS.PENDING : APPROVAL_STATUS.APPROVED),
   lastLoginAt: user.lastLoginAt,
   personId: user.personId,
   createdAt: user.createdAt
+});
+
+const normalizeUserRecord = (user) => ({
+  ...user,
+  approvalStatus: user.approvalStatus || (user.role === ROLES.TEACHER ? APPROVAL_STATUS.PENDING : APPROVAL_STATUS.APPROVED),
+  status: user.status || USER_STATUS.ACTIVE
 });
 
 export const getDashboard = async (req, res) => {
@@ -334,33 +340,55 @@ export const getUsers = async (req, res) => {
       search = ''
     } = req.query;
     const { page, limit, skip } = getPagination(req.query, 12);
-    const filters = {};
+    const conditions = [];
 
     if (role && role !== 'all') {
-      filters.role = role;
+      conditions.push({ role });
     }
 
     if (status && status !== 'all') {
-      filters.status = status;
+      conditions.push({ status });
     }
 
     if (school && school !== 'all') {
-      filters.school = school;
+      conditions.push({ school });
     }
 
     if (approvalStatus && approvalStatus !== 'all') {
-      filters.approvalStatus = approvalStatus;
+      if (approvalStatus === APPROVAL_STATUS.PENDING) {
+        conditions.push({
+          $or: [
+            { approvalStatus: APPROVAL_STATUS.PENDING },
+            { role: ROLES.TEACHER, approvalStatus: { $exists: false } },
+            { role: ROLES.TEACHER, approvalStatus: null }
+          ]
+        });
+      } else if (approvalStatus === APPROVAL_STATUS.APPROVED) {
+        conditions.push({
+          $or: [
+            { approvalStatus: APPROVAL_STATUS.APPROVED },
+            { role: { $ne: ROLES.TEACHER }, approvalStatus: { $exists: false } },
+            { role: { $ne: ROLES.TEACHER }, approvalStatus: null }
+          ]
+        });
+      } else {
+        conditions.push({ approvalStatus });
+      }
     }
 
     const trimmedSearch = search.trim();
     if (trimmedSearch) {
       const safeSearch = escapeRegex(trimmedSearch);
-      filters.$or = [
+      conditions.push({
+        $or: [
         { name: { $regex: safeSearch, $options: 'i' } },
         { email: { $regex: safeSearch, $options: 'i' } },
         { personId: { $regex: safeSearch, $options: 'i' } }
-      ];
+        ]
+      });
     }
+
+    const filters = conditions.length ? { $and: conditions } : {};
 
     const [users, total] = await Promise.all([
       User.find(filters)
@@ -373,7 +401,7 @@ export const getUsers = async (req, res) => {
     ]);
 
     return sendSuccess(res, 200, {
-      data: users,
+      data: users.map(normalizeUserRecord),
       pagination: {
         total,
         page,
@@ -421,7 +449,7 @@ export const getUserById = async (req, res) => {
     ]);
 
     return sendSuccess(res, 200, {
-      profile: user,
+      profile: normalizeUserRecord(user),
       createdCourses,
       activityLogs: auditLogs,
       loginActivity

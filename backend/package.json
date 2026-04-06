@@ -6,7 +6,9 @@
     "type": "module",
     "scripts": {
         "start": "node src/server.js",
-        "dev": "nodemon"
+        "dev": "nodemon",
+        "create-admin": "node src/scripts/create-admin.js",
+        "backfill-user-approval": "node src/scripts/backfill-user-approval.js"
     },
     "dependencies": {
         "bcryptjs": "^2.4.3",
