@@ -8,12 +8,7 @@ import dns from 'dns';
 //This is a temporary fix for the DNS resolution issues.
 
 
-try {
-  dns.setServers(['8.8.8.8']);//This is Google's DNS server
-} catch (error) {
-  console.error('Could not set DNS servers:', error);
-}
-
+// Removed invalid dns.setServers(['8.8.8.8']) that was breaking localhost resolution.
 //Export : export: Makes this function available to be used in other files
 //Async : async: Allows us to use the await keyword in the function
 //Await : await: Pauses the execution of the function until the promise is resolved

@@ -17,10 +17,10 @@ workflow:
 */
 
 export const config = {
-  
+
   mongodb: {
     //process is the keyword that exists in the node.js and it is used to access the environment variables.
-    uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/unilearn'
+    uri: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/unilearn'
 
     /* 
     comparison between the node app and the database:process and connection propertices 
@@ -45,7 +45,7 @@ export const config = {
   },
 
   //JWT : JWT is a JSON Web Token that is used to authenticate the user.
-  
+
   /*
 
     JWT (✅ modern solution)
