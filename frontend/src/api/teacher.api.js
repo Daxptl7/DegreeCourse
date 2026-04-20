@@ -16,7 +16,10 @@ export const fetchTeacherStats = async () => {
 };
 
 export const createCourse = async (courseData) => {
-    const response = await axios.post('/courses', courseData);
+    const isFormData = courseData instanceof FormData;
+    const response = await axios.post('/courses', courseData,
+        isFormData ? { headers: { 'Content-Type': 'multipart/form-data' } } : {}
+    );
     return response.data;
 };
 

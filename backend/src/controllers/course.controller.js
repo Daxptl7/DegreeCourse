@@ -14,8 +14,31 @@ const COURSE_SORT_OPTIONS = {
 
 export const createCourse = async (req, res) => {
   try {
+    const courseData = { ...req.body };
+
+    // Handle thumbnail file upload — store as Base64 data URL in MongoDB
+    if (req.file) {
+      const base64Image = req.file.buffer.toString('base64');
+      courseData.thumbnail = `data:${req.file.mimetype};base64,${base64Image}`;
+    }
+
+    // Parse whatYouLearn if it's a JSON string (from FormData)
+    if (typeof courseData.whatYouLearn === 'string') {
+      try {
+        courseData.whatYouLearn = JSON.parse(courseData.whatYouLearn);
+      } catch {
+        // If it's a comma-separated string, split it
+        courseData.whatYouLearn = courseData.whatYouLearn.split(',').map(s => s.trim()).filter(s => s);
+      }
+    }
+
+    // Parse price to number if it's a string (from FormData)
+    if (typeof courseData.price === 'string') {
+      courseData.price = Number(courseData.price);
+    }
+
     const course = await Course.create({
-      ...req.body,
+      ...courseData,
       instructor: req.user.id,
       status: COURSE_STATUS.PENDING
     });
