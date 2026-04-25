@@ -14,7 +14,7 @@ const Home = ({ user, viewMode, toggleViewMode }) => {
         return <TeacherDashboard toggleViewMode={toggleViewMode} />;
     }
 
-
+    //Load 
     useEffect(() => {
         const loadCourses = async () => {
             try {
@@ -47,11 +47,18 @@ const Home = ({ user, viewMode, toggleViewMode }) => {
 
     // Scroll Opacity Effect
     useEffect(() => {
+        let ticking = false;
         const handleScroll = () => {
-            const scrollFactor = Math.min(window.scrollY / 2000, 0.2);
-            setOpacity(0.3 + scrollFactor);
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const scrollFactor = Math.min(window.scrollY / 2000, 0.2);
+                    setOpacity(0.3 + scrollFactor);
+                    ticking = false;
+                });
+                ticking = true;
+            }
         };
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -65,9 +72,38 @@ const Home = ({ user, viewMode, toggleViewMode }) => {
                 }}
             >
                 <div className="heroContent">
-                    <h1 className="heroTitle">UniLearn | PDEU</h1>
+                    <h1 className="heroTitle">Degree | Skill Program | PDEU</h1>
                     <p className="heroSubtitle">Empowering the future through DIgital education and research.</p>
                 </div>
+            </section>
+
+            {/* SCHOOLS SECTION */}
+            <section className="schools-section">
+                <div className="schools-divider"></div>
+                <h2 className="schools-heading">Constituent Schools</h2>
+                <div className="schools-grid">
+                    <div className="school-item">
+                        <img src="/SOM.png" alt="School of Management" className="school-logo" />
+                        <span className="school-know-more">Know More →</span>
+                    </div>
+                    <div className="school-item">
+                        <img src="/SLS.png" alt="School of Liberal Studies" className="school-logo" />
+                        <Link to="/school/sls" className="school-know-more">Know More →</Link>
+                    </div>
+                    <div className="school-item">
+                        <img src="/SOET.png" alt="School of Energy Technology" className="school-logo" />
+                        <span className="school-know-more">Know More →</span>
+                    </div>
+                    <div className="school-item">
+                        <img src="/SOT.png" alt="School of Technology" className="school-logo" />
+                        <span className="school-know-more">Know More →</span>
+                    </div>
+                </div>
+                <p className="schools-description">
+                    Study at the most vibrant and diverse campus in Gujarat with opportunity for experience based learning.
+                    The overall University's physical infrastructure is designed to focus on the power of 'interdisciplinary research'.
+                </p>
+                <div className="schools-divider"></div>
             </section>
 
             {/* RECOMMENDED COURSES */}

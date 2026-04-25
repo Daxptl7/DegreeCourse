@@ -1,0 +1,358 @@
+/* ===== SLS Page — Collin College-inspired design ===== */
+
+/* Hero override for SLS */
+.sls-hero-section {
+    position: relative;
+    flex-direction: column;
+}
+
+.sls-hero-content {
+    text-align: left;
+    align-self: flex-start;
+    padding: 0 60px;
+    background-color: transparent;
+    backdrop-filter: none;
+}
+
+.sls-hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    line-height: 1.15;
+    text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.5);
+}
+
+.sls-hero-subtitle {
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 800;
+    margin-top: 16px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    line-height: 1.15;
+    text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.5);
+}
+
+.sls-hero-welcome {
+    color: #fff;
+    font-size: 2.2rem;
+    font-weight: 700;
+    font-family: 'Playfair Display', Georgia, serif;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+/* Breadcrumb — overlaid on hero */
+.sls-breadcrumb {
+    position: absolute;
+    top: 16px;
+    left: 40px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.85);
+    z-index: 2;
+    border-bottom: none;
+    padding: 0;
+}
+
+.sls-breadcrumb a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.sls-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.sls-breadcrumb-sep {
+    margin: 0 8px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Hero — split layout */
+.sls-hero {
+    display: flex;
+    min-height: 340px;
+    overflow: hidden;
+}
+
+.sls-hero-text {
+    flex: 1;
+    background: linear-gradient(135deg, #C1548A 0%, #9B2D6B 100%);
+    display: flex;
+    align-items: center;
+    padding: 60px 60px;
+}
+
+.sls-hero-text h1 {
+    color: #fff;
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.sls-hero-image {
+    flex: 1;
+    overflow: hidden;
+}
+
+.sls-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Layout — full width content */
+.sls-main {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 50px 80px;
+}
+
+/* Quick Links Grid — Collin College style */
+.sls-quicklinks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 60px;
+    margin-top: 36px;
+}
+
+.sls-quicklink {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 4px;
+    border-bottom: 2.5px solid #1a3a6b;
+    text-decoration: none;
+    color: #1a3a6b;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: color 0.2s ease, padding-left 0.2s ease;
+}
+
+.sls-quicklink:hover {
+    color: #A6192E;
+    padding-left: 8px;
+}
+
+.sls-quicklink-arrow {
+    font-size: 1.2rem;
+    transition: transform 0.2s ease;
+}
+
+.sls-quicklink:hover .sls-quicklink-arrow {
+    transform: translateX(4px);
+}
+
+.sls-section {
+    margin-bottom: 50px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #eee;
+    scroll-margin-top: 110px;
+}
+
+.sls-section:last-child {
+    border-bottom: none;
+}
+
+.sls-section-title {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.sls-section-desc {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: #444;
+    max-width: none;
+}
+
+.sls-category-title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.sls-category-desc {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 20px;
+    max-width: none;
+}
+
+/* Program Links */
+.sls-program-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sls-program-list li {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.sls-program-link {
+    display: block;
+    padding: 14px 16px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #A6192E;
+    text-decoration: none;
+    transition: background 0.2s ease, padding-left 0.2s ease;
+}
+
+.sls-program-link:hover {
+    background: #fdf5f7;
+    padding-left: 24px;
+}
+
+/* Explore Button */
+.sls-explore-btn {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 14px 32px;
+    background: #A6192E;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.sls-explore-btn:hover {
+    background: #8B1425;
+    transform: translateY(-2px);
+}
+
+/* Live Courses Grid */
+.sls-courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 24px;
+    margin-top: 20px;
+}
+
+.sls-course-card {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    background: #fff;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.sls-course-card:hover {
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.14);
+    transform: translateY(-4px);
+}
+
+.sls-course-thumb {
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+    background-color: #eee;
+}
+
+.sls-course-info {
+    padding: 16px;
+}
+
+.sls-course-name {
+    display: block;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sls-course-instructor {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+/* CTA Footer */
+.sls-cta {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 50px 20px;
+    background: #f5f5f5;
+    border-top: 1px solid #e5e5e5;
+}
+
+.sls-cta-btn {
+    padding: 14px 36px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+    border: 2px solid #A6192E;
+    color: #A6192E;
+    background: transparent;
+    transition: all 0.25s ease;
+}
+
+.sls-cta-btn:hover {
+    background: #A6192E;
+    color: #fff;
+}
+
+.sls-cta-btn--primary {
+    background: #A6192E;
+    color: #fff;
+}
+
+.sls-cta-btn--primary:hover {
+    background: #8B1425;
+    border-color: #8B1425;
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+    .sls-hero {
+        flex-direction: column;
+    }
+
+    .sls-hero-text {
+        padding: 40px 30px;
+    }
+
+    .sls-hero-text h1 {
+        font-size: 2rem;
+    }
+
+    .sls-hero-image {
+        height: 200px;
+    }
+
+    .sls-main {
+        padding: 30px 20px;
+    }
+
+    .sls-quicklinks {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .sls-breadcrumb {
+        padding: 10px 20px;
+    }
+
+    .sls-cta {
+        flex-direction: column;
+        align-items: center;
+    }
+}

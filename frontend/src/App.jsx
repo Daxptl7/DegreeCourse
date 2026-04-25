@@ -24,14 +24,15 @@ import TeacherCreateCourse from './pages/TeacherCreateCourse';
 import ManageCourse from './pages/ManageCourse';
 import LiveClass from './pages/LiveClass';
 import StudentCourses from './pages/StudentCourses';
+import SchoolSLS from './pages/SchoolSLS';
 import AdminPortal from './pages/admin/AdminPortal';
 import AdminRoute from './pages/admin/AdminRoute';
 
 // Layout Component to handle conditional padding
 const PageLayout = ({ children, navbarProps, viewMode }) => {
     const location = useLocation();
-    // Only apply 0 padding if on Home Page AND in Student Mode
-    const isStudentHome = location.pathname === '/' && viewMode !== 'teacher';
+    // Only apply 0 padding if on Home Page AND in Student Mode, or on school pages
+    const isStudentHome = (location.pathname === '/' && viewMode !== 'teacher') || location.pathname.startsWith('/school/');
     const isLiveClass = location.pathname.startsWith('/live/');
     const isAdminRoute = location.pathname.startsWith('/admin');
 
@@ -95,6 +96,7 @@ function App() {
                             <Route path="/courses" element={<Courses />} />
                             <Route path="/profile" element={<Profile />} />
                             <Route path="/my-courses" element={<StudentCourses />} />
+                            <Route path="/school/sls" element={<SchoolSLS />} />
 
                             <Route path="/live/:roomId" element={<LiveClass />} />
                             {/* Add other routes as we build them */}

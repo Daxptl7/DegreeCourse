@@ -42,8 +42,9 @@ const Navbar = ({ user, toggleLogin, viewMode, toggleViewMode }) => {
     };
 
     const isHome = location.pathname === '/';
-    // Transparent only if on Home Page AND NOT in teacher mode
-    const isTransparent = isHome && viewMode !== 'teacher' && !scrolled;
+    const isSchoolPage = location.pathname.startsWith('/school/');
+    // Transparent on Home Page (student mode) and school pages
+    const isTransparent = ((isHome && viewMode !== 'teacher') || isSchoolPage) && !scrolled;
     const navClass = isTransparent ? 'transparent' : 'scrolled';
 
     return (
