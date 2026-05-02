@@ -4,9 +4,9 @@ import {
   PieChart, Pie, Cell, LineChart, Line
 } from 'recharts';
 import { TrendingUp, Users, Star, MessageSquare } from 'lucide-react';
-import TeacherSidebar from '../components/teacher/TeacherSidebar';
-import { fetchTeacherStats } from '../api/teacher.api';
-import '../pages/TeacherPortal.css';
+import TeacherSidebar from '../../components/teacher/TeacherSidebar';
+import { fetchTeacherStats } from '../../api/teacher.api';
+import './TeacherPortal.css';
 import './TeacherStats.css';
 
 const COLORS = ['#A6192E', '#D4AF37', '#2563EB', '#10B981', '#F59E0B', '#6366F1'];

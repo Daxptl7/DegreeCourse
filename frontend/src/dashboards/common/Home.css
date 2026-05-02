@@ -3,38 +3,49 @@
     height: 100vh;
     width: 100%;
     /* Gradient + Image */
-    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/campus.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), url('/campus.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: scroll;
-    /* Using scroll instead of fixed to prevent scroll jank */
     will-change: background-image;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     color: white;
-    text-align: center;
+    text-align: left;
 }
 
 .heroContent {
     width: 100%;
-    padding: 0 20px;
-    background-color: rgba(0, 0, 0, 0.05);
-    backdrop-filter: blur(1px);
+    padding: 0 60px;
+    background-color: transparent;
+    backdrop-filter: none;
 }
 
 .heroTitle {
-    font-size: 3.5rem;
+    font-size: 3rem;
     font-weight: 800;
-    margin-bottom: 20px;
-    text-shadow:
-        0 0 10px rgba(0, 0, 0, 0.9),
-        0 0 20px rgba(0, 0, 0, 0.9),
-        0 0 40px rgba(0, 0, 0, 0.8),
-        0 0 80px rgba(0, 0, 0, 0.8);
-    letter-spacing: 2px;
+    margin-bottom: 16px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    line-height: 1.15;
+    text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.5);
 }
 
+/* Subtitle style matching SLS page */
+.sls-hero-subtitle {
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 800;
+    margin-top: 0;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    line-height: 1.15;
+    text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* Keep old .heroSubtitle for other potential uses */
 .heroSubtitle {
     font-size: 1.5rem;
     font-weight: 400;
@@ -150,8 +161,18 @@
         background-attachment: scroll;
     }
 
+    .heroContent {
+        padding: 0 24px;
+    }
+
     .heroTitle {
-        font-size: 2rem;
+        font-size: 1.8rem;
+        letter-spacing: 2px;
+    }
+
+    .sls-hero-subtitle {
+        font-size: 1.1rem;
+        letter-spacing: 2px;
     }
 
     .heroSubtitle {

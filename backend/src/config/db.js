@@ -25,3 +25,6 @@ export const connectDB = async () => {
     process.exit(1);
   }
 };
+
+// Add this temporarily to the bottom of db.js
+connectDB();

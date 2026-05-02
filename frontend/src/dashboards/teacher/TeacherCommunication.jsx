@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import {
     ChevronDown,
     ChevronUp,
@@ -9,10 +9,10 @@ import {
     XCircle,
     Send
 } from 'lucide-react';
-import TeacherSidebar from '../components/teacher/TeacherSidebar';
-import { fetchTeacherCourses } from '../api/teacher.api';
-import { getQuestions, addAnswer, toggleStatus } from '../api/question.api';
-import { config } from '../config';
+import TeacherSidebar from '../../components/teacher/TeacherSidebar';
+import { fetchTeacherCourses } from '../../api/teacher.api';
+import { getQuestions, addAnswer, toggleStatus } from '../../api/question.api';
+import { config } from '../../config';
 import './TeacherPortal.css';
 
 const BASE_URL = config.API_URL.replace('/api', '');

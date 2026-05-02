@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { updateDetails } from '../api/auth';
+import { useAuth } from '../../context/AuthContext';
+import { updateDetails } from '../../api/auth';
 import './Profile.css';
 import { User, Mail, Phone, MapPin, Calendar, ExternalLink, Linkedin, Github, Instagram, Link as LinkIcon, Save, Camera } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-import { config } from '../config';
+import { config } from '../../config';
 
 const BASE_URL = config.API_URL.replace('/api', '');
 

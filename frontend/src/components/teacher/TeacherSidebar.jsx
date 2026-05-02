@@ -1,49 +1,64 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
     LayoutDashboard,
     BookOpen,
     MessageCircle,
     BarChart2,
     Settings,
+    LogOut,
+    Home,
 } from 'lucide-react';
-import '../../pages/TeacherCommunication.css';
+import './TeacherSidebar.css';
+
+const NAV_ITEMS = [
+    { icon: LayoutDashboard, label: 'Dashboard',     path: '/teacher/dashboard' },
+    { icon: BookOpen,        label: 'Courses',       path: '/teacher/courses' },
+    { icon: MessageCircle,   label: 'Communication', path: '/teacher/communication' },
+    { icon: BarChart2,       label: 'Statistics',    path: '/teacher/stats' },
+    { icon: Settings,        label: 'Settings',      path: '/teacher/settings' },
+];
 
 const TeacherSidebar = () => {
     const location = useLocation();
-    const isActive = (path) => location.pathname === path || location.pathname.startsWith(path + '/');
+    const navigate = useNavigate();
+
+    const isActive = (path) =>
+        location.pathname === path || location.pathname.startsWith(path + '/');
 
     return (
-        <aside className="comm-sidebar">
-            <div className="td-logo">
-                <h2>U</h2>
+        <aside className="ts-sidebar">
+            {/* Logo / Brand */}
+            <div className="ts-brand">
+                <Link to="/" className="ts-logo">
+                    <img src="/logo.png" alt="PDEU" className="ts-logo-img" />
+                </Link>
+                <span className="ts-brand-label">Teacher Portal</span>
             </div>
 
-            <nav className="comm-nav">
-                <Link to="/teacher/dashboard" className={`comm-nav-item ${isActive('/teacher/dashboard') ? 'active' : ''}`}>
-                    <div className="comm-nav-icon"><LayoutDashboard size={24} /></div>
-                    <span className="nav-tooltip">Dashboard</span>
-                </Link>
-                <Link to="/teacher/courses" className={`comm-nav-item ${isActive('/teacher/courses') ? 'active' : ''}`}>
-                    <div className="comm-nav-icon"><BookOpen size={24} /></div>
-                    <span className="nav-tooltip">Courses</span>
-                </Link>
-                <Link to="/teacher/communication" className={`comm-nav-item ${isActive('/teacher/communication') || isActive('/teacher/assignments') || isActive('/teacher/announcements') ? 'active' : ''}`}>
-                    <div className="comm-nav-icon"><MessageCircle size={24} /></div>
-                    <span className="nav-tooltip">Communication</span>
-                </Link>
-                <Link to="/teacher/stats" className={`comm-nav-item ${isActive('/teacher/stats') ? 'active' : ''}`}>
-                    <div className="comm-nav-icon"><BarChart2 size={24} /></div>
-                    <span className="nav-tooltip">Statistics</span>
-                </Link>
-                <Link to="/teacher/settings" className={`comm-nav-item ${isActive('/teacher/settings') ? 'active' : ''}`}>
-                    <div className="comm-nav-icon"><Settings size={24} /></div>
-                    <span className="nav-tooltip">Settings</span>
-                </Link>
+            {/* Navigation Links */}
+            <nav className="ts-nav">
+                {NAV_ITEMS.map(({ icon: Icon, label, path }) => (
+                    <Link
+                        key={path}
+                        to={path}
+                        className={`ts-nav-item ${isActive(path) ? 'ts-active' : ''}`}
+                    >
+                        <Icon size={20} className="ts-nav-icon" />
+                        <span className="ts-nav-label">{label}</span>
+                    </Link>
+                ))}
             </nav>
+
+            {/* Bottom: Back to Home */}
+            <div className="ts-bottom">
+                <Link to="/" className="ts-back-home">
+                    <Home size={18} />
+                    <span>Back to Home</span>
+                </Link>
+            </div>
         </aside>
     );
 };
 
 export default TeacherSidebar;
-

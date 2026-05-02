@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import TeacherSidebar from '../components/teacher/TeacherSidebar';
-import { createCourse } from '../api/teacher.api';
+import TeacherSidebar from '../../components/teacher/TeacherSidebar';
+import { createCourse } from '../../api/teacher.api';
 import { ChevronDown, Upload, X, ImageIcon } from 'lucide-react';
 import './TeacherPortal.css';
 

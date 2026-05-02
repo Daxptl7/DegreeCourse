@@ -165,6 +165,53 @@
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
 }
 
+/* Inner link covers thumb + info */
+.course-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    flex: 1;
+}
+
+/* Footer strip that holds the Add to Cart button */
+.course-card-footer {
+    padding: 0 16px 16px;
+    margin-top: -4px;
+}
+
+.btn-add-cart {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 10px 0;
+    border-radius: 8px;
+    border: 1.5px solid #A6192E;
+    background: transparent;
+    color: #A6192E;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.btn-add-cart:hover:not(:disabled) {
+    background: #A6192E;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.btn-add-cart:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn-add-cart:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 .course-thumb {
     height: 180px;
     background-size: cover;

@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { fetchPublicCourses } from '../api/course.api';
+import { ShoppingCart } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
+import { fetchPublicCourses } from '../../api/course.api';
+import { addToCart } from '../../api/student.api';
+import { useToastContext } from '../../context/ToastContext';
 import './Courses.css';
 
 const DEFAULT_FILTERS = ['All', 'SOT', 'SOET', 'SLS', 'SOL'];
@@ -22,6 +25,7 @@ const Courses = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState('newest');
     const [currentPage, setCurrentPage] = useState(1);
+    const [cartLoadingId, setCartLoadingId] = useState(null);
     const [pagination, setPagination] = useState({
         total: 0,
         page: 1,
@@ -32,6 +36,7 @@ const Courses = () => {
     });
 
     const { user } = useAuth();
+    const { toast } = useToastContext();
 
     const filters = useMemo(() => {
         if (user?.role === 'student' && user.school) {
@@ -108,6 +113,29 @@ const Courses = () => {
         setSearchTerm('');
         setSortBy('newest');
         setCurrentPage(1);
+    };
+
+    const handleAddToCart = async (e, courseId) => {
+        e.preventDefault();        // don't navigate to course detail
+        e.stopPropagation();
+        if (!user) {
+            toast.info('Please log in to add courses to your cart.');
+            return;
+        }
+        if (user.role !== 'student') {
+            toast.info('Only students can add courses to a cart.');
+            return;
+        }
+        setCartLoadingId(courseId);
+        try {
+            await addToCart(courseId);
+            toast.success('Added to cart! 🛒');
+        } catch (err) {
+            const msg = err?.response?.data?.message || 'Could not add to cart.';
+            toast.error(msg);
+        } finally {
+            setCartLoadingId(null);
+        }
     };
 
     const handleFilterChange = (filter) => {
@@ -187,20 +215,35 @@ const Courses = () => {
                 ) : (
                     <div className="courses-grid">
                         {courses.map((course) => (
-                            <Link key={course._id} to={`/course/${course.slug}`} className="course-card-item">
-                                <div
-                                    className="course-thumb"
-                                    style={course.thumbnail ? { backgroundImage: `url(${course.thumbnail})` } : {}}
-                                ></div>
-                                <div className="course-info">
-                                    <h3>{course.name}</h3>
-                                    <p className="instructor">By {course.instructor?.name || 'Instructor'}</p>
-                                    <div className="course-meta">
-                                        <span className="price">{course.price > 0 ? `₹${course.price}` : 'Free'}</span>
-                                        <span className="rating">★ {course.stats?.rating?.toFixed?.(1) || '0.0'}</span>
+                            <div key={course._id} className="course-card-item">
+                                <Link to={`/course/${course.slug}`} className="course-card-link">
+                                    <div
+                                        className="course-thumb"
+                                        style={course.thumbnail ? { backgroundImage: `url(${course.thumbnail})` } : {}}
+                                    />
+                                    <div className="course-info">
+                                        <h3>{course.name}</h3>
+                                        <p className="instructor">By {course.instructor?.name || 'Instructor'}</p>
+                                        <div className="course-meta">
+                                            <span className="price">{course.price > 0 ? `₹${course.price}` : 'Free'}</span>
+                                            <span className="rating">★ {course.stats?.rating?.toFixed?.(1) || '0.0'}</span>
+                                        </div>
                                     </div>
-                                </div>
-                            </Link>
+                                </Link>
+                                {user?.role === 'student' && (
+                                    <div className="course-card-footer">
+                                        <button
+                                            className="btn-add-cart"
+                                            onClick={(e) => handleAddToCart(e, course._id)}
+                                            disabled={cartLoadingId === course._id}
+                                            aria-label={`Add ${course.name} to cart`}
+                                        >
+                                            <ShoppingCart size={15} />
+                                            {cartLoadingId === course._id ? 'Adding...' : 'Add to Cart'}
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
                         ))}
                     </div>
                 )}

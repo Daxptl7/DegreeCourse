@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import TeacherSidebar from '../components/teacher/TeacherSidebar';
-import { fetchCourseBySlug } from '../api/course.api';
-import { addSection, addLecture } from '../api/teacher.api';
+import TeacherSidebar from '../../components/teacher/TeacherSidebar';
+import { fetchCourseBySlug } from '../../api/course.api';
+import { addSection, addLecture } from '../../api/teacher.api';
 import { Plus, Video, MonitorPlay, ChevronDown, ChevronUp, Bookmark, Share2, MoreVertical, Copy } from 'lucide-react';
 import './TeacherCommunication.css';
 import { io } from 'socket.io-client';
 import { v4 as uuidv4 } from 'uuid';
-import { useAuth } from '../context/AuthContext';
-import { config } from '../config';
+import { useAuth } from '../../context/AuthContext';
+import { config } from '../../config';
 
 const ManageCourse = () => {
     const { slug } = useParams();

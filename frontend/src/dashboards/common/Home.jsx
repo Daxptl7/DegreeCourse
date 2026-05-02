@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import TeacherDashboard from './TeacherDashboard';
+import TeacherDashboard from '../teacher/TeacherDashboard';
 import './Home.css';
 
 const Home = ({ user, viewMode, toggleViewMode }) => {
@@ -13,12 +13,11 @@ const Home = ({ user, viewMode, toggleViewMode }) => {
     if (user?.role === 'teacher' && viewMode === 'teacher') {
         return <TeacherDashboard toggleViewMode={toggleViewMode} />;
     }
-
-    //Load 
+     //Load 
     useEffect(() => {
         const loadCourses = async () => {
             try {
-                const { fetchPublicCourses } = await import('../api/course.api');
+                const { fetchPublicCourses } = await import('../../api/course.api');
                 const response = await fetchPublicCourses({
                     sort: 'ratingHighToLow',
                     limit: 24
@@ -66,14 +65,14 @@ const Home = ({ user, viewMode, toggleViewMode }) => {
         <div className="home-wrapper">
             {/* HERO SECTION */}
             <section
-                className="heroContainer"
+                className="heroContainer sls-hero-section"
                 style={{
                     backgroundImage: `linear-gradient(rgba(0, 0, 0, ${opacity}), rgba(0, 0, 0, ${opacity})), url('/campus.jpg')`
                 }}
             >
-                <div className="heroContent">
-                    <h1 className="heroTitle">Degree | Skill Program | PDEU</h1>
-                    <p className="heroSubtitle">Empowering the future through DIgital education and research.</p>
+                <div className="heroContent sls-hero-content">
+                    <h1 className="heroTitle sls-hero-title">DEGREE &amp; SKILL<br />PROGRAMS | PDEU</h1>
+                    <p className="sls-hero-subtitle">Empowering the Future Through Digital Education</p>
                 </div>
             </section>
 
@@ -86,10 +85,18 @@ const Home = ({ user, viewMode, toggleViewMode }) => {
                         <img src="/SOM.png" alt="School of Management" className="school-logo" />
                         <span className="school-know-more">Know More →</span>
                     </div>
-                    <div className="school-item">
-                        <img src="/SLS.png" alt="School of Liberal Studies" className="school-logo" />
-                        <Link to="/school/sls" className="school-know-more">Know More →</Link>
-                    </div>
+                <div className="school-item">
+                    <Link to="/school/sls" className="school-link">
+                        <img 
+                            src="/SLS.png" 
+                            alt="School of Liberal Studies" 
+                            className="school-logo"
+                        />
+                    </Link>
+                    <Link to="/school/sls" className="school-know-more">
+                        Know More →
+                    </Link>
+                </div>
                     <div className="school-item">
                         <img src="/SOET.png" alt="School of Energy Technology" className="school-logo" />
                         <span className="school-know-more">Know More →</span>

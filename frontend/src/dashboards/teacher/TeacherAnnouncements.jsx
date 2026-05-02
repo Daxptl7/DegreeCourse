@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { fetchTeacherCourses } from '../api/teacher.api';
-import { createAnnouncement, getAnnouncements, updateAnnouncement, deleteAnnouncement } from '../api/announcement.api';
-import TeacherSidebar from '../components/teacher/TeacherSidebar';
+import { useAuth } from '../../context/AuthContext';
+import { fetchTeacherCourses } from '../../api/teacher.api';
+import { createAnnouncement, getAnnouncements, updateAnnouncement, deleteAnnouncement } from '../../api/announcement.api';
+import TeacherSidebar from '../../components/teacher/TeacherSidebar';
 import { ChevronDown, Send, CheckCircle, AlertCircle, Edit2, Trash2, X } from 'lucide-react';
 import './TeacherPortal.css';
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import TeacherSidebar from '../components/teacher/TeacherSidebar';
-import { fetchTeacherCourses } from '../api/teacher.api';
+import TeacherSidebar from '../../components/teacher/TeacherSidebar';
+import { fetchTeacherCourses } from '../../api/teacher.api';
 import { Plus, BookOpen, Clock, Users, ArrowRight } from 'lucide-react';
 import './TeacherPortal.css';
 

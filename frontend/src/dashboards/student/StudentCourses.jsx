@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { fetchMyCourses } from '../api/student.api';
-import { getUnreadCounts } from '../api/announcement.api';
+import { useAuth } from '../../context/AuthContext';
+import { fetchMyCourses } from '../../api/student.api';
+import { getUnreadCounts } from '../../api/announcement.api';
 import { Video, ChevronRight, Hash, Bell, BookOpen, Clock, Users } from 'lucide-react';
 import { io } from 'socket.io-client';
-import { config } from '../config';
+import { config } from '../../config';
 import './StudentPortal.css';
 
 const StudentCourses = () => {

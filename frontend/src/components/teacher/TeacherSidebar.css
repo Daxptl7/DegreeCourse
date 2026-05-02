@@ -1,0 +1,124 @@
+/* ===================================================
+   TeacherSidebar — Full labeled sidebar navigation
+   =================================================== */
+
+.ts-sidebar {
+    width: 220px;
+    min-width: 220px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    background: #ffffff;
+    border-right: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.04);
+    animation: sidebarSlideIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes sidebarSlideIn {
+    from { transform: translateX(-100%); opacity: 0; }
+    to   { transform: translateX(0);    opacity: 1; }
+}
+
+/* ---- Brand / Logo ---- */
+.ts-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 20px;
+    border-bottom: 1px solid #f3f4f6;
+    gap: 6px;
+}
+
+.ts-logo {
+    display: block;
+    text-decoration: none;
+}
+
+.ts-logo-img {
+    height: 56px;
+    width: auto;
+    object-fit: contain;
+}
+
+.ts-brand-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #A6192E;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+/* ---- Navigation ---- */
+.ts-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px 12px;
+    overflow-y: auto;
+}
+
+.ts-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #6b7280;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+}
+
+.ts-nav-item:hover {
+    background: #f9fafb;
+    color: #111827;
+}
+
+.ts-nav-item.ts-active {
+    background: rgba(166, 25, 46, 0.08);
+    color: #A6192E;
+    font-weight: 600;
+}
+
+.ts-nav-icon {
+    flex-shrink: 0;
+    opacity: 0.85;
+}
+
+.ts-nav-item.ts-active .ts-nav-icon {
+    opacity: 1;
+}
+
+.ts-nav-label {
+    font-family: 'Montserrat', 'Outfit', sans-serif;
+}
+
+/* ---- Bottom / Back to Home ---- */
+.ts-bottom {
+    padding: 16px 12px;
+    border-top: 1px solid #f3f4f6;
+}
+
+.ts-back-home {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #6b7280;
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.ts-back-home:hover {
+    background: #fff1f3;
+    color: #A6192E;
+}

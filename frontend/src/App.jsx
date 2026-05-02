@@ -1,42 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
 import ErrorBoundary from './components/common/ErrorBoundary';
-import Home from './pages/Home';
+import Home from './dashboards/common/Home';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
-import CourseDetail from './pages/CourseDetail';
-import Cart from './pages/Cart';
-import Profile from './pages/Profile';
-import Courses from './pages/Courses';
+import CourseDetail from './dashboards/student/CourseDetail';
+import Cart from './dashboards/common/Cart';
+import Profile from './dashboards/common/Profile';
+import Courses from './dashboards/common/Courses';
 
-import TeacherLanding from './pages/TeacherLanding';
-import TeacherSignup from './pages/TeacherSignup';
-import TeacherDashboard from './pages/TeacherDashboard';
-import TeacherStats from './pages/TeacherStats';
-import TeacherCommunication from './pages/TeacherCommunication';
-import TeacherAssignments from './pages/TeacherAssignments';
-import TeacherAnnouncements from './pages/TeacherAnnouncements';
-import TeacherCourses from './pages/TeacherCourses';
-import TeacherCreateCourse from './pages/TeacherCreateCourse';
-import ManageCourse from './pages/ManageCourse';
+import TeacherLanding from './dashboards/teacher/TeacherLanding';
+import TeacherSignup from './dashboards/teacher/TeacherSignup';
+import TeacherDashboard from './dashboards/teacher/TeacherDashboard';
+import TeacherStats from './dashboards/teacher/TeacherStats';
+import TeacherCommunication from './dashboards/teacher/TeacherCommunication';
+import TeacherAssignments from './dashboards/teacher/TeacherAssignments';
+import TeacherAnnouncements from './dashboards/teacher/TeacherAnnouncements';
+import TeacherCourses from './dashboards/teacher/TeacherCourses';
+import TeacherCreateCourse from './dashboards/teacher/TeacherCreateCourse';
+import ManageCourse from './dashboards/teacher/ManageCourse';
 import LiveClass from './pages/LiveClass';
-import StudentCourses from './pages/StudentCourses';
-import SchoolSLS from './pages/SchoolSLS';
-import AdminPortal from './pages/admin/AdminPortal';
-import AdminRoute from './pages/admin/AdminRoute';
+import StudentCourses from './dashboards/student/StudentCourses';
+import SchoolSLS from './dashboards/common/SchoolSLS';
+import AdminPortal from './dashboards/admin/AdminPortal';
+import AdminRoute from './dashboards/admin/AdminRoute';
+import { ThemeProvider } from './context/ThemeContext';
+import { ToastProvider } from './context/ToastContext';
 
-// Layout Component to handle conditional padding
+
+const ScrollToTop = () => {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
+    return null;
+};
+
+
+// Layout Component
 const PageLayout = ({ children, navbarProps, viewMode }) => {
     const location = useLocation();
-    // Only apply 0 padding if on Home Page AND in Student Mode, or on school pages
-    const isStudentHome = (location.pathname === '/' && viewMode !== 'teacher') || location.pathname.startsWith('/school/');
+
+    const isStudentHome =
+        (location.pathname === '/' && viewMode !== 'teacher') ||
+        location.pathname.startsWith('/school/');
+
     const isLiveClass = location.pathname.startsWith('/live/');
     const isAdminRoute = location.pathname.startsWith('/admin');
+    const isTeacherRoute =
+        location.pathname.startsWith('/teacher') || location.pathname === '/teach';
 
-    if (isLiveClass || isAdminRoute) {
+    if (isLiveClass || isAdminRoute || isTeacherRoute) {
         return <div className="app">{children}</div>;
     }
 
@@ -51,27 +70,31 @@ const PageLayout = ({ children, navbarProps, viewMode }) => {
     );
 };
 
-import { ThemeProvider } from './context/ThemeContext';
 
 function App() {
     const { user, logout } = useAuth();
-    const [viewMode, setViewMode] = useState('student'); // 'student' or 'teacher'
+    const [viewMode, setViewMode] = useState('student');
 
     const toggleViewMode = () => {
-        setViewMode(prev => prev === 'student' ? 'teacher' : 'student');
+        setViewMode(prev => (prev === 'student' ? 'teacher' : 'student'));
     };
 
     const navbarProps = {
         user,
         toggleLogin: logout,
         viewMode,
-        toggleViewMode
+        toggleViewMode,
     };
 
     return (
         <ThemeProvider>
+            <ToastProvider>
             <ErrorBoundary>
                 <Router>
+
+                    {/* ✅ ADD THIS LINE */}
+                    <ScrollToTop />
+
                     <PageLayout navbarProps={navbarProps} viewMode={viewMode}>
                         <Routes>
                             <Route path="/" element={<Home user={user} viewMode={viewMode} toggleViewMode={toggleViewMode} />} />
@@ -89,6 +112,7 @@ function App() {
                             <Route path="/teacher/courses" element={<TeacherCourses />} />
                             <Route path="/teacher/create-course" element={<TeacherCreateCourse />} />
                             <Route path="/teacher/courses/:slug" element={<ManageCourse />} />
+
                             <Route path="/admin/*" element={<AdminRoute><AdminPortal /></AdminRoute>} />
 
                             <Route path="/cart" element={<Cart />} />
@@ -99,11 +123,11 @@ function App() {
                             <Route path="/school/sls" element={<SchoolSLS />} />
 
                             <Route path="/live/:roomId" element={<LiveClass />} />
-                            {/* Add other routes as we build them */}
                         </Routes>
                     </PageLayout>
                 </Router>
             </ErrorBoundary>
+            </ToastProvider>
         </ThemeProvider>
     );
 }

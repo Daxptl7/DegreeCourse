@@ -28,7 +28,7 @@ const SchoolSLS = () => {
     useEffect(() => {
         const loadCourses = async () => {
             try {
-                const { fetchPublicCourses } = await import('../api/course.api');
+                const { fetchPublicCourses } = await import('../../api/course.api');
                 const response = await fetchPublicCourses({ limit: 50 });
                 if (response.success) {
                     const allCourses = Array.isArray(response.data) ? response.data : [];
