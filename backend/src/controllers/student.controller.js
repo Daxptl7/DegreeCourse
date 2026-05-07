@@ -3,53 +3,155 @@ import Course from '../models/Course.js';
 import Enrollment from '../models/Enrollment.js';
 
 // Enroll in a course
+
+// export const enrollCourse = async (req, res) => {
+//   try {
+// //
+//     //this is the Things Which Seees that our function of Enrollment Not happen twise in the Code 
+//     const { courseId } = req.params;
+//     const userId = req.user._id;
+
+//     const course = await Course.findById(courseId);
+//     if (!course) {
+//       return res.status(404).json({ success: false, message: 'Course not found' });
+//     }
+
+//     // Prevent self-enrollment (Teachers cannot enroll in their own course)
+//     if (course.instructor.toString() === userId.toString()) {
+//         return res.status(400).json({ success: false, message: 'You cannot enroll in your own course' });
+//     }
+// //
+//     const user = await User.findById(userId);
+
+//     // Check if already enrolled via User model (legacy check) or Enrollment model
+//     const existingEnrollment = await Enrollment.findOne({ user: userId, course: courseId });
+//     if (existingEnrollment) {
+//       return res.status(400).json({ success: false, message: 'Already enrolled in this course' });
+//     }
+
+//     // Create Enrollment Record
+//     const enrollment = await Enrollment.create({
+//         user: userId,
+//         course: courseId,
+//         progress: new Map()
+//     });
+
+//     // Add to enrolledCourses and remove from cart if present
+//     if (!user.enrolledCourses.includes(courseId)) {
+//         user.enrolledCourses.push(courseId);
+//     }
+//     user.cart = user.cart.filter(id => id.toString() !== courseId);
+//     await user.save();
+
+//     // Add user to course enrolledStudents
+//     course.enrolledStudents.push(userId);
+//     await course.save();
+
+//     res.status(200).json({ success: true, message: 'Enrolled successfully', data: enrollment });
+//   } catch (error) {
+//     res.status(500).json({ success: false, message: error.message });
+//   }
+// };
+import mongoose from 'mongoose';
+import User from '../models/User.js';
+import Course from '../models/Course.js';
+import Enrollment from '../models/Enrollment.js';
+import { COURSE_STATUS } from '../config/roles.js'; 
+
 export const enrollCourse = async (req, res) => {
+  // 1. Start a database transaction session
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
     const { courseId } = req.params;
     const userId = req.user._id;
 
-    const course = await Course.findById(courseId);
+    // 2. Fetch course within the session to ensure atomicity
+    const course = await Course.findById(courseId).session(session);
     if (!course) {
+      await session.abortTransaction();
+      session.endSession();
       return res.status(404).json({ success: false, message: 'Course not found' });
     }
 
-    // Prevent self-enrollment (Teachers cannot enroll in their own course)
-    if (course.instructor.toString() === userId.toString()) {
-        return res.status(400).json({ success: false, message: 'You cannot enroll in your own course' });
+    // SECURITY CHECK: Ensure the course is actually approved/published
+    // Prevents students from enrolling in pending or rejected courses
+    if (course.status !== COURSE_STATUS.APPROVED) { 
+       await session.abortTransaction();
+       session.endSession();
+       return res.status(400).json({ success: false, message: 'This course is not available for enrollment' });
     }
 
-    const user = await User.findById(userId);
+    // Prevent self-enrollment
+    if (course.instructor.toString() === userId.toString()) {
+      await session.abortTransaction();
+      session.endSession();
+      return res.status(400).json({ success: false, message: 'Instructors cannot enroll in their own courses' });
+    }
 
-    // Check if already enrolled via User model (legacy check) or Enrollment model
-    const existingEnrollment = await Enrollment.findOne({ user: userId, course: courseId });
+    // 3. Check for existing enrollment within the session
+    const existingEnrollment = await Enrollment.findOne({ user: userId, course: courseId }).session(session);
     if (existingEnrollment) {
+      await session.abortTransaction();
+      session.endSession();
       return res.status(400).json({ success: false, message: 'Already enrolled in this course' });
     }
 
-    // Create Enrollment Record
-    const enrollment = await Enrollment.create({
+    // 4. Create Enrollment Record
+    // Note: create() inside a transaction requires an array of documents
+    const [enrollment] = await Enrollment.create([{
         user: userId,
         course: courseId,
         progress: new Map()
+    }], { session });
+
+    // 5. Update User Document efficiently
+    // DATA LEAKAGE PREVENTION: We use findByIdAndUpdate instead of fetching the whole user.
+    // This prevents pulling sensitive data (like the password hash or phone number) into server memory.
+    await User.findByIdAndUpdate(
+      userId,
+      {
+        $addToSet: { enrolledCourses: courseId }, // Prevents duplicate IDs
+        $pull: { cart: courseId }                 // Removes from cart automatically
+      },
+      { session }
+    );
+
+    // 6. Update Course Document
+    await Course.findByIdAndUpdate(
+      courseId,
+      {
+        $addToSet: { enrolledStudents: userId }
+      },
+      { session }
+    );
+
+    // 7. Commit everything if no errors occurred
+    await session.commitTransaction();
+    session.endSession();
+
+    // DATA LEAKAGE PREVENTION: Do not return the entire enrollment or user object
+    res.status(200).json({ 
+      success: true, 
+      message: 'Enrolled successfully', 
+      data: {
+        enrollmentId: enrollment._id,
+        courseId: enrollment.course,
+        enrolledAt: enrollment.enrolledAt
+      } 
     });
 
-    // Add to enrolledCourses and remove from cart if present
-    if (!user.enrolledCourses.includes(courseId)) {
-        user.enrolledCourses.push(courseId);
-    }
-    user.cart = user.cart.filter(id => id.toString() !== courseId);
-    await user.save();
-
-    // Add user to course enrolledStudents
-    course.enrolledStudents.push(userId);
-    await course.save();
-
-    res.status(200).json({ success: true, message: 'Enrolled successfully', data: enrollment });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    // If ANY step fails, roll back all database changes
+    await session.abortTransaction();
+    session.endSession();
+    
+    // DATA LEAKAGE PREVENTION: Do not send raw database error messages to the client
+    console.error('Enrollment Error:', error); 
+    res.status(500).json({ success: false, message: 'An internal error occurred during enrollment' });
   }
 };
-
 // Toggle Lecture Progress
 export const toggleLectureProgress = async (req, res) => {
     try {
