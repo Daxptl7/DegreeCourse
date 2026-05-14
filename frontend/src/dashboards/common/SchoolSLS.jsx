@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import JourneyCTA from '../../components/common/JourneyCTA';
 import './SchoolSLS.css';
 import './Home.css';
 
@@ -95,10 +94,10 @@ const SchoolSLS = () => {
                             <span>Online Learning Platform</span>
                             <span className="sls-quicklink-arrow">→</span>
                         </a>
-                        <Link to="/academics/programs" className="sls-quicklink">
-                            <span>A to Z Program List</span>
+                        <a href="#available-courses" className="sls-quicklink">
+                            <span>Available SLS Courses</span>
                             <span className="sls-quicklink-arrow">→</span>
-                        </Link>
+                        </a>
                         <a href="/courses" className="sls-quicklink">
                             <span>Browse All Courses</span>
                             <span className="sls-quicklink-arrow">→</span>
@@ -110,110 +109,45 @@ const SchoolSLS = () => {
                     </div>
                 </section>
 
-                {/* ===== B.COM CURRICULUM ===== */}
-                <section className="sls-section" id="bcom-curriculum-details">
-                    <h3 className="sls-category-title">B.Com Curriculum (Batch 2026)</h3>
+                {/* ===== ONLINE DEGREE PROGRAMS ===== */}
+                <section className="sls-section" id="degree">
+                    <h3 className="sls-category-title">Online Degree Programs</h3>
                     <p className="sls-category-desc">
-                        The Bachelor of Commerce program at SLS offers a comprehensive curriculum designed to provide a strong foundation in business, accounting, and management principles.
+                        The School of Liberal Studies offers UGC-recognized online degree programs that combine 
+                        academic excellence with the flexibility of digital learning. Designed for working professionals 
+                        and students seeking quality education from anywhere, these programs are delivered through 
+                        live lectures, interactive sessions, and comprehensive study material.
                     </p>
-                    
-                    <div className="sls-semester-grid">
-                        {[1, 2, 3, 4, 5, 6].map((sem) => (
-                            <div key={sem} className="sls-semester-card">
-                                <div className="sls-semester-header">
-                                    <h4>Semester - {sem}</h4>
-                                    <span className="sls-semester-credits">Credits: 22</span>
-                                </div>
-                                <table className="sls-curriculum-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Sr. No</th>
-                                            <th>Course Title</th>
-                                            <th>Category</th>
-                                            <th>Credits</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Core Subject 1</td>
-                                            <td><span className="sls-pill sls-pill-major">Major</span></td>
-                                            <td>4</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Core Subject 2</td>
-                                            <td><span className="sls-pill sls-pill-major">Major</span></td>
-                                            <td>4</td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Elective Course</td>
-                                            <td><span className="sls-pill sls-pill-minor">Minor</span></td>
-                                            <td>3</td>
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td>Skill Enhancement</td>
-                                            <td><span className="sls-pill sls-pill-sec">SEC</span></td>
-                                            <td>2</td>
-                                        </tr>
-                                        <tr>
-                                            <td>5</td>
-                                            <td>Value Added Course</td>
-                                            <td><span className="sls-pill sls-pill-vac">VAC</span></td>
-                                            <td>2</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        ))}
-                    </div>
+                    <ul className="sls-program-list">
+                        <li><a href="#" className="sls-program-link">B.A. in Liberal Studies (Online)</a></li>
+                        <li><a href="#" className="sls-program-link">B.A. in Economics (Online)</a></li>
+                        <li><a href="#" className="sls-program-link">B.A. in Political Science (Online)</a></li>
+                        <li><a href="#" className="sls-program-link">B.A. in English Literature (Online)</a></li>
+                        <li><a href="#" className="sls-program-link">B.A. in Psychology (Online)</a></li>
+                        <li><a href="#" className="sls-program-link">M.A. in Public Policy (Online)</a></li>
+                        <li><a href="#" className="sls-program-link">M.A. in International Relations (Online)</a></li>
+                        <li><a href="#" className="sls-program-link">MBA in Liberal Management (Online)</a></li>
+                    </ul>
+                </section>
 
-                    <div className="sls-credit-summary" style={{marginTop: '40px'}}>
-                        <h4>Credit Requirements</h4>
-                        <table className="sls-summary-table">
-                            <thead>
-                                <tr>
-                                    <th>Category</th>
-                                    <th>Total Credits</th>
-                                    <th>Percentage</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Major (Core)</td>
-                                    <td>60</td>
-                                    <td>45%</td>
-                                </tr>
-                                <tr>
-                                    <td>Minor / Electives</td>
-                                    <td>24</td>
-                                    <td>18%</td>
-                                </tr>
-                                <tr>
-                                    <td>Multidisciplinary (MDC)</td>
-                                    <td>9</td>
-                                    <td>7%</td>
-                                </tr>
-                                <tr>
-                                    <td>Skill Enhancement (SEC)</td>
-                                    <td>9</td>
-                                    <td>7%</td>
-                                </tr>
-                                <tr>
-                                    <td>Value Added (VAC) / AEC</td>
-                                    <td>30</td>
-                                    <td>23%</td>
-                                </tr>
-                                <tr className="sls-summary-total">
-                                    <td>Total</td>
-                                    <td>132</td>
-                                    <td>100%</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                {/* ===== SKILL PROGRAMS ===== */}
+                <section className="sls-section" id="certificate">
+                    <h3 className="sls-category-title">Skill Programs</h3>
+                    <p className="sls-category-desc">
+                        Industry-aligned skill development programs designed to enhance employability and 
+                        build real-world competencies. These short-term and certificate programs are ideal 
+                        for upskilling, career transitions, and gaining expertise in specialized domains.
+                    </p>
+                    <ul className="sls-program-list">
+                        <li><a href="#" className="sls-program-link">Certificate in Communication & Soft Skills</a></li>
+                        <li><a href="#" className="sls-program-link">Certificate in Creative Writing & Content Strategy</a></li>
+                        <li><a href="#" className="sls-program-link">Certificate in Public Policy & Governance</a></li>
+                        <li><a href="#" className="sls-program-link">Certificate in Media, Journalism & Digital Marketing</a></li>
+                        <li><a href="#" className="sls-program-link">Diploma in Social Sciences & Research Methods</a></li>
+                        <li><a href="#" className="sls-program-link">Diploma in Humanities & Liberal Arts</a></li>
+                        <li><a href="#" className="sls-program-link">Skill Course — Data Literacy for Humanities</a></li>
+                        <li><a href="#" className="sls-program-link">Skill Course — Critical Thinking & Logic</a></li>
+                    </ul>
                 </section>
 
                 {/* ===== ONLINE LEARNING ===== */}
@@ -262,7 +196,12 @@ const SchoolSLS = () => {
                     )}
             </div>
 
-            <JourneyCTA />
+            {/* CTA FOOTER */}
+            <section className="sls-cta">
+                <Link to="/courses" className="sls-cta-btn">Explore Programs</Link>
+                <Link to="/signup" className="sls-cta-btn sls-cta-btn--primary">Apply Today</Link>
+                <Link to="/" className="sls-cta-btn">Back to Home</Link>
+            </section>
         </div>
     );
 };
