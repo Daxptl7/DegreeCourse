@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, ChevronDown, Plus, Minus, ArrowUp } from 'lucide-react';
 import axios from 'axios';
-import { API_URL } from '../../config';
+import { config } from '../../config';
 import './ProgramList.css';
 
 const ProgramList = () => {
@@ -15,7 +15,7 @@ const ProgramList = () => {
         const fetchCourses = async () => {
             try {
                 // Fetch public approved courses
-                const res = await axios.get(`${API_URL}/courses`);
+                const res = await axios.get(`${config.API_URL}/courses`);
                 setCourses(res.data);
             } catch (error) {
                 console.error("Error fetching courses:", error);
