@@ -3,6 +3,48 @@ import { APPROVAL_STATUS, USER_STATUS } from '../config/roles.js';
 import { verifyToken } from '../utils/jwt.js';
 import { sendError } from '../utils/response.js';
 
+/**
+ * Attaches req.user when a valid Bearer token is present; otherwise leaves req.user unset.
+ * Used for routes that are public but may expose more data to authenticated users.
+ */
+export const optionalProtect = async (req, res, next) => {
+  req.user = undefined;
+
+  let token;
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    token = req.headers.authorization.split(' ')[1];
+  }
+
+  if (!token) {
+    return next();
+  }
+
+  try {
+    const decoded = verifyToken(token);
+    if (!decoded) {
+      return next();
+    }
+
+    const user = await User.findById(decoded.id);
+    if (!user) {
+      return next();
+    }
+
+    if (user.status === USER_STATUS.SUSPENDED) {
+      return next();
+    }
+
+    if (user.role === 'teacher' && user.approvalStatus !== APPROVAL_STATUS.APPROVED) {
+      return next();
+    }
+
+    req.user = user;
+    return next();
+  } catch {
+    return next();
+  }
+};
+
 export const protect = async (req, res, next) => {
   let token;
 

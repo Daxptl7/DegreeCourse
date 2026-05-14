@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import TeacherDashboard from '../teacher/TeacherDashboard';
+import JourneyCTA from '../../components/common/JourneyCTA';
 import './Home.css';
+
+const SCHOOLS = [
+    { id: 'sls', name: 'School of Liberal Studies', shortName: 'SLS', logo: '/SLS.png', link: '/school/sls' },
+    { id: 'som', name: 'School of Management', shortName: 'SOM', logo: '/SOM.png', link: '#' },
+    { id: 'soet', name: 'School of Energy Technology', shortName: 'SOET', logo: '/SOET.png', link: '#' },
+    { id: 'sot', name: 'School of Technology', shortName: 'SOT', logo: '/SOT.png', link: '#' },
+];
 
 const Home = ({ user, viewMode, toggleViewMode }) => {
     // State declarations
@@ -74,37 +82,40 @@ const Home = ({ user, viewMode, toggleViewMode }) => {
                     <h1 className="heroTitle sls-hero-title">DEGREE &amp; SKILL<br />PROGRAMS | PDEU</h1>
                     <p className="sls-hero-subtitle">Empowering the Future Through Digital Education</p>
                 </div>
+
+                {/* SCHOOL ICONS ON HERO — visible immediately on landing */}
+                <div className="hero-schools-bar">
+                    <span className="hero-schools-label">{SCHOOLS.length} Constituent Schools</span>
+                    <div className="hero-schools-icons">
+                        {SCHOOLS.map(school => (
+                            <Link key={school.id} to={school.link} className="hero-school-chip" title={school.name}>
+                                <img src={school.logo} alt={school.name} className="hero-school-icon" />
+                                <span className="hero-school-name">{school.shortName}</span>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
             </section>
 
-            {/* SCHOOLS SECTION */}
+            {/* SCHOOLS SECTION — Static Grid */}
             <section className="schools-section">
                 <div className="schools-divider"></div>
                 <h2 className="schools-heading">Constituent Schools</h2>
                 <div className="schools-grid">
-                    <div className="school-item">
-                        <img src="/SOM.png" alt="School of Management" className="school-logo" />
-                        <span className="school-know-more">Know More →</span>
-                    </div>
-                <div className="school-item">
-                    <Link to="/school/sls" className="school-link">
-                        <img 
-                            src="/SLS.png" 
-                            alt="School of Liberal Studies" 
-                            className="school-logo"
-                        />
-                    </Link>
-                    <Link to="/school/sls" className="school-know-more">
-                        Know More →
-                    </Link>
-                </div>
-                    <div className="school-item">
-                        <img src="/SOET.png" alt="School of Energy Technology" className="school-logo" />
-                        <span className="school-know-more">Know More →</span>
-                    </div>
-                    <div className="school-item">
-                        <img src="/SOT.png" alt="School of Technology" className="school-logo" />
-                        <span className="school-know-more">Know More →</span>
-                    </div>
+                    {SCHOOLS.map(school => (
+                        <div key={school.id} className="school-item">
+                            <Link to={school.link} className="school-link">
+                                <img
+                                    src={school.logo}
+                                    alt={school.name}
+                                    className="school-logo"
+                                />
+                            </Link>
+                            <Link to={school.link} className="school-know-more">
+                                Know More →
+                            </Link>
+                        </div>
+                    ))}
                 </div>
                 <p className="schools-description">
                     Study at the most vibrant and diverse campus in Gujarat with opportunity for experience based learning.
@@ -154,19 +165,22 @@ const Home = ({ user, viewMode, toggleViewMode }) => {
                 <h3 style={{ borderLeft: 'none' }}>Our Impact</h3>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '40px', marginTop: '40px' }}>
                     <div>
-                        <h2 style={{ fontSize: '48px', color: '#A6192E', fontWeight: '800' }}>50+</h2>
+                        <h2 style={{ fontSize: '48px', color: '#1D70B8', fontWeight: '800' }}>50+</h2>
                         <p>Lab Equipment</p>
                     </div>
                     <div>
-                        <h2 style={{ fontSize: '48px', color: '#A6192E', fontWeight: '800' }}>200+</h2>
+                        <h2 style={{ fontSize: '48px', color: '#1D70B8', fontWeight: '800' }}>200+</h2>
                         <p>Projects Completed</p>
                     </div>
                     <div>
-                        <h2 style={{ fontSize: '48px', color: '#A6192E', fontWeight: '800' }}>1000+</h2>
+                        <h2 style={{ fontSize: '48px', color: '#1D70B8', fontWeight: '800' }}>1000+</h2>
                         <p>Students Trained</p>
                     </div>
                 </div>
             </div>
+
+            {/* JOURNEY CTA */}
+            <JourneyCTA />
         </div>
     );
 };

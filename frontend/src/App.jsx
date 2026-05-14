@@ -25,6 +25,7 @@ import ManageCourse from './dashboards/teacher/ManageCourse';
 import LiveClass from './pages/LiveClass';
 import StudentCourses from './dashboards/student/StudentCourses';
 import SchoolSLS from './dashboards/common/SchoolSLS';
+import ProgramList from './dashboards/common/ProgramList';
 import AdminPortal from './dashboards/admin/AdminPortal';
 import AdminRoute from './dashboards/admin/AdminRoute';
 import { ThemeProvider } from './context/ThemeContext';
@@ -121,6 +122,7 @@ function App() {
                             <Route path="/profile" element={<Profile />} />
                             <Route path="/my-courses" element={<StudentCourses />} />
                             <Route path="/school/sls" element={<SchoolSLS />} />
+                            <Route path="/academics/programs" element={<ProgramList />} />
 
                             <Route path="/live/:roomId" element={<LiveClass />} />
                         </Routes>

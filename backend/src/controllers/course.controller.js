@@ -1,5 +1,45 @@
 import Course from '../models/Course.js';
-import { COURSE_STATUS, ROLES } from '../config/roles.js';
+import { ADMIN_ROLES, COURSE_STATUS, ROLES } from '../config/roles.js';
+
+const instructorIdString = (course) => {
+  const ins = course.instructor;
+  if (!ins) return '';
+  if (typeof ins === 'object' && ins._id) return ins._id.toString();
+  return ins.toString();
+};
+
+/**
+ * Full curriculum (parts, video URLs) is only returned for approved courses,
+ * or when the caller may legitimately access a non-approved/archived course.
+ */
+const canViewFullCourseDetail = (course, user) => {
+  if (course.status === COURSE_STATUS.APPROVED) {
+    return true;
+  }
+
+  if (!user) {
+    return false;
+  }
+
+  if (ADMIN_ROLES.includes(user.role)) {
+    return true;
+  }
+
+  if (instructorIdString(course) === user._id.toString()) {
+    return true;
+  }
+
+  if (course.status === COURSE_STATUS.ARCHIVED) {
+    const enrolled = (user.enrolledCourses || []).some(
+      (id) => id.toString() === course._id.toString()
+    );
+    if (enrolled) {
+      return true;
+    }
+  }
+
+  return false;
+};
 
 const escapeRegex = (value = '') => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -227,6 +267,13 @@ export const getCourseBySlug = async (req, res) => {
       .populate('parts.lectures');
 
     if (!course) {
+      return res.status(404).json({
+        success: false,
+        message: 'Course not found'
+      });
+    }
+
+    if (!canViewFullCourseDetail(course, req.user)) {
       return res.status(404).json({
         success: false,
         message: 'Course not found'

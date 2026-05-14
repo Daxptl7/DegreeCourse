@@ -133,10 +133,18 @@ export const submitAssignment = async (req, res) => {
 export const getSubmissions = async (req, res) => {
     try {
         const { assignmentId } = req.params;
-        
+
+        const assignment = await Assignment.findOne({
+            _id: assignmentId,
+            instructor: req.user._id
+        });
+        if (!assignment) {
+            return res.status(403).json({ success: false, message: 'Not authorized for this assignment' });
+        }
+
         const submissions = await Submission.find({ assignment: assignmentId })
             .populate('student', 'name email');
-        
+
         res.status(200).json({
             success: true,
             data: submissions

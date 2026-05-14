@@ -1,6 +1,8 @@
 import Question from '../models/Question.js';
 import Course from '../models/Course.js';
 
+const QUESTION_STATUSES = ['open', 'completed'];
+
 // Create Question (Student)
 export const createQuestion = async (req, res) => {
     try {
@@ -90,11 +92,24 @@ export const addAnswer = async (req, res) => {
 export const toggleStatus = async (req, res) => {
     try {
         const { questionId } = req.params;
-        const { status } = req.body; // 'open' or 'completed'
+        const { status } = req.body;
+
+        if (!QUESTION_STATUSES.includes(status)) {
+            return res.status(400).json({ success: false, message: 'Invalid status' });
+        }
 
         const question = await Question.findById(questionId);
         if (!question) {
             return res.status(404).json({ success: false, message: 'Question not found' });
+        }
+
+        const course = await Course.findById(question.course);
+        if (!course) {
+            return res.status(404).json({ success: false, message: 'Course not found' });
+        }
+
+        if (course.instructor.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ success: false, message: 'Not authorized to update this question' });
         }
 
         question.status = status;

@@ -9,7 +9,7 @@ import { fetchTeacherStats } from '../../api/teacher.api';
 import './TeacherPortal.css';
 import './TeacherStats.css';
 
-const COLORS = ['#A6192E', '#D4AF37', '#2563EB', '#10B981', '#F59E0B', '#6366F1'];
+const COLORS = ['#1D70B8', '#D4AF37', '#2563EB', '#10B981', '#F59E0B', '#6366F1'];
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
@@ -99,7 +99,7 @@ const TeacherStats = () => {
                 {/* Overall KPI Cards */}
                 <div className="ts-kpi-grid">
                     <div className="ts-kpi-card">
-                        <div className="ts-kpi-icon" style={{ backgroundColor: 'rgba(166, 25, 46, 0.1)', color: '#A6192E' }}>
+                        <div className="ts-kpi-icon" style={{ backgroundColor: 'rgba(166, 25, 46, 0.1)', color: '#1D70B8' }}>
                             <TrendingUp size={24} />
                         </div>
                         <div>
@@ -188,7 +188,7 @@ const TeacherStats = () => {
                                             />
                                             <YAxis domain={[0, 5]} tickCount={6} tick={{ fill: '#6b7280', fontSize: 12 }} />
                                             <Tooltip content={<CustomTooltip />} />
-                                            <Line type="monotone" dataKey="rating" name="Rating" stroke="#A6192E" strokeWidth={3} activeDot={{ r: 8 }} />
+                                            <Line type="monotone" dataKey="rating" name="Rating" stroke="#1D70B8" strokeWidth={3} activeDot={{ r: 8 }} />
                                         </LineChart>
                                     </ResponsiveContainer>
                                 </div>

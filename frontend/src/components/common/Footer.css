@@ -68,7 +68,7 @@
 }
 
 .column a:hover {
-    color: #A6192E;
+    color: #1D70B8;
     /* Hover to Red */
     transform: translateX(5px);
 }
@@ -85,14 +85,14 @@
 }
 
 .contactIcon {
-    color: #A6192E;
+    color: #1D70B8;
     flex-shrink: 0;
     margin-top: 3px;
 }
 
 /* --- 2. RED BOTTOM BAR --- */
 .bottomBar {
-    background-color: #A6192E;
+    background-color: #1D70B8;
     padding: 40px 0;
     color: white;
 }
@@ -139,7 +139,7 @@
 
 .socialBox:hover {
     background-color: #ffffff;
-    color: #A6192E;
+    color: #1D70B8;
     transform: translateY(-3px);
 }
 

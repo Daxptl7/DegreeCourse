@@ -46,7 +46,7 @@
 .ts-brand-label {
     font-size: 0.72rem;
     font-weight: 700;
-    color: #A6192E;
+    color: #1D70B8;
     letter-spacing: 1.5px;
     text-transform: uppercase;
 }
@@ -82,7 +82,7 @@
 
 .ts-nav-item.ts-active {
     background: rgba(166, 25, 46, 0.08);
-    color: #A6192E;
+    color: #1D70B8;
     font-weight: 600;
 }
 
@@ -120,5 +120,5 @@
 
 .ts-back-home:hover {
     background: #fff1f3;
-    color: #A6192E;
+    color: #1D70B8;
 }

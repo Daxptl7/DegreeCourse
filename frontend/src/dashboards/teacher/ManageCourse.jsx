@@ -33,8 +33,13 @@ const ManageCourse = () => {
     const socketRef = useRef();
 
     useEffect(() => {
-        socketRef.current = io(config.SOCKET_URL);
-        return () => socketRef.current.disconnect();
+        socketRef.current = io(config.SOCKET_URL, {
+            auth: { token: localStorage.getItem('token') || '' },
+            transports: ['websocket', 'polling']
+        });
+        return () => {
+            if (socketRef.current) socketRef.current.disconnect();
+        };
     }, []);
 
     // Form states
@@ -442,21 +447,17 @@ const ManageCourse = () => {
                                 <button
                                     onClick={() => {
                                         if (socketRef.current) {
-                                            socketRef.current.emit('start-live-session',
-                                                { roomId: meetingCode, teacherId: user?.name || 'Teacher', courseId: course._id },
+                                            socketRef.current.emit(
+                                                'start-live-session',
+                                                { roomId: meetingCode, courseId: course._id },
                                                 (response) => {
-                                                    if (response && response.success) {
+                                                    if (response?.success) {
                                                         navigate(`/live/${meetingCode}`);
                                                     } else {
-                                                        // Fallback if no ack (old server) or error, but give it a tiny delay
-                                                        navigate(`/live/${meetingCode}`);
+                                                        window.alert(response?.error || 'Unable to start live session. Make sure you are logged in as the course instructor.');
                                                     }
                                                 }
                                             );
-                                            // Fallback timeout in case server doesn't respond
-                                            setTimeout(() => {
-                                                navigate(`/live/${meetingCode}`);
-                                            }, 2000);
                                         }
                                     }}
                                     className="flex-1 py-3 px-4 bg-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-indigo-500/30 hover:opacity-90 transition-opacity border-none"

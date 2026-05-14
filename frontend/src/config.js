@@ -1,6 +1,8 @@
+const HOST = window.location.hostname;
+
 export const config = {
-    API_URL: `http://${window.location.hostname}:5001/api`,
-    SOCKET_URL: `http://${window.location.hostname}:5001`
+  API_URL: "http://localhost:5001/api",
+  SOCKET_URL: "http://localhost:5001",
 };
 
 

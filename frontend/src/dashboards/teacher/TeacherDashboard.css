@@ -1,6 +1,6 @@
 /* ============================================================
    TEACHER DASHBOARD — Professional & Premium Styling
-   Matches theme: Maroon #A6192E, Montserrat, clean white cards
+   Matches theme: Maroon #1D70B8, Montserrat, clean white cards
    ============================================================ */
 
 /* Main Content Wrapper */
@@ -19,7 +19,7 @@
 
 /* ======================== WELCOME BANNER ======================== */
 .td-welcome-banner {
-    background: linear-gradient(135deg, #A6192E 0%, #8B1526 50%, #6d0f1e 100%);
+    background: linear-gradient(135deg, #1D70B8 0%, #165a93 50%, #114775 100%);
     border-radius: 20px;
     padding: 2.5rem 3rem;
     color: white;
@@ -206,7 +206,7 @@
     gap: 4px;
     font-size: 0.85rem;
     font-weight: 600;
-    color: #A6192E;
+    color: #1D70B8;
     text-decoration: none;
     transition: gap 0.3s ease;
 }
@@ -359,7 +359,7 @@
     border-radius: 50px;
     font-size: 11px;
     font-weight: 600;
-    color: #A6192E;
+    color: #1D70B8;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     text-transform: uppercase;
     letter-spacing: 0.3px;
@@ -407,7 +407,7 @@
 .td-manage-link {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #A6192E;
+    color: #1D70B8;
     display: flex;
     align-items: center;
     gap: 4px;
@@ -451,7 +451,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: #A6192E;
+    background: #1D70B8;
     color: white;
     padding: 10px 24px;
     border-radius: 50px;
@@ -465,7 +465,7 @@
 .td-empty-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(166, 25, 46, 0.4);
-    background: #8B1526;
+    background: #165a93;
 }
 
 /* ======================== LOADING SKELETONS ======================== */

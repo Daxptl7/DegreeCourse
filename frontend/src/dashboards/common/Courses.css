@@ -84,8 +84,8 @@
 }
 
 .filter-btn.active {
-    background: #A6192E;
-    border-color: #A6192E;
+    background: #1D70B8;
+    border-color: #1D70B8;
     color: white;
     font-weight: 600;
     transform: scale(1.05);
@@ -187,9 +187,9 @@
     gap: 7px;
     padding: 10px 0;
     border-radius: 8px;
-    border: 1.5px solid #A6192E;
+    border: 1.5px solid #1D70B8;
     background: transparent;
-    color: #A6192E;
+    color: #1D70B8;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
@@ -198,7 +198,7 @@
 }
 
 .btn-add-cart:hover:not(:disabled) {
-    background: #A6192E;
+    background: #1D70B8;
     color: #fff;
     transform: translateY(-1px);
 }
@@ -252,7 +252,7 @@
 .price {
     font-weight: 700;
     font-size: 18px;
-    color: #A6192E;
+    color: #1D70B8;
 }
 
 .rating {

@@ -1,6 +1,6 @@
 /* ============================================================
    COURSE DETAIL VIEWER — Unified Professional Styling
-   Theme: Maroon #A6192E, Montserrat / Outfit fonts
+   Theme: Maroon #1D70B8, Montserrat / Outfit fonts
    ============================================================ */
 
 .course-detail-container {
@@ -55,7 +55,7 @@
 
 .left-nav-item.active {
     background: rgba(166, 25, 46, 0.08); /* Maroon tint */
-    color: #A6192E;
+    color: #1D70B8;
     font-weight: 600;
 }
 
@@ -183,7 +183,7 @@
 
 /* ======================== BUTTON STYLES (MATCHING SP/TP) ======================== */
 .btn-enroll-primary {
-    background: #A6192E;
+    background: #1D70B8;
     color: white;
     padding: 10px 24px;
     border-radius: 50px;
@@ -203,7 +203,7 @@
 .btn-enroll-primary:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(166, 25, 46, 0.35);
-    background: #8B1526;
+    background: #165a93;
 }
 
 .btn-enroll-primary:disabled {
@@ -227,7 +227,7 @@
     height: 50px;
     border-radius: 50%;
     background: rgba(166, 25, 46, 0.1);
-    color: #A6192E;
+    color: #1D70B8;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -299,7 +299,7 @@
 .course-progress-mini {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #A6192E;
+    color: #1D70B8;
     background: rgba(166, 25, 46, 0.1);
     padding: 4px 10px;
     border-radius: 50px;
@@ -350,7 +350,7 @@
 
 .lecture-item.active {
     background: rgba(166, 25, 46, 0.05); /* Maroon transparent */
-    border-left: 3px solid #A6192E;
+    border-left: 3px solid #1D70B8;
 }
 
 .lecture-status-icon {
@@ -362,7 +362,7 @@
 }
 
 .lecture-item.active .lecture-status-icon {
-    color: #A6192E;
+    color: #1D70B8;
 }
 
 .lecture-info {
@@ -381,7 +381,7 @@
 
 .lecture-item.active .lecture-title {
     font-weight: 600;
-    color: #A6192E;
+    color: #1D70B8;
 }
 
 .lecture-meta {
@@ -401,7 +401,7 @@
 }
 
 .lecture-check:hover {
-    color: #A6192E;
+    color: #1D70B8;
 }
 
 .lecture-check.completed {
@@ -458,7 +458,7 @@
 }
 
 .similar-item:hover .similar-title {
-    color: #A6192E;
+    color: #1D70B8;
 }
 
 .similar-author {
@@ -512,7 +512,7 @@
 }
 
 .announcement-modern-card.unread {
-    border-left-color: #A6192E;
+    border-left-color: #1D70B8;
     background: linear-gradient(135deg, rgba(166, 25, 46, 0.05) 0%, rgba(255, 255, 255, 0.4) 100%);
 }
 
@@ -523,7 +523,7 @@
 .announcement-modern-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 12px 24px rgba(0,0,0,0.06);
-    border-color: #A6192E;
+    border-color: #1D70B8;
 }
 
 .announcement-modern-icon {
@@ -533,7 +533,7 @@
 }
 
 .icon-unread {
-    color: #A6192E;
+    color: #1D70B8;
     fill: rgba(166, 25, 46, 0.1);
 }
 
@@ -825,7 +825,7 @@
 
 .btn-glass-download:hover {
     background: #fff;
-    color: #A6192E;
+    color: #1D70B8;
     border-color: rgba(166, 25, 46, 0.3);
     transform: translateY(-1px);
     box-shadow: 0 4px 6px rgba(166, 25, 46, 0.05);
