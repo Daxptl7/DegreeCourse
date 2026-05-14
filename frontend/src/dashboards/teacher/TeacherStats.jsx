@@ -9,7 +9,7 @@ import { fetchTeacherStats } from '../../api/teacher.api';
 import './TeacherPortal.css';
 import './TeacherStats.css';
 
-const COLORS = ['#1D70B8', '#D4AF37', '#2563EB', '#10B981', '#F59E0B', '#6366F1'];
+const COLORS = ['#8b1425', '#D4AF37', '#a6192e', '#10B981', '#F59E0B', '#6366F1'];
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
@@ -99,7 +99,7 @@ const TeacherStats = () => {
                 {/* Overall KPI Cards */}
                 <div className="ts-kpi-grid">
                     <div className="ts-kpi-card">
-                        <div className="ts-kpi-icon" style={{ backgroundColor: 'rgba(166, 25, 46, 0.1)', color: '#1D70B8' }}>
+                        <div className="ts-kpi-icon" style={{ backgroundColor: 'rgba(166, 25, 46, 0.1)', color: '#8b1425' }}>
                             <TrendingUp size={24} />
                         </div>
                         <div>
@@ -108,7 +108,7 @@ const TeacherStats = () => {
                         </div>
                     </div>
                     <div className="ts-kpi-card">
-                        <div className="ts-kpi-icon" style={{ backgroundColor: 'rgba(37, 99, 235, 0.1)', color: '#2563EB' }}>
+                        <div className="ts-kpi-icon" style={{ backgroundColor: 'rgba(139, 20, 37, 0.1)', color: '#8b1425' }}>
                             <Users size={24} />
                         </div>
                         <div>
@@ -160,7 +160,7 @@ const TeacherStats = () => {
                                             <YAxis tick={{ fill: '#6b7280', fontSize: 12 }} />
                                             <Tooltip content={<CustomTooltip />} cursor={{ fill: '#f3f4f6' }} />
                                             <Legend wrapperStyle={{ paddingTop: '20px' }} />
-                                            <Bar dataKey="students" name="Students" fill="#2563EB" radius={[4, 4, 0, 0]} maxBarSize={60} />
+                                            <Bar dataKey="students" name="Students" fill="#8b1425" radius={[4, 4, 0, 0]} maxBarSize={60} />
                                             <Bar dataKey="reviews" name="Reviews" fill="#10B981" radius={[4, 4, 0, 0]} maxBarSize={60} />
                                         </BarChart>
                                     </ResponsiveContainer>
@@ -188,7 +188,7 @@ const TeacherStats = () => {
                                             />
                                             <YAxis domain={[0, 5]} tickCount={6} tick={{ fill: '#6b7280', fontSize: 12 }} />
                                             <Tooltip content={<CustomTooltip />} />
-                                            <Line type="monotone" dataKey="rating" name="Rating" stroke="#1D70B8" strokeWidth={3} activeDot={{ r: 8 }} />
+                                            <Line type="monotone" dataKey="rating" name="Rating" stroke="#8b1425" strokeWidth={3} activeDot={{ r: 8 }} />
                                         </LineChart>
                                     </ResponsiveContainer>
                                 </div>

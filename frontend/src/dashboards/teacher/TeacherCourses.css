@@ -39,7 +39,7 @@
 
 /* Create Course Button - Aesthetic & Small */
 .create-btn {
-    background: #1D70B8;
+    background: #8b1425;
     color: white;
     padding: 10px 24px;
     border-radius: 50px;
@@ -57,7 +57,7 @@
 .create-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(166, 25, 46, 0.4);
-    background: #165a93;
+    background: #74101d;
 }
 
 .create-btn:active {
@@ -108,7 +108,7 @@
     border-radius: 20px;
     font-size: 12px;
     font-weight: 600;
-    color: #1D70B8;
+    color: #8b1425;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -150,13 +150,13 @@
 .t-price {
     font-size: 1.1rem;
     font-weight: 700;
-    color: #1D70B8;
+    color: #8b1425;
 }
 
 .edit-text {
     font-size: 13px;
     font-weight: 500;
-    color: #1D70B8;
+    color: #8b1425;
     opacity: 0;
     transform: translateX(-10px);
     transition: all 0.3s ease;

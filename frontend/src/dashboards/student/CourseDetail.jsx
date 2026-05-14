@@ -976,7 +976,7 @@ const CourseDetail = () => {
                                                                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                                                                     {q.answers.map(ans => (
                                                                         <div key={ans._id} className="sp-answer-item">
-                                                                            <div className="sp-answer-avatar" style={{ backgroundColor: ans.user?.role === 'teacher' ? '#1D70B8' : '#94a3b8' }}>
+                                                                            <div className="sp-answer-avatar" style={{ backgroundColor: ans.user?.role === 'teacher' ? '#8b1425' : '#94a3b8' }}>
                                                                                 {ans.user?.image ? (
                                                                                     <img
                                                                                         src={ans.user.image.startsWith('http') ? ans.user.image : `${BASE_URL}${ans.user.image}`}
@@ -990,7 +990,7 @@ const CourseDetail = () => {
                                                                             <div className="sp-answer-content">
                                                                                 <h5>
                                                                                     {ans.user?.name}
-                                                                                    {ans.user?.role === 'teacher' && <CheckCircle size={14} fill="#1D70B8" color="#fff" />}
+                                                                                    {ans.user?.role === 'teacher' && <CheckCircle size={14} fill="#8b1425" color="#fff" />}
                                                                                 </h5>
                                                                                 <p className="sp-answer-text">{ans.content}</p>
                                                                             </div>
@@ -1059,7 +1059,7 @@ const CourseDetail = () => {
                                                     />
                                                     <label htmlFor="qna-image-upload" style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
                                                         <ImageIcon size={28} style={{ color: '#9ca3af' }} />
-                                                        <span style={{ color: '#1D70B8', fontWeight: '700', fontSize: '0.9rem' }}>
+                                                        <span style={{ color: '#8b1425', fontWeight: '700', fontSize: '0.9rem' }}>
                                                             {askForm.image ? askForm.image.name : 'Click to upload image'}
                                                         </span>
                                                         <span style={{ color: '#6b7280', fontSize: '0.8rem' }}>PNG, JPG up to 10MB</span>

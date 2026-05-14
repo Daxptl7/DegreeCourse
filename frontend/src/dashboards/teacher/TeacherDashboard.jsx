@@ -57,7 +57,7 @@ const TeacherDashboard = () => {
     };
 
     const quickActions = [
-        { icon: <Plus size={22} />, title: 'Create Course', description: 'Build a new learning experience', link: '/teacher/create-course', color: '#1D70B8' },
+        { icon: <Plus size={22} />, title: 'Create Course', description: 'Build a new learning experience', link: '/teacher/create-course', color: '#8b1425' },
         { icon: <FolderOpen size={22} />, title: 'My Courses', description: 'View & edit your courses', link: '/teacher/courses', color: '#4f46e5' },
         { icon: <MessageSquare size={22} />, title: 'Communication', description: 'Engage with your students', link: '/teacher/communication', color: '#059669' },
         { icon: <ClipboardList size={22} />, title: 'Assignments', description: 'Create & review assignments', link: '/teacher/assignments', color: '#d97706' },
@@ -65,7 +65,7 @@ const TeacherDashboard = () => {
     ];
 
     const statCards = [
-        { icon: <BookOpen size={24} />, label: 'Total Courses', value: stats.totalCourses, color: '#1D70B8', bg: 'rgba(166, 25, 46, 0.08)' },
+        { icon: <BookOpen size={24} />, label: 'Total Courses', value: stats.totalCourses, color: '#8b1425', bg: 'rgba(166, 25, 46, 0.08)' },
         { icon: <Users size={24} />, label: 'Total Students', value: stats.totalStudents, color: '#4f46e5', bg: 'rgba(79, 70, 229, 0.08)' },
         { icon: <MessageSquare size={24} />, label: 'Total Reviews', value: stats.totalReviews, color: '#059669', bg: 'rgba(5, 150, 105, 0.08)' },
         { icon: <Star size={24} />, label: 'Avg. Rating', value: stats.averageRating > 0 ? stats.averageRating.toFixed(1) : '—', color: '#d97706', bg: 'rgba(217, 119, 6, 0.08)' }

@@ -1,6 +1,6 @@
 /* ============================================================
    TEACHER PORTAL — Unified Professional Styling
-   Theme: Maroon #1D70B8, Montserrat / Outfit fonts
+   Theme: Maroon #8b1425, Montserrat / Outfit fonts
    Used by: Dashboard, Courses, Communication, Assignments,
             Announcements, Create Course
    ============================================================ */
@@ -93,7 +93,7 @@
 }
 
 .tp-tab.active {
-    background: #1D70B8;
+    background: #8b1425;
     color: white;
     box-shadow: 0 2px 8px rgba(166, 25, 46, 0.25);
 }
@@ -103,7 +103,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: #1D70B8;
+    background: #8b1425;
     color: white;
     padding: 10px 24px;
     border-radius: 50px;
@@ -120,7 +120,7 @@
 .tp-btn-primary:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(166, 25, 46, 0.35);
-    background: #165a93;
+    background: #74101d;
 }
 
 .tp-btn-primary:active {
@@ -147,8 +147,8 @@
 
 .tp-btn-secondary:hover {
     background: var(--bg-hover, #f3f4f6);
-    border-color: #1D70B8;
-    color: #1D70B8;
+    border-color: #8b1425;
+    color: #8b1425;
 }
 
 /* ======================== CARD BASE ======================== */
@@ -192,7 +192,7 @@
 
 .tp-course-selector select:focus {
     outline: none;
-    border-color: #1D70B8;
+    border-color: #8b1425;
     box-shadow: 0 0 0 3px rgba(166, 25, 46, 0.1);
 }
 
@@ -227,14 +227,14 @@
 }
 
 .tp-filter-pill:hover {
-    border-color: #1D70B8;
-    color: #1D70B8;
+    border-color: #8b1425;
+    color: #8b1425;
 }
 
 .tp-filter-pill.active {
-    background: #1D70B8;
+    background: #8b1425;
     color: white;
-    border-color: #1D70B8;
+    border-color: #8b1425;
     box-shadow: 0 2px 8px rgba(166, 25, 46, 0.2);
 }
 
@@ -387,7 +387,7 @@
 }
 
 .tp-reply-avatar.teacher {
-    background: #1D70B8;
+    background: #8b1425;
 }
 
 .tp-reply-avatar.student {
@@ -419,7 +419,7 @@
 
 .tp-instructor-tag {
     font-size: 0.65rem;
-    background: #1D70B8;
+    background: #8b1425;
     color: white;
     padding: 1px 8px;
     border-radius: 50px;
@@ -455,7 +455,7 @@
 
 .tp-reply-input input:focus {
     outline: none;
-    border-color: #1D70B8;
+    border-color: #8b1425;
     box-shadow: 0 0 0 3px rgba(166, 25, 46, 0.08);
 }
 
@@ -463,7 +463,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    background: #1D70B8;
+    background: #8b1425;
     color: white;
     border: none;
     padding: 0 1.2rem;
@@ -476,7 +476,7 @@
 }
 
 .tp-reply-btn:hover {
-    background: #165a93;
+    background: #74101d;
 }
 
 /* ======================== COURSE GRID ======================== */
@@ -524,7 +524,7 @@
     border-radius: 50px;
     font-size: 11px;
     font-weight: 700;
-    color: #1D70B8;
+    color: #8b1425;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     text-transform: uppercase;
     letter-spacing: 0.3px;
@@ -576,13 +576,13 @@
 .tp-course-price {
     font-size: 1.1rem;
     font-weight: 700;
-    color: #1D70B8;
+    color: #8b1425;
 }
 
 .tp-course-link {
     font-size: 0.82rem;
     font-weight: 600;
-    color: #1D70B8;
+    color: #8b1425;
     display: flex;
     align-items: center;
     gap: 4px;
@@ -645,7 +645,7 @@
 .tp-form-textarea:focus,
 .tp-form-select:focus {
     outline: none;
-    border-color: #1D70B8;
+    border-color: #8b1425;
     box-shadow: 0 0 0 3px rgba(166, 25, 46, 0.08);
     background: var(--bg-card, #ffffff);
 }
@@ -695,7 +695,7 @@
 }
 
 .tp-file-upload:hover {
-    border-color: #1D70B8;
+    border-color: #8b1425;
     background: rgba(166, 25, 46, 0.02);
 }
 
@@ -712,7 +712,7 @@
 }
 
 .tp-file-name {
-    color: #1D70B8;
+    color: #8b1425;
     font-weight: 600;
     font-size: 0.9rem;
 }
@@ -837,7 +837,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    color: #1D70B8;
+    color: #8b1425;
     text-decoration: none;
     font-size: 0.85rem;
     font-weight: 500;
@@ -888,7 +888,7 @@
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #1D70B8 0%, #165a93 100%);
+    background: linear-gradient(135deg, #8b1425 0%, #74101d 100%);
     color: #ffffff;
     display: flex;
     align-items: center;
@@ -1016,19 +1016,19 @@
     align-items: center;
     justify-content: center;
     background: transparent;
-    color: #1D70B8;
+    color: #8b1425;
     padding: 8px 12px;
     border-radius: 8px;
     font-weight: 600;
     font-size: 0.85rem;
-    border: 1px solid #1D70B8;
+    border: 1px solid #8b1425;
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: inherit;
 }
 
 .tp-btn-grade-outline:hover {
-    background: #1D70B8;
+    background: #8b1425;
     color: white;
     box-shadow: 0 4px 10px rgba(166, 25, 46, 0.2);
 }
@@ -1169,7 +1169,7 @@
 }
 
 .tp-announcement-card.editing {
-    border-color: #1D70B8 !important;
+    border-color: #8b1425 !important;
     background-color: #fdf2f2 !important;
 }
 
@@ -1211,7 +1211,7 @@
 }
 
 .tp-thumbnail-dropzone:hover {
-    border-color: #1D70B8;
+    border-color: #8b1425;
     background: rgba(166, 25, 46, 0.02);
 }
 
@@ -1220,7 +1220,7 @@
 }
 
 .tp-thumbnail-dragging {
-    border-color: #1D70B8;
+    border-color: #8b1425;
     background: rgba(166, 25, 46, 0.05);
     transform: scale(1.01);
     box-shadow: 0 0 0 4px rgba(166, 25, 46, 0.08);
@@ -1234,7 +1234,7 @@
     width: 56px;
     height: 56px;
     margin: 0 auto 1rem;
-    background: linear-gradient(135deg, #1D70B8, #165a93);
+    background: linear-gradient(135deg, #8b1425, #74101d);
     border-radius: 14px;
     display: flex;
     align-items: center;
@@ -1273,7 +1273,7 @@
 }
 
 .tp-thumbnail-browse-link {
-    color: #1D70B8;
+    color: #8b1425;
     font-weight: 600;
     text-decoration: underline;
     text-underline-offset: 2px;
@@ -1362,7 +1362,7 @@
     height: 36px;
     border-radius: 10px;
     background: rgba(166, 25, 46, 0.08);
-    color: #1D70B8;
+    color: #8b1425;
     display: flex;
     align-items: center;
     justify-content: center;

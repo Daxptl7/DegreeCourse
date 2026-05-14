@@ -1,6 +1,6 @@
 /* ============================================================
    STUDENT PORTAL — Unified Professional Styling
-   Theme: Maroon #1D70B8, Montserrat / Outfit fonts
+   Theme: Maroon #8b1425, Montserrat / Outfit fonts
    Used by: StudentCourses
    ============================================================ */
 
@@ -52,7 +52,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: #1D70B8;
+    background: #8b1425;
     color: white;
     padding: 12px 28px;
     border-radius: 50px;
@@ -69,7 +69,7 @@
 .sp-btn-primary:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(166, 25, 46, 0.35);
-    background: #165a93;
+    background: #74101d;
 }
 
 .sp-btn-primary:active {
@@ -152,7 +152,7 @@
     border-radius: 50px;
     font-size: 11px;
     font-weight: 700;
-    color: #1D70B8;
+    color: #8b1425;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     text-transform: uppercase;
     letter-spacing: 0.3px;
@@ -181,7 +181,7 @@
 }
 
 .sp-course-card:hover .sp-course-name {
-    color: #1D70B8;
+    color: #8b1425;
 }
 
 .sp-course-desc {
@@ -219,7 +219,7 @@
     height: 26px;
     border-radius: 50%;
     background: rgba(166, 25, 46, 0.1);
-    color: #1D70B8;
+    color: #8b1425;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -230,7 +230,7 @@
 .sp-course-link {
     font-size: 0.9rem;
     font-weight: 600;
-    color: #1D70B8;
+    color: #8b1425;
     display: flex;
     align-items: center;
     gap: 4px;
@@ -389,7 +389,7 @@
 
 .sp-input:focus {
     outline: none;
-    border-color: #1D70B8;
+    border-color: #8b1425;
     box-shadow: 0 0 0 4px rgba(166, 25, 46, 0.1);
     background: #ffffff;
 }

@@ -2,14 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import TeacherDashboard from '../teacher/TeacherDashboard';
 import JourneyCTA from '../../components/common/JourneyCTA';
+import { schools as SCHOOLS } from '../../data/schools';
 import './Home.css';
-
-const SCHOOLS = [
-    { id: 'sls', name: 'School of Liberal Studies', shortName: 'SLS', logo: '/SLS.png', link: '/school/sls' },
-    { id: 'som', name: 'School of Management', shortName: 'SOM', logo: '/SOM.png', link: '#' },
-    { id: 'soet', name: 'School of Energy Technology', shortName: 'SOET', logo: '/SOET.png', link: '#' },
-    { id: 'sot', name: 'School of Technology', shortName: 'SOT', logo: '/SOT.png', link: '#' },
-];
 
 const Home = ({ user, viewMode, toggleViewMode }) => {
     // State declarations
@@ -165,15 +159,15 @@ const Home = ({ user, viewMode, toggleViewMode }) => {
                 <h3 style={{ borderLeft: 'none' }}>Our Impact</h3>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '40px', marginTop: '40px' }}>
                     <div>
-                        <h2 style={{ fontSize: '48px', color: '#1D70B8', fontWeight: '800' }}>50+</h2>
+                        <h2 style={{ fontSize: '48px', color: '#8b1425', fontWeight: '800' }}>50+</h2>
                         <p>Lab Equipment</p>
                     </div>
                     <div>
-                        <h2 style={{ fontSize: '48px', color: '#1D70B8', fontWeight: '800' }}>200+</h2>
+                        <h2 style={{ fontSize: '48px', color: '#8b1425', fontWeight: '800' }}>200+</h2>
                         <p>Projects Completed</p>
                     </div>
                     <div>
-                        <h2 style={{ fontSize: '48px', color: '#1D70B8', fontWeight: '800' }}>1000+</h2>
+                        <h2 style={{ fontSize: '48px', color: '#8b1425', fontWeight: '800' }}>1000+</h2>
                         <p>Students Trained</p>
                     </div>
                 </div>

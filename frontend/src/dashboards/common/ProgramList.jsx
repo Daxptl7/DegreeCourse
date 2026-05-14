@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom';
 import { Search, ChevronDown, Plus, Minus, ArrowUp } from 'lucide-react';
 import axios from 'axios';
 import { config } from '../../config';
+import { programCurriculumList } from '../../data/programCurriculums';
 import './ProgramList.css';
 
 const ProgramList = () => {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [expandedIndex, setExpandedIndex] = useState(null);
+    const [expandedIndex, setExpandedIndex] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
@@ -48,7 +49,26 @@ const ProgramList = () => {
     // Filter categories and courses based on search term
     const filterTerm = searchTerm.toLowerCase();
     
-    const filteredCategories = Object.keys(groupedCourses)
+    const curriculumCategories = programCurriculumList
+        .filter(program => {
+            const searchable = `${program.title} ${program.shortTitle} curriculum ${program.description}`.toLowerCase();
+            return !filterTerm || searchable.includes(filterTerm);
+        })
+        .map(program => ({
+            title: program.title,
+            programs: [
+                {
+                    name: `${program.shortTitle} Course Curriculum (${program.batch})`,
+                    link: `/academics/programs/${program.slug}`,
+                    description: `${program.semesters.length} semesters - ${program.totalCredits} credits`,
+                },
+            ],
+            available: 1,
+        }));
+
+    const filteredCategories = [
+        ...curriculumCategories,
+        ...Object.keys(groupedCourses)
         .filter(cat => {
             // Category matches OR any course inside matches
             return cat.toLowerCase().includes(filterTerm) || 
@@ -68,23 +88,8 @@ const ProgramList = () => {
                 programs: filteredProgs,
                 available: filteredProgs.length
             };
-        });
-
-    // Hardcode B.Com for the SLS requirement if it matches search
-    const bcomTitle = "Bachelor of Commerce (B.Com)";
-    const bcomMatches = bcomTitle.toLowerCase().includes(filterTerm) || 
-                        "b.com curriculum".includes(filterTerm);
-    
-    if (bcomMatches) {
-        filteredCategories.push({
-            title: bcomTitle,
-            programs: [
-                { name: "B.Com Curriculum (Batch 2026)", link: "/school/sls#bcom-curriculum-details", isAnchor: true },
-                { name: "About the B.Com Course", link: "/school/sls#bcom-curriculum-details", isAnchor: true }
-            ],
-            available: 1
-        });
-    }
+        })
+    ];
 
     return (
         <div className="programs-page">
@@ -98,7 +103,7 @@ const ProgramList = () => {
             {/* Main Content */}
             <div className="programs-content-wrapper">
                 <p className="programs-intro-text">
-                    PDEU offers associate of arts (AA), associate of arts in teaching (AAT), associate of applied science (AAS), associate of science (AS), bachelor of science in nursing (BSN) and bachelor of applied technology (BAT) degrees in addition to a variety of certificates. Click on a subject below to learn more about what PDEU can teach you.
+                    Explore SLS online degree programs, semester-wise course curriculum, credit structure, and available courses. Open a program below to view the complete curriculum in a clean semester-by-semester format.
                 </p>
 
                 {/* Filter Bar */}
@@ -117,8 +122,8 @@ const ProgramList = () => {
                     <div className="select-group">
                         <select defaultValue="">
                             <option value="" disabled hidden>All Degrees</option>
-                            <option value="aa">Associate of Arts</option>
                             <option value="bcom">B.Com</option>
+                            <option value="bba">BBA</option>
                         </select>
                         <ChevronDown size={18} className="select-icon" />
                     </div>
@@ -127,7 +132,8 @@ const ProgramList = () => {
                         <select defaultValue="">
                             <option value="" disabled hidden>All Pathways</option>
                             <option value="business">Business</option>
-                            <option value="science">Science</option>
+                            <option value="finance">Finance</option>
+                            <option value="marketing">Marketing</option>
                         </select>
                         <ChevronDown size={18} className="select-icon" />
                     </div>
@@ -135,9 +141,7 @@ const ProgramList = () => {
 
                 {/* Accordion List */}
                 <div className="programs-accordion-list">
-                    {loading ? (
-                        <p style={{textAlign: 'center', padding: '40px', color: '#666'}}>Loading programs...</p>
-                    ) : filteredCategories.length === 0 ? (
+                    {filteredCategories.length === 0 ? (
                         <p style={{textAlign: 'center', padding: '40px', color: '#666'}}>No programs match your search.</p>
                     ) : (
                         filteredCategories.map((item, index) => {
@@ -156,14 +160,23 @@ const ProgramList = () => {
                                             <ul className="programs-sublist">
                                                 {item.programs.map((prog, pIndex) => (
                                                     <li key={pIndex}>
-                                                        {prog.isAnchor ? (
+                                                        {prog.link ? (
+                                                            prog.isAnchor ? (
                                                             <a href={prog.link} className="program-link">
                                                                 {prog.name} ↗
                                                             </a>
+                                                            ) : (
+                                                                <Link to={prog.link} className="program-link">
+                                                                    {prog.name} ↗
+                                                                </Link>
+                                                            )
                                                         ) : (
                                                             <Link to={`/course/${prog.slug}`} className="program-link">
                                                                 {prog.name} ↗
                                                             </Link>
+                                                        )}
+                                                        {prog.description && (
+                                                            <p className="program-link-description">{prog.description}</p>
                                                         )}
                                                     </li>
                                                 ))}
@@ -181,6 +194,9 @@ const ProgramList = () => {
                                 </div>
                             );
                         })
+                    )}
+                    {loading && (
+                        <p className="programs-loading-note">Loading additional approved courses...</p>
                     )}
                 </div>
 

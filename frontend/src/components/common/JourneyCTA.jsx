@@ -12,7 +12,7 @@ const JourneyCTA = () => {
                     <em>Today.</em>
                 </h2>
                 <div className="sls-journey-links">
-                    <Link to="/courses" className="sls-journey-link">
+                    <Link to="/academics/programs" className="sls-journey-link">
                         <span>Explore Programs</span>
                         <ArrowRight size={28} strokeWidth={1.5} className="sls-journey-arrow" />
                     </Link>

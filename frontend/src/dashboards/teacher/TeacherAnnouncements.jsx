@@ -225,7 +225,7 @@ const TeacherAnnouncements = () => {
                             ) : (
                                 <div className="tp-announcements-list">
                                     {announcements.map(ann => (
-                                        <div key={ann._id} className={`tp-announcement-card ${editingId === ann._id ? 'editing' : ''}`} style={{ background: '#fff', padding: '1.5rem', borderRadius: '12px', border: '1px solid #e5e7eb', marginBottom: '1rem', transition: 'all 0.2s ease', position: 'relative', boxShadow: editingId === ann._id ? '0 0 0 2px #1D70B8' : '0 4px 6px rgba(0,0,0,0.02)' }}>
+                                        <div key={ann._id} className={`tp-announcement-card ${editingId === ann._id ? 'editing' : ''}`} style={{ background: '#fff', padding: '1.5rem', borderRadius: '12px', border: '1px solid #e5e7eb', marginBottom: '1rem', transition: 'all 0.2s ease', position: 'relative', boxShadow: editingId === ann._id ? '0 0 0 2px #8b1425' : '0 4px 6px rgba(0,0,0,0.02)' }}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
                                                 <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: '600', color: '#111827' }}>{ann.title}</h3>
                                                 <div className="tp-announcement-actions" style={{ display: 'flex', gap: '0.5rem' }}>

@@ -499,7 +499,7 @@ const LiveClass = () => {
         <div className="fixed inset-0 z-50 flex h-full w-full bg-gray-50 text-gray-900 overflow-hidden font-sans transition-colors duration-300">
 
             <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40">
-                <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-[128px] animate-blob" />
+                <div className="absolute top-0 left-1/4 w-96 h-96 bg-rose-100 rounded-full mix-blend-multiply filter blur-[128px] animate-blob" />
                 <div className="absolute top-0 right-1/4 w-96 h-96 bg-purple-100 rounded-full mix-blend-multiply filter blur-[128px] animate-blob animation-delay-2000" />
                 <div className="absolute -bottom-32 left-1/3 w-96 h-96 bg-pink-100 rounded-full mix-blend-multiply filter blur-[128px] animate-blob animation-delay-4000" />
             </div>
@@ -523,7 +523,7 @@ const LiveClass = () => {
                 <div className="h-24 px-8 flex items-center justify-between z-20">
                     <div className="glass-panel-light px-6 py-3 rounded-2xl flex items-center gap-5 shadow-lg shadow-gray-200/50 border border-white/60 bg-white/70 backdrop-blur-md group hover:border-gray-200 transition-all duration-300">
                         <div className="relative">
-                            <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform duration-300">
+                            <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-rose-700 to-red-900 flex items-center justify-center shadow-lg shadow-rose-700/20 group-hover:scale-105 transition-transform duration-300">
                                 <Video size={22} className="text-white" />
                             </div>
                             <span className="absolute -top-1 -right-1 flex h-4 w-4">

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Plus, Video, MonitorPlay } from 'lucide-react';
 import './Navbar.css';
 
 const Navbar = ({ user, toggleLogin, viewMode, toggleViewMode }) => {
@@ -43,8 +42,8 @@ const Navbar = ({ user, toggleLogin, viewMode, toggleViewMode }) => {
 
     const isHome = location.pathname === '/';
     const isSchoolPage = location.pathname.startsWith('/school/');
-    // Transparent on Home Page (student mode) only
-    const isTransparent = (isHome && viewMode !== 'teacher') && !scrolled;
+    // Transparent on Home and School Pages (student mode) only
+    const isTransparent = ((isHome || isSchoolPage) && viewMode !== 'teacher') && !scrolled;
     const navClass = isTransparent ? 'transparent' : 'scrolled';
 
     return (
@@ -53,6 +52,12 @@ const Navbar = ({ user, toggleLogin, viewMode, toggleViewMode }) => {
                 {/* Logo Section */}
                 <Link to="/" className="logoGroup">
                     <img src="/logo.png" alt="PDEU Logo" style={{ height: '80px', width: 'auto' }} />
+                    {isSchoolPage && (
+                        <>
+                            <span className="separator">|</span>
+                            <img src="/SLS.png" alt="SLS Logo" style={{ height: '60px', width: 'auto' }} />
+                        </>
+                    )}
                 </Link>
 
                 {/* Hamburger for Mobile */}
