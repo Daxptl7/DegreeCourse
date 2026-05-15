@@ -95,6 +95,7 @@ const Home = ({ user, viewMode, toggleViewMode }) => {
             <section className="schools-section">
                 <div className="schools-divider"></div>
                 <h2 className="schools-heading">Constituent Schools</h2>
+                <p className="schools-click-hint">Click on a school to explore</p>
                 <div className="schools-grid">
                     {SCHOOLS.map(school => (
                         <div key={school.id} className="school-item">

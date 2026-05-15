@@ -346,6 +346,13 @@
     pointer-events: auto;
 }
 
+.schools-click-hint {
+    font-size: 0.9rem;
+    color: #888;
+    margin-top: -30px;
+    margin-bottom: 10px;
+}
+
 .schools-description {
     max-width: 700px;
     margin: 10px auto 30px;

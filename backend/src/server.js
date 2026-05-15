@@ -21,6 +21,8 @@ const io = new Server(httpServer, {
 attachSocketAuth(io);
 registerLiveClassHandlers(io);
 
-httpServer.listen(PORT, () => {
+httpServer.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running in ${config.server.env} mode on port ${PORT}`);
+  console.log(`  ➜  Local:   http://localhost:${PORT}`);
+  console.log(`  ➜  Network: http://0.0.0.0:${PORT}`);
 });

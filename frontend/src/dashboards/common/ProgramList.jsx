@@ -9,15 +9,18 @@ import './ProgramList.css';
 const ProgramList = () => {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [expandedIndex, setExpandedIndex] = useState(0);
+    const [expandedIndex, setExpandedIndex] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const [degreeFilter, setDegreeFilter] = useState('');
+    const [pathwayFilter, setPathwayFilter] = useState('');
 
     useEffect(() => {
         const fetchCourses = async () => {
             try {
                 // Fetch public approved courses
                 const res = await axios.get(`${config.API_URL}/courses`);
-                setCourses(res.data);
+                const payload = res.data;
+                setCourses(Array.isArray(payload.data) ? payload.data : Array.isArray(payload) ? payload : []);
             } catch (error) {
                 console.error("Error fetching courses:", error);
             } finally {
@@ -46,13 +49,41 @@ const ProgramList = () => {
         return acc;
     }, {});
 
-    // Filter categories and courses based on search term
+    // Filter categories and courses based on search term + dropdowns
     const filterTerm = searchTerm.toLowerCase();
-    
+
+    // Degree filter keywords map
+    const degreeKeywords = {
+        bcom: ['bcom', 'b.com', 'bachelor of commerce'],
+        bba: ['bba', 'bachelor of business administration'],
+    };
+
+    const matchesDegree = (text) => {
+        if (!degreeFilter) return true;
+        const keywords = degreeKeywords[degreeFilter] || [];
+        const lower = text.toLowerCase();
+        return keywords.some(k => lower.includes(k));
+    };
+
+    const matchesPathway = (text) => {
+        if (!pathwayFilter) return true;
+        return text.toLowerCase().includes(pathwayFilter.toLowerCase());
+    };
+
     const curriculumCategories = programCurriculumList
         .filter(program => {
-            const searchable = `${program.title} ${program.shortTitle} curriculum ${program.description}`.toLowerCase();
-            return !filterTerm || searchable.includes(filterTerm);
+            const searchable = `${program.title} ${program.shortTitle} curriculum ${program.description}`;
+            // Search filter
+            if (filterTerm && !searchable.toLowerCase().includes(filterTerm)) return false;
+            // Degree filter
+            if (!matchesDegree(searchable)) return false;
+            // Pathway filter — check specializations if they exist, or title/description
+            if (pathwayFilter) {
+                const specNames = (program.specializations || []).map(s => s.name).join(' ');
+                const allText = `${searchable} ${specNames}`;
+                if (!matchesPathway(allText)) return false;
+            }
+            return true;
         })
         .map(program => ({
             title: program.title,
@@ -70,25 +101,46 @@ const ProgramList = () => {
         ...curriculumCategories,
         ...Object.keys(groupedCourses)
         .filter(cat => {
-            // Category matches OR any course inside matches
-            return cat.toLowerCase().includes(filterTerm) || 
-                   groupedCourses[cat].some(c => c.name.toLowerCase().includes(filterTerm));
+            const catLower = cat.toLowerCase();
+            const coursesInCat = groupedCourses[cat];
+            // Search: category matches OR any course inside matches
+            const searchMatch = !filterTerm || catLower.includes(filterTerm) ||
+                coursesInCat.some(c => c.name.toLowerCase().includes(filterTerm));
+            if (!searchMatch) return false;
+            // Degree: category name should match
+            if (degreeFilter && !matchesDegree(cat)) {
+                // Also check if any course name matches the degree
+                const anyMatch = coursesInCat.some(c => matchesDegree(c.name));
+                if (!anyMatch) return false;
+            }
+            // Pathway
+            if (pathwayFilter) {
+                const anyMatch = coursesInCat.some(c => matchesPathway(c.name));
+                if (!matchesPathway(cat) && !anyMatch) return false;
+            }
+            return true;
         })
         .map(cat => {
-            // Further filter the courses inside if the category itself doesn't match the search
-            const catMatches = cat.toLowerCase().includes(filterTerm);
+            const catLower = cat.toLowerCase();
+            const catMatches = catLower.includes(filterTerm);
             let filteredProgs = groupedCourses[cat];
-            
+
+            // Narrow down courses by search
             if (!catMatches && filterTerm) {
                 filteredProgs = filteredProgs.filter(c => c.name.toLowerCase().includes(filterTerm));
             }
-            
+            // Narrow down by pathway
+            if (pathwayFilter) {
+                filteredProgs = filteredProgs.filter(c => matchesPathway(c.name));
+            }
+
             return {
                 title: cat,
                 programs: filteredProgs,
                 available: filteredProgs.length
             };
         })
+        .filter(cat => cat.programs.length > 0)
     ];
 
     return (
@@ -117,11 +169,11 @@ const ProgramList = () => {
                         />
                         <Search size={18} className="search-icon" />
                     </div>
-                    <button className="find-btn" onClick={() => {}}>Find</button>
+                    <button className="find-btn" onClick={() => setExpandedIndex(null)}>Find</button>
                     
                     <div className="select-group">
-                        <select defaultValue="">
-                            <option value="" disabled hidden>All Degrees</option>
+                        <select value={degreeFilter} onChange={(e) => { setDegreeFilter(e.target.value); setExpandedIndex(null); }}>
+                            <option value="">All Degrees</option>
                             <option value="bcom">B.Com</option>
                             <option value="bba">BBA</option>
                         </select>
@@ -129,11 +181,12 @@ const ProgramList = () => {
                     </div>
 
                     <div className="select-group">
-                        <select defaultValue="">
-                            <option value="" disabled hidden>All Pathways</option>
+                        <select value={pathwayFilter} onChange={(e) => { setPathwayFilter(e.target.value); setExpandedIndex(null); }}>
+                            <option value="">All Pathways</option>
                             <option value="business">Business</option>
                             <option value="finance">Finance</option>
                             <option value="marketing">Marketing</option>
+                            <option value="human resource">Human Resource</option>
                         </select>
                         <ChevronDown size={18} className="select-icon" />
                     </div>

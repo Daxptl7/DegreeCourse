@@ -51,11 +51,11 @@ const Navbar = ({ user, toggleLogin, viewMode, toggleViewMode }) => {
             <div className="nav-container">
                 {/* Logo Section */}
                 <Link to="/" className="logoGroup">
-                    <img src="/logo.png" alt="PDEU Logo" style={{ height: '80px', width: 'auto' }} />
+                    <img src="/logo.png" alt="PDEU Logo" className="main-logo" />
                     {isSchoolPage && (
                         <>
                             <span className="separator">|</span>
-                            <img src="/SLS.png" alt="SLS Logo" style={{ height: '60px', width: 'auto' }} />
+                            <img src="/SLS.png" alt="SLS Logo" className="school-logo-nav" />
                         </>
                     )}
                 </Link>
