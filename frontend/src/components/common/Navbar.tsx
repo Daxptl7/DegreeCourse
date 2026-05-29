@@ -80,7 +80,7 @@ const Navbar = ({ user, toggleLogin, viewMode, toggleViewMode }) => {
                             Home
                         </Link>
                     </li>
-                    <li><Link to="/courses" className="menuLink">Courses</Link></li>
+                    <li><Link to="/academics/programs" className="menuLink">Courses</Link></li>
 
                     {user ? (
                         <>
