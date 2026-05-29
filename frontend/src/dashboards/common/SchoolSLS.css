@@ -1,0 +1,590 @@
+.sls-page {
+    --sls-blue: #8b1425;
+    --sls-blue-deep: #74101d;
+    --sls-blue-dark: #5b0d18;
+    --sls-text: #4a1b22;
+    --sls-rule: #8b1425;
+    background: #ffffff;
+    color: var(--sls-text);
+}
+
+.sls-content-wrap {
+    width: min(1260px, calc(100% - 48px));
+    margin: 0 auto;
+}
+
+.sls-top-hero {
+    padding-top: 104px;
+    background: #ffffff;
+}
+
+.sls-hero-breadcrumb {
+    height: 58px;
+    width: min(100%, 1920px);
+    margin: 0 auto;
+    padding: 0 clamp(24px, 3.3vw, 48px);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: var(--sls-blue-dark);
+    font-size: 0.95rem;
+    font-weight: 800;
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.18);
+}
+
+.sls-hero-breadcrumb a {
+    display: inline-flex;
+    color: var(--sls-blue);
+    text-decoration: none;
+}
+
+.sls-hero-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.06fr) minmax(420px, 0.94fr);
+    min-height: 500px;
+    width: 100%;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 10px 22px rgba(20, 42, 76, 0.17);
+}
+
+.sls-hero-copy {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: #ffffff;
+    background: linear-gradient(112deg, #8b1425 0%, #74101d 58%, #5b0d18 100%);
+}
+
+.sls-hero-pattern {
+    position: absolute;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.sls-hero-pattern-dots {
+    top: 0;
+    right: 0;
+    width: 58%;
+    height: 100%;
+    opacity: 0.18;
+    background-image: radial-gradient(circle, rgba(83, 13, 24, 0.58) 0 6px, transparent 7px);
+    background-size: 28px 28px;
+    mask-image: linear-gradient(90deg, transparent 0%, #000 20%, #000 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 20%, #000 100%);
+}
+
+.sls-hero-pattern-wave-one {
+    left: -15%;
+    bottom: -45%;
+    width: 100%;
+    height: 62%;
+    border-radius: 50% 50% 0 0;
+    background: rgba(255, 255, 255, 0.08);
+    transform: rotate(-8deg);
+}
+
+.sls-hero-pattern-wave-two {
+    right: -16%;
+    bottom: -58%;
+    width: 95%;
+    height: 80%;
+    border-radius: 50% 50% 0 0;
+    background: rgba(61, 9, 17, 0.22);
+    transform: rotate(-12deg);
+}
+
+.sls-hero-pattern-angle {
+    top: -18%;
+    right: 4%;
+    width: 40%;
+    height: 150%;
+    background: rgba(255, 255, 255, 0.05);
+    clip-path: polygon(42% 0, 100% 0, 52% 100%, 0 100%);
+}
+
+.sls-hero-text {
+    width: min(560px, calc(100% - 64px));
+    position: relative;
+    z-index: 1;
+}
+
+.sls-hero-text h1 {
+    margin: 0 0 28px;
+    color: #ffffff;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(2.8rem, 4.2vw, 4.7rem);
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: 0;
+}
+
+.sls-hero-text p {
+    max-width: 560px;
+    margin: 0 0 28px;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: clamp(1rem, 1.25vw, 1.22rem);
+    font-weight: 500;
+    line-height: 1.85;
+}
+
+.sls-hero-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 58px;
+    padding: 0 28px;
+    color: var(--sls-blue);
+    background: #ffffff;
+    border-radius: 7px;
+    box-shadow: 0 8px 20px rgba(20, 42, 76, 0.18);
+    font-size: 1.04rem;
+    font-weight: 800;
+    text-decoration: none;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.sls-hero-cta:hover,
+.sls-hero-cta:focus-visible {
+    box-shadow: 0 12px 26px rgba(20, 42, 76, 0.25);
+    transform: translateY(-2px);
+}
+
+.sls-hero-image {
+    min-height: 500px;
+    padding: 14px 0 14px;
+    margin-left: -56px;
+    position: relative;
+    z-index: 1;
+}
+
+.sls-hero-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 472px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 12px 0 0 12px;
+    box-shadow: -12px 12px 28px rgba(13, 32, 62, 0.24);
+}
+
+.sls-intro-section {
+    padding: 64px 0;
+    background: #ffffff;
+}
+
+.sls-kicker {
+    margin: 0 0 10px;
+    color: var(--sls-blue);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.sls-intro-section h1,
+.sls-blue-content h2,
+.sls-courses-section h2,
+.sls-detail-section h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    letter-spacing: 0;
+}
+
+.sls-intro-section h1 {
+    max-width: 980px;
+    margin: 0 0 22px;
+    color: var(--sls-blue-dark);
+    font-size: clamp(2.35rem, 4vw, 3.85rem);
+    font-weight: 700;
+    line-height: 1.05;
+}
+
+.sls-intro-copy {
+    max-width: 1180px;
+    margin: 0;
+    color: #563038;
+    font-size: 1.08rem;
+    font-weight: 500;
+    line-height: 1.8;
+}
+
+.sls-link-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 54px;
+    margin-top: 38px;
+}
+
+.sls-link-row,
+.sls-offering-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+    min-height: 54px;
+    padding: 15px 0 12px;
+    color: var(--sls-blue);
+    border-bottom: 2px solid var(--sls-rule);
+    font-size: 1.03rem;
+    font-weight: 800;
+    line-height: 1.35;
+    text-decoration: none;
+    transition: color 180ms ease, transform 180ms ease;
+}
+
+.sls-link-row svg,
+.sls-offering-row svg {
+    flex: 0 0 auto;
+    transition: transform 180ms ease;
+}
+
+.sls-link-row:hover,
+.sls-link-row:focus-visible {
+    color: var(--sls-blue-dark);
+}
+
+.sls-link-row:hover svg,
+.sls-link-row:focus-visible svg,
+.sls-offering-row:hover svg,
+.sls-offering-row:focus-visible svg {
+    transform: translateX(6px);
+}
+
+.sls-blue-band {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: 430px;
+    padding: 66px 0 72px;
+    color: #ffffff;
+    background:
+        linear-gradient(110deg, rgba(139, 20, 37, 0.98) 0%, rgba(116, 16, 29, 0.98) 56%, rgba(91, 13, 24, 0.98) 100%);
+}
+
+.sls-blue-pattern {
+    position: absolute;
+    inset: auto;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.sls-blue-pattern-dots {
+    top: 0;
+    right: 0;
+    width: 52%;
+    height: 100%;
+    opacity: 0.23;
+    background-image: radial-gradient(circle, rgba(66, 9, 18, 0.5) 0 7px, transparent 8px);
+    background-size: 31px 31px;
+    mask-image: linear-gradient(90deg, transparent 0%, #000 24%, #000 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 24%, #000 100%);
+}
+
+.sls-blue-pattern-wave-one {
+    left: -9%;
+    bottom: -42%;
+    width: 86%;
+    height: 62%;
+    border-radius: 50% 50% 0 0;
+    background: rgba(255, 255, 255, 0.08);
+    transform: rotate(-7deg);
+}
+
+.sls-blue-pattern-wave-two {
+    right: -15%;
+    bottom: -58%;
+    width: 92%;
+    height: 82%;
+    border-radius: 50% 50% 0 0;
+    background: rgba(61, 9, 17, 0.22);
+    transform: rotate(-10deg);
+}
+
+.sls-blue-pattern-angle {
+    top: -18%;
+    right: 6%;
+    width: 36%;
+    height: 150%;
+    background: rgba(255, 255, 255, 0.06);
+    clip-path: polygon(38% 0, 100% 0, 55% 100%, 0 100%);
+}
+
+.sls-blue-content {
+    position: relative;
+    z-index: 1;
+}
+
+.sls-blue-content h2 {
+    margin: 0 0 22px;
+    color: #ffffff;
+    font-size: clamp(2.35rem, 4vw, 3.85rem);
+    font-weight: 700;
+    line-height: 1.05;
+}
+
+.sls-blue-content p {
+    max-width: 1120px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.94);
+    font-size: 1.08rem;
+    font-weight: 500;
+    line-height: 1.75;
+}
+
+.sls-offering-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 54px;
+    margin-top: 34px;
+}
+
+.sls-offering-row {
+    color: #ffffff;
+    border-bottom-color: rgba(255, 255, 255, 0.78);
+}
+
+.sls-offering-row:hover,
+.sls-offering-row:focus-visible {
+    color: #f6cc64;
+}
+
+.sls-detail-section {
+    padding: 58px 0 24px;
+    background: #ffffff;
+}
+
+.sls-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 30px;
+}
+
+.sls-detail-grid article {
+    border-top: 3px solid var(--sls-rule);
+    padding-top: 20px;
+}
+
+.sls-detail-grid h2,
+.sls-courses-section h2 {
+    margin: 0 0 14px;
+    color: var(--sls-blue-dark);
+    font-size: clamp(1.65rem, 2vw, 2.15rem);
+    line-height: 1.15;
+}
+
+.sls-detail-grid p,
+.sls-courses-copy {
+    margin: 0;
+    color: #5d343c;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.7;
+}
+
+.sls-courses-section {
+    padding: 40px 0 70px;
+    background: #ffffff;
+}
+
+.sls-courses-copy {
+    max-width: 780px;
+}
+
+.sls-courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 24px;
+    margin-top: 26px;
+}
+
+.sls-course-card {
+    display: block;
+    overflow: hidden;
+    color: inherit;
+    background: #ffffff;
+    border: 1px solid rgba(139, 20, 37, 0.14);
+    border-radius: 8px;
+    box-shadow: 0 10px 24px rgba(91, 13, 24, 0.08);
+    text-decoration: none;
+    transition: box-shadow 220ms ease, transform 220ms ease;
+}
+
+.sls-course-card:hover,
+.sls-course-card:focus-visible {
+    box-shadow: 0 18px 36px rgba(91, 13, 24, 0.16);
+    transform: translateY(-4px);
+}
+
+.sls-course-thumb {
+    height: 154px;
+    background: linear-gradient(135deg, #f3dce0, #fff8f9);
+    background-position: center;
+    background-size: cover;
+}
+
+.sls-course-info {
+    padding: 17px 18px 19px;
+}
+
+.sls-course-name {
+    display: block;
+    margin-bottom: 6px;
+    overflow: hidden;
+    color: var(--sls-blue-dark);
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1.35;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sls-course-instructor {
+    color: #627391;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+@media (max-width: 980px) {
+    .sls-content-wrap {
+        width: min(100% - 36px, 720px);
+    }
+
+    .sls-top-hero {
+        padding-top: 88px;
+    }
+
+    .sls-hero-breadcrumb {
+        height: 48px;
+        padding-inline: 20px;
+    }
+
+    .sls-hero-panel {
+        grid-template-columns: 1fr;
+        min-height: 0;
+    }
+
+    .sls-hero-copy {
+        min-height: 420px;
+        justify-content: flex-start;
+        padding: 70px 0;
+    }
+
+    .sls-hero-text {
+        width: min(100% - 40px, 640px);
+        margin: 0 auto;
+    }
+
+    .sls-hero-image {
+        min-height: 280px;
+        margin-left: 0;
+        padding: 0;
+    }
+
+    .sls-hero-image img {
+        min-height: 280px;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .sls-intro-section {
+        padding: 50px 0;
+    }
+
+    .sls-link-grid,
+    .sls-offering-grid,
+    .sls-detail-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .sls-detail-grid {
+        gap: 28px;
+    }
+
+    .sls-blue-band {
+        padding: 52px 0 60px;
+    }
+
+    .sls-blue-pattern-dots {
+        width: 88%;
+        opacity: 0.18;
+    }
+
+    .sls-blue-pattern-angle {
+        right: -24%;
+        width: 68%;
+    }
+}
+
+@media (max-width: 560px) {
+    .sls-content-wrap {
+        width: min(100% - 28px, 520px);
+    }
+
+    .sls-top-hero {
+        padding-top: 82px;
+    }
+
+    .sls-hero-breadcrumb {
+        gap: 10px;
+        height: 44px;
+        font-size: 0.84rem;
+    }
+
+    .sls-hero-copy {
+        min-height: 360px;
+        padding: 54px 0;
+    }
+
+    .sls-hero-text {
+        width: min(100% - 28px, 520px);
+    }
+
+    .sls-hero-text h1 {
+        margin-bottom: 18px;
+        font-size: 2.36rem;
+    }
+
+    .sls-hero-text p {
+        margin-bottom: 24px;
+        font-size: 0.98rem;
+        line-height: 1.65;
+    }
+
+    .sls-hero-cta {
+        min-height: 52px;
+        padding: 0 24px;
+        font-size: 0.98rem;
+    }
+
+    .sls-hero-image,
+    .sls-hero-image img {
+        min-height: 220px;
+    }
+
+    .sls-intro-section h1,
+    .sls-blue-content h2 {
+        font-size: 2.24rem;
+    }
+
+    .sls-intro-copy,
+    .sls-blue-content p {
+        font-size: 0.98rem;
+        line-height: 1.68;
+    }
+
+    .sls-link-row,
+    .sls-offering-row {
+        min-height: 52px;
+        gap: 16px;
+        font-size: 0.96rem;
+    }
+
+    .sls-courses-grid {
+        grid-template-columns: 1fr;
+    }
+}

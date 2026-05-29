@@ -153,7 +153,7 @@
 
 .register-form-input:focus {
     outline: none;
-    border-color: #A6192E; /* Maroon accent matching PDEU theme */
+    border-color: #8b1425; /* Maroon accent matching PDEU theme */
     background-color: #ffffff;
     box-shadow: 0 0 0 3px rgba(166, 25, 46, 0.1);
 }

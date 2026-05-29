@@ -1,0 +1,168 @@
+/* Dashboard Container */
+.dashboard-container {
+    padding: 2rem 4rem;
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header Section */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.dashboard-title h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #111;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.dashboard-subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* Create Course Button - Aesthetic & Small */
+.create-btn {
+    background: #8b1425;
+    color: white;
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(166, 25, 46, 0.3);
+    border: none;
+}
+
+.create-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(166, 25, 46, 0.4);
+    background: #74101d;
+}
+
+.create-btn:active {
+    transform: translateY(0);
+}
+
+/* Courses Grid */
+.courses-grid-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+/* Course Card */
+.t-course-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: all 0.4s ease;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.t-course-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border-color: rgba(166, 25, 46, 0.1);
+}
+
+.t-course-thumb {
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.t-course-status {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #8b1425;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.t-course-info {
+    padding: 20px;
+}
+
+.t-course-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #222;
+    line-height: 1.4;
+}
+
+.t-course-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.t-course-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.t-price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #8b1425;
+}
+
+.edit-text {
+    font-size: 13px;
+    font-weight: 500;
+    color: #8b1425;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+}
+
+.t-course-card:hover .edit-text {
+    opacity: 1;
+    transform: translateX(0);
+}

@@ -5,10 +5,11 @@
     "main": "src/server.js",
     "type": "module",
     "scripts": {
-        "start": "node src/server.js",
-        "dev": "nodemon",
-        "create-admin": "node src/scripts/create-admin.js",
-        "backfill-user-approval": "node src/scripts/backfill-user-approval.js"
+        "start": "tsx src/server.ts",
+        "dev": "tsx watch src/server.ts",
+        "create-admin": "tsx src/scripts/create-admin.ts",
+        "backfill-user-approval": "tsx src/scripts/backfill-user-approval.ts",
+        "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
     },
     "dependencies": {
         "bcryptjs": "^2.4.3",
@@ -23,6 +24,11 @@
         "socket.io": "^4.8.3"
     },
     "devDependencies": {
-        "nodemon": "^3.0.2"
+        "@types/express": "^5.0.6",
+        "@types/mongoose": "^5.11.96",
+        "@types/node": "^25.9.1",
+        "nodemon": "^3.0.2",
+        "tsx": "^4.22.3",
+        "typescript": "^6.0.3"
     }
 }

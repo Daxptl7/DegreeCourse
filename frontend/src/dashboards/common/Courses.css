@@ -1,0 +1,325 @@
+.courses-page {
+    min-height: 80vh;
+    background-color: #f8f9fa;
+    padding-bottom: 60px;
+}
+
+.courses-header {
+    background: linear-gradient(135deg, #111 0%, #333 100%);
+    color: white;
+    text-align: center;
+    padding: 60px 20px 40px;
+    margin-bottom: 40px;
+}
+
+.courses-header h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.courses-header p {
+    font-size: 1.2rem;
+    opacity: 0.8;
+    margin-bottom: 30px;
+}
+
+/* Search Bar */
+.search-container {
+    max-width: 600px;
+    margin: 0 auto 20px;
+    position: relative;
+}
+
+.search-input {
+    width: 100%;
+    padding: 15px 25px;
+    border-radius: 50px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    color: white;
+    font-size: 16px;
+    font-family: 'Montserrat', sans-serif;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.search-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+/* Filter Buttons */
+.filter-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.filter-btn {
+    padding: 8px 24px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: transparent;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.filter-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.filter-btn.active {
+    background: #8b1425;
+    border-color: #8b1425;
+    color: white;
+    font-weight: 600;
+    transform: scale(1.05);
+}
+
+.courses-grid-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.catalog-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.results-count {
+    margin: 0;
+    color: #444;
+    font-weight: 600;
+}
+
+.catalog-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sort-select {
+    padding: 9px 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: #fff;
+    font-size: 14px;
+    color: #222;
+}
+
+.clear-filters-btn {
+    padding: 9px 14px;
+    border-radius: 8px;
+    border: 1px solid #d9d9d9;
+    background: white;
+    color: #222;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.clear-filters-btn:hover {
+    border-color: #bbb;
+    background: #f7f7f7;
+}
+
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.course-card-item {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+}
+
+.course-card-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* Inner link covers thumb + info */
+.course-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    flex: 1;
+}
+
+/* Footer strip that holds the Add to Cart button */
+.course-card-footer {
+    padding: 0 16px 16px;
+    margin-top: -4px;
+}
+
+.btn-add-cart {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 10px 0;
+    border-radius: 8px;
+    border: 1.5px solid #8b1425;
+    background: transparent;
+    color: #8b1425;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.btn-add-cart:hover:not(:disabled) {
+    background: #8b1425;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.btn-add-cart:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn-add-cart:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.course-thumb {
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+    background-color: #eee;
+}
+
+.course-info {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.course-info h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+    line-height: 1.4;
+}
+
+.instructor {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.course-meta {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.price {
+    font-weight: 700;
+    font-size: 18px;
+    color: #8b1425;
+}
+
+.rating {
+    background: #fff8e1;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #f59e0b;
+}
+
+.courses-loading,
+.no-courses {
+    text-align: center;
+    padding: 50px;
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.pagination-controls {
+    margin-top: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+}
+
+.pagination-btn {
+    padding: 9px 14px;
+    border-radius: 8px;
+    border: 1px solid #d5d5d5;
+    background: #fff;
+    color: #222;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background: #f5f5f5;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.page-indicator {
+    color: #333;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .courses-header h1 {
+        font-size: 2.2rem;
+    }
+
+    .catalog-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .catalog-actions {
+        width: 100%;
+    }
+
+    .sort-select,
+    .clear-filters-btn {
+        flex: 1;
+    }
+}
