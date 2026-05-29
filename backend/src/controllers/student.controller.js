@@ -55,7 +55,6 @@ export const toggleLectureProgress = async (req, res) => {
     try {
         const { courseId, lectureId } = req.params;
         const userId = req.user._id;
-        // const { completed } = req.body; // Can accept generic status, but simple toggle is requested
 
         let enrollment = await Enrollment.findOne({ user: userId, course: courseId });
         
