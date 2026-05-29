@@ -2,6 +2,36 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { APPROVAL_STATUS, ROLES, USER_STATUS } from '../config/roles.js';
 
+export interface IUser extends mongoose.Document {
+  name: string;
+  email: string;
+  phone: string;
+  password: string;
+  role: keyof typeof ROLES;
+  status: keyof typeof USER_STATUS;
+  approvalStatus: keyof typeof APPROVAL_STATUS;
+  approvalNote: string;
+  approvedBy?: mongoose.Types.ObjectId;
+  approvedAt?: Date;
+  enrolledCourses: mongoose.Types.ObjectId[];
+  cart: mongoose.Types.ObjectId[];
+  createdAt: Date;
+  updatedAt: Date;
+  image: string;
+  address: string;
+  birthday?: Date;
+  personId?: string;
+  school: string;
+  socialLinks: {
+    linkedin: string;
+    github: string;
+    instagram: string;
+  };
+  lastLoginAt?: Date;
+  lastLoginIp: string;
+  comparePassword(enteredPassword: string): Promise<boolean>;
+}
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -119,10 +149,10 @@ userSchema.pre('save', async function(next) {
 });
 
 // Method to compare password
-userSchema.methods.comparePassword = async function(enteredPassword) {
+userSchema.methods.comparePassword = async function(enteredPassword: string) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
 userSchema.index({ role: 1, status: 1, school: 1, approvalStatus: 1 });
 
-export default mongoose.model('User', userSchema);
+export default mongoose.model<IUser>('User', userSchema);

@@ -3,16 +3,20 @@ import path from 'path';
 import fs from 'fs';
 
 // Ensure upload directories exist
+const createdDirs = new Set();
 const createDir = (dir) => {
-    if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
+    if (!createdDirs.has(dir)) {
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+        createdDirs.add(dir);
     }
 };
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         let uploadPath = 'uploads/others';
-        
+
         if (file.fieldname === 'assignmentFile') {
             uploadPath = 'uploads/assignments';
         } else if (file.fieldname === 'submissionFile') {
@@ -34,17 +38,17 @@ const storage = multer.diskStorage({
     }
 });
 
-const fileFilter = (req, file, cb) => {
-    // Accept standard document types and images
-    const allowedTypes = [
-        'application/pdf', 
-        'application/msword', 
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'image/jpeg', 
-        'image/png',
-        'image/jpg'
-    ];
+// Accept standard document types and images
+const allowedTypes = [
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'image/jpeg',
+    'image/png',
+    'image/jpg'
+];
 
+const fileFilter = (req, file, cb) => {
     if (allowedTypes.includes(file.mimetype)) {
         cb(null, true);
     } else {
@@ -52,7 +56,7 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-export const upload = multer({ 
+export const upload = multer({
     storage: storage,
     limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
     fileFilter: fileFilter

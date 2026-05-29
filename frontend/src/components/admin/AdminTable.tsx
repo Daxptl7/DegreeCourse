@@ -1,4 +1,17 @@
-const AdminTable = ({ columns, rows, rowKey = '_id', emptyMessage = 'No records found.' }) => {
+interface Column {
+  key: string;
+  label: string;
+  render?: (row: any, index: number) => React.ReactNode;
+}
+
+interface AdminTableProps {
+  columns: Column[];
+  rows: any[];
+  rowKey?: string;
+  emptyMessage?: string;
+}
+
+const AdminTable = ({ columns, rows, rowKey = '_id', emptyMessage = 'No records found.' }: AdminTableProps) => {
   return (
     <div className="overflow-hidden rounded-2xl border border-white/10">
       <div className="overflow-x-auto">

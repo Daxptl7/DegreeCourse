@@ -1,7 +1,16 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import { getCurrentUser, logout as logoutAPI } from '../api/auth';
+import { User } from '../types';
 
-const AuthContext = createContext();
+interface AuthContextType {
+    user: User | null;
+    login: (userData: User) => void;
+    logout: () => void;
+    updateUser: (userData: User) => void;
+    loading: boolean;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const useAuth = () => {
     const context = useContext(AuthContext);
@@ -11,8 +20,8 @@ export const useAuth = () => {
     return context;
 };
 
-export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+    const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -44,7 +53,7 @@ export const AuthProvider = ({ children }) => {
         initAuth();
     }, []);
 
-    const login = (userData) => {
+    const login = (userData: User) => {
         setUser(userData);
     };
 
@@ -53,7 +62,7 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
     };
 
-    const updateUser = (userData) => {
+    const updateUser = (userData: User) => {
         setUser(userData);
         localStorage.setItem('user', JSON.stringify(userData));
     };

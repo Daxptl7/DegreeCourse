@@ -68,8 +68,8 @@ const Login = () => {
                     <div className="login-content">
                         {/* Header */}
                         <div className="login-header">
-                            <h1 className="login-title">Hi Student</h1>
-                            <p className="login-subtitle">Welcome to UniLearn</p>
+                            <h1 className="login-title"> Welcome to PDEU</h1>
+                            <p className="login-subtitle"> Online Course and Degree Program </p>
                         </div>
 
                         {/* Form Section */}

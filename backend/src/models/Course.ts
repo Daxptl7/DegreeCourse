@@ -1,6 +1,58 @@
 import mongoose from 'mongoose';
 import { COURSE_STATUS } from '../config/roles.js';
 
+export interface ILecture {
+  title: string;
+  description?: string;
+  summary?: string;
+  thumbnail?: string;
+  notes?: string;
+  videoUrl?: string;
+  duration?: string;
+  status: 'locked' | 'unlocked';
+  order?: number;
+}
+
+export interface IPart {
+  title: string;
+  lectures: ILecture[];
+  resources: boolean;
+  order?: number;
+}
+
+export interface ICourse extends mongoose.Document {
+  name: string;
+  slug: string;
+  category: string;
+  subtitle?: string;
+  description: string;
+  instructor: mongoose.Types.ObjectId;
+  provider?: string;
+  price: number;
+  thumbnail?: string;
+  videoPreview?: string;
+  stats: {
+    parts: number;
+    rating: number;
+    reviews: number;
+    difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
+    totalHours: number;
+    shareable: boolean;
+  };
+  whatYouLearn: string[];
+  parts: IPart[];
+  status: keyof typeof COURSE_STATUS;
+  isFeatured: boolean;
+  featuredAt?: Date;
+  archivedAt?: Date;
+  rejectionReason: string;
+  reviewedBy?: mongoose.Types.ObjectId;
+  reviewedAt?: Date;
+  enrolledStudents: mongoose.Types.ObjectId[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 const lectureSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -127,4 +179,4 @@ courseSchema.pre('save', function(next) {
   next();
 });
 
-export default mongoose.model('Course', courseSchema);
+export default mongoose.model<ICourse>('Course', courseSchema);

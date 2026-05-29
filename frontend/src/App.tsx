@@ -47,7 +47,7 @@ const ScrollToTop = () => {
 
 
 // Layout Component
-const PageLayout = ({ children, navbarProps, viewMode }) => {
+const PageLayout = ({ children, navbarProps, viewMode }: { children: React.ReactNode, navbarProps: any, viewMode: string }) => {
     const location = useLocation();
 
     const isStudentHome =

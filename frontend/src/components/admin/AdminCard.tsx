@@ -1,4 +1,12 @@
-const AdminCard = ({ title, subtitle, actions, children, className = '' }) => {
+interface AdminCardProps {
+  title?: string;
+  subtitle?: string;
+  actions?: React.ReactNode;
+  children: React.ReactNode;
+  className?: string;
+}
+
+const AdminCard = ({ title, subtitle, actions, children, className = '' }: AdminCardProps) => {
   return (
     <section className={`rounded-3xl border border-white/10 bg-slate-900/70 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur ${className}`}>
       {(title || subtitle || actions) && (
